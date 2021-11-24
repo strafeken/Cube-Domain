@@ -1,0 +1,18 @@
+public enum State
+{
+    IDLE,
+    JUMPING,
+    PATROL,
+    CHASE,
+    ATTACK,
+    READY_TO_ATTACK,
+    ATTACKING,
+    DEAD,
+    MELEE_MODE,
+    RANGED_MODE,
+    SHOOT,
+    ENRAGED,
+    SOUTH_ATTACK,
+    WEST_EAST_ATTACK,
+    RANGED_ATTACK
+}
