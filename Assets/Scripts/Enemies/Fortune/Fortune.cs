@@ -18,14 +18,13 @@ public class Fortune : Enemy
 
     bool isMoving;
 
-    [SerializeField] private GameObject hearts;
-    [SerializeField] private GameObject h1;
-    [SerializeField] private GameObject h2;
-    [SerializeField] private GameObject h3;
-    [SerializeField] private GameObject h4;
-    [SerializeField] private GameObject h5;
-    [SerializeField] private GameObject h6;
-
+    private GameObject hearts;
+    private GameObject h1;
+    private GameObject h2;
+    private GameObject h3;
+    private GameObject h4;
+    private GameObject h5;
+    private GameObject h6;
 
     [SerializeField] private GameObject skills;
     [SerializeField] private GameObject pillar;
@@ -33,10 +32,24 @@ public class Fortune : Enemy
 
     private Vector3 initialPillarPosition;
 
-    private float rollCooldown = 4f;
-    public float rollCooldownTimer = 0f;
+    [SerializeField] private float rollCooldown = 4f;
+    private float rollCooldownTimer = 0f;
 
     private State currentState;
+
+    public Transform body;
+
+    void Awake()
+    {
+        Transform heartGroup = transform.Find("Hearts");
+        hearts = heartGroup.gameObject;
+        h1 = heartGroup.Find("1H").gameObject;
+        h2 = heartGroup.Find("2H").gameObject;
+        h3 = heartGroup.Find("3H").gameObject;
+        h4 = heartGroup.Find("4H").gameObject;
+        h5 = heartGroup.Find("5H").gameObject;
+        h6 = heartGroup.Find("6H").gameObject;
+    }
 
     protected override void Start()
     {
@@ -178,7 +191,7 @@ public class Fortune : Enemy
 
         if (h1.activeInHierarchy)
         {
-            StartCoroutine("Impale");
+            //StartCoroutine("Impale");
         }
         else if(h2.activeInHierarchy)
         {
@@ -228,13 +241,14 @@ public class Fortune : Enemy
 
         float remainingAngle = 90;
 
-        Vector3 rotationCenter = transform.position + direction / 2 + Vector3.down / 2;
+        Vector3 rotationCenter = body.transform.position + direction / 2 + Vector3.down / 2;
         Vector3 rotationAxis = Vector3.Cross(Vector3.up, direction);
 
         while (remainingAngle > 0)
         {
             float rotationAngle = Mathf.Min(rollSpeed * Time.deltaTime, remainingAngle);
-            transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
+            body.transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
+            transform.position = body.transform.position;
             remainingAngle -= rotationAngle;
             yield return null;
         }
