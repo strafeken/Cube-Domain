@@ -10477,7 +10477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 619162e3a5e64b04bb84c5c78e38f1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPrefab: {fileID: 3172390414277885294, guid: 3a389bb4c02ed664d92c49142b3fbb42, type: 3}
+  targetPrefab: {fileID: 1331176847106808843, guid: cf430b512a048d04181f1eb4ba82802a, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -10491,6 +10491,7 @@ MonoBehaviour:
   swordTip: {fileID: 1375481579}
   raycastPoint: {fileID: 1824926376}
   raycastPointDirection: {fileID: 2087537326}
+  mouseControl: {fileID: 2693030121831806833}
 --- !u!1 &1237764857
 GameObject:
   m_ObjectHideFlags: 0
