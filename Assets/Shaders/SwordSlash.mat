@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SwordSlash
+  m_Shader: {fileID: -6465566751694194690, guid: 6ad152c0304dbd446944bc440608165e, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_51b3800a0a5d4571a92865b5b1bb6207:
+        m_Texture: {fileID: 2800000, guid: 67a028807644880448ec33605c59646b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_f5b84ac1e3924662875f98a1b88cf9bf:
+        m_Texture: {fileID: 2800000, guid: 34069cb4e26d5824b8dd9a5e147e0237, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_6f2d0f1c692949db851724ee86952191: 2.16
+    - Vector1_9a894ca6bb2f4547ab4815d7d8a9259f: 14.14
+    - Vector1_affc146e0f484087a4efa98b4cccb3cb: 0.5
+    m_Colors:
+    - Color_b933bc2e13dd42baac1c3813f22ad794: {r: 14.2594795, g: 4.75316, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -31,6 +31,25 @@ public class RealisticSwordAttack : MonoBehaviour
     [SerializeField] private GameObject notBlocked;
     [SerializeField] private GameObject stab;
 
+    public Transform[] controlPoints;
+    private Vector3 gizmosPosition;
+
+    void OnDrawGizmosSelected()
+    {
+        for (float t = 0; t <= 1; t += 0.05f)
+        {
+            gizmosPosition = Mathf.Pow(1 - t, 3) * controlPoints[0].position +
+                3 * Mathf.Pow(1 - t, 2) * t * controlPoints[1].position +
+                3 * (1 - t) * Mathf.Pow(t, 2) * controlPoints[2].position +
+                Mathf.Pow(t, 3) * controlPoints[3].position;
+
+            Gizmos.DrawSphere(gizmosPosition, 0.1f);
+        }
+
+        Gizmos.DrawLine(controlPoints[0].position, controlPoints[1].position);
+        Gizmos.DrawLine(controlPoints[2].position, controlPoints[3].position);
+    }
+
     void Awake()
     {
         //swordRendererController = GameObject.FindGameObjectWithTag("SwordRenderer").GetComponent<SwordRendererController>();
@@ -38,6 +57,7 @@ public class RealisticSwordAttack : MonoBehaviour
 
     void Start()
     {
+        controlPoints[0].position = transform.position;
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
     }
@@ -137,6 +157,14 @@ public class RealisticSwordAttack : MonoBehaviour
             GameObject obj = Instantiate(targetPrefab, hit.point, Quaternion.identity, player);
             target = obj.transform;
             target.rotation = Quaternion.LookRotation(-hit.normal);
+            controlPoints[0].position = transform.position;
+            controlPoints[3].position = target.position;
+
+            Vector3 resultantVector = controlPoints[3].position - controlPoints[0].position;
+            Vector3 position2 = controlPoints[0].position + resultantVector / 3;
+            Vector3 position3 = controlPoints[0].position + resultantVector / 3 * 2;
+            controlPoints[1].position = position2 + player.forward / 5;
+            controlPoints[2].position = position3 + player.forward / 5;
             return true;
         }
         return false;
@@ -144,7 +172,9 @@ public class RealisticSwordAttack : MonoBehaviour
 
     private IEnumerator Swing()
     {
+
         isSwinging = true;
+        // USE BEZIER CURVE
 
         if (isIdleTimerRunning)
         {
@@ -152,17 +182,38 @@ public class RealisticSwordAttack : MonoBehaviour
             isIdleTimerRunning = false;
         }
 
-        float distanceToTarget = float.MaxValue;
-        float distanceToMove = moveSpeed * Time.deltaTime;
-
-        while (distanceToTarget > minDistance)
+        Vector3 p0 = controlPoints[0].position;
+        Vector3 p1 = controlPoints[1].position;
+        Vector3 p2 = controlPoints[2].position;
+        Vector3 p3 = controlPoints[3].position;
+        float t = 0;
+        Vector3 nextPosition;
+        while (t < 1)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, distanceToMove);
-            distanceToTarget = (transform.position - target.position).magnitude;
+            t += Time.deltaTime * moveSpeed;
+
+            nextPosition = Mathf.Pow(1 - t, 3) * p0 +
+                3 * Mathf.Pow(1 - t, 2) * t * p1 +
+                3 * (1 - t) * Mathf.Pow(t, 2) * p2 +
+                Mathf.Pow(t, 3) * p3;
+
+            transform.position = nextPosition;
             if (isFirstSwing)
                 isFirstSwing = false;
             yield return null;
         }
+
+        //float distanceToTarget = float.MaxValue;
+        //float distanceToMove = moveSpeed * Time.deltaTime;
+
+        //while (distanceToTarget > minDistance)
+        //{
+        //    transform.position = Vector3.MoveTowards(transform.position, target.position, distanceToMove);
+        //    distanceToTarget = (transform.position - target.position).magnitude;
+        //    if (isFirstSwing)
+        //        isFirstSwing = false;
+        //    yield return null;
+        //}
 
         StartCoroutine("IdleTimer");
         isSwinging = false;
