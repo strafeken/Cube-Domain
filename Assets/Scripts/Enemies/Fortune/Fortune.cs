@@ -7,16 +7,10 @@ public class Fortune : Enemy
 {
     public enum State
     {
-        CHASE
+        CHASE,
+        MISSILE,
+        CAGE
     }
-
-    [SerializeField] private float rollSpeed = 10f;
-
-    [SerializeField] private Transform[] sides;
-
-    private List<float> listOfDistance = new List<float>();
-
-    bool isMoving;
 
     private GameObject hearts;
     private GameObject h1;
@@ -27,17 +21,24 @@ public class Fortune : Enemy
     private GameObject h6;
 
     [SerializeField] private GameObject skills;
-    [SerializeField] private GameObject pillar;
+    [Header("Pillars")]
+    private Transform[] pillars = new Transform[6];
     [SerializeField] private float impaleSpeed = 10f;
-
-    private Vector3 initialPillarPosition;
-
-    [SerializeField] private float rollCooldown = 4f;
-    private float rollCooldownTimer = 0f;
 
     private State currentState;
 
     public Transform body;
+
+    [Header("Missile")]
+    [SerializeField] private Transform missilePosition;
+    [SerializeField] private float missileSpeed = 5f;
+
+    [Header("Cage")]
+    [SerializeField] private float cageRadius = 2f;
+    [SerializeField] private float risingSpeed = 1f;
+    [SerializeField] private Transform cagePosition;
+
+    private FortuneBodyMovement bodyMovement;
 
     void Awake()
     {
@@ -49,19 +50,26 @@ public class Fortune : Enemy
         h4 = heartGroup.Find("4H").gameObject;
         h5 = heartGroup.Find("5H").gameObject;
         h6 = heartGroup.Find("6H").gameObject;
+
+        Transform skillsGroup = transform.Find("Skills");
+        for(int i = 0; i < 6; ++i)
+            pillars[i] = skillsGroup.Find("Pillar" + (i + 1));
+
+        bodyMovement = GetComponent<FortuneBodyMovement>();
     }
 
     protected override void Start()
     {
         base.Start();
 
-        DetermineSideFacingUp();
+        bodyMovement.OnSideChanged += OnSideChangedEvent;
 
-        initialPillarPosition = pillar.transform.localPosition;
-
-       // StartCoroutine("Impale");
         SetState(State.CHASE);
-        //SetState(State.IDLE);
+    }
+
+    void OnDisable()
+    {
+        bodyMovement.OnSideChanged -= OnSideChangedEvent;
     }
 
     protected override void Update()
@@ -74,92 +82,100 @@ public class Fortune : Enemy
         switch (currentState)
         {
             case State.CHASE:
-                if (isMoving)
-                    return;
-
-                rollCooldownTimer += Time.deltaTime;
-                if(rollCooldownTimer > rollCooldown)
-                {
-                    FindBestDirection();
-                    rollCooldownTimer = 0f;
-                }
-
-
                 break;
         }
-
-        //if (Input.GetKeyDown(KeyCode.RightArrow))
-        //    StartCoroutine(Roll(Vector3.right));
-        //else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //    StartCoroutine(Roll(Vector3.left));
-        //else if (Input.GetKeyDown(KeyCode.UpArrow))
-        //    StartCoroutine(Roll(Vector3.forward));
-        //else if (Input.GetKeyDown(KeyCode.DownArrow))
-        //    StartCoroutine(Roll(Vector3.back));
     }
 
     public void SetState(State nextState)
     {
         currentState = nextState;
-    }
 
-    private void FindBestDirection()
-    {
-        listOfDistance.Clear();
-
-        for (int i = 0; i < 4; ++i)
+        switch(currentState)
         {
-            switch (i)
-            {
-                case 0:
-                    ProjectMovement(Vector3.right);
-                    break;
-                case 1:
-                    ProjectMovement(Vector3.left);
-                    break;
-                case 2:
-                    ProjectMovement(Vector3.forward);
-                    break;
-                case 3:
-                    ProjectMovement(Vector3.back);
-                    break;
-            }
-        }
-
-        float minVal = listOfDistance.Min();
-        int index = listOfDistance.IndexOf(minVal);
-
-        switch (index)
-        {
-            case 0:
-                StartCoroutine(Roll(Vector3.right));
+            case State.CHASE:
+                GetComponent<FortuneBodyMovement>().enabled = true;
+                //ResetPillars();
                 break;
-            case 1:
-                StartCoroutine(Roll(Vector3.left));
+            case State.MISSILE:
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                ResetPillars();
+                //StartCoroutine("Missile");
+                for(int i = 0; i < 5; ++i)
+                {
+                    pillars[i].GetComponent<PillarMissile>().FaceTarget(((player.position - Vector3.down) - pillars[i].position).normalized);
+                }
                 break;
-            case 2:
-                StartCoroutine(Roll(Vector3.forward));
-                break;
-            case 3:
-                StartCoroutine(Roll(Vector3.back));
+            case State.CAGE:
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                ResetPillars();
+                //StartCoroutine("Cage");
                 break;
         }
     }
 
-    private void DetermineSideFacingUp()
+    private IEnumerator Impale()
     {
-        //sides = sides.OrderBy(sides => sides.transform.position.y).ToArray();
-        GameObject highestFilling = null;
-        float highestPosition = float.MinValue;
-        for (int f = 0; f < sides.Length; f++)
+        float distance = float.MaxValue;
+        while(distance > 2f)
         {
-            float thisY = sides[f].transform.position.y; //cache this, because calculating it twice is also slower than need be
-            if (thisY > highestPosition)
-            {
-                highestPosition = thisY;
-                highestFilling = sides[f].gameObject;
-            }
+            //pillar.transform.position = Vector3.MoveTowards(pillar.transform.position, player.position, impaleSpeed * Time.deltaTime);
+            //distance = Vector3.Distance(player.position, pillar.transform.position);
+            yield return null;
         }
+        //pillar.transform.localPosition = initialPillarPosition;
+    }
+
+    private IEnumerator Missile()
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            float angle = i * Mathf.PI * 2f / 5;
+            Vector3 newPos = new Vector3(transform.position.x + Mathf.Cos(angle) * cageRadius, missilePosition.position.y + Mathf.Sin(angle) * cageRadius, transform.position.z);
+            pillars[i].position = newPos;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        for (int i = 0; i < 5; ++i)
+        {
+            pillars[i].GetComponent<PillarMissile>().Move(player.position + (Vector3.down), missileSpeed);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        SetState(State.CHASE);
+    }
+
+    private IEnumerator Cage()
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            float angle = i * Mathf.PI * 2f / 6;
+            Vector3 newPos = new Vector3(player.position.x + Mathf.Cos(angle) * cageRadius, pillars[i].position.y, player.position.z + Mathf.Sin(angle) * cageRadius);
+            pillars[i].position = newPos;
+        }
+
+        while (pillars[5].position.y < cagePosition.position.y)
+        {
+            for(int i = 0; i < 6; ++i)
+            {
+                Vector3 currentPosition = pillars[i].position;
+                pillars[i].position = new Vector3(currentPosition.x, currentPosition.y + risingSpeed * Time.deltaTime, currentPosition.z);
+            }
+            yield return null;
+        }
+    }
+
+    private void ResetPillars()
+    {
+        for(int i = 0; i <6; ++i)
+        {
+            pillars[i].rotation = Quaternion.identity;
+            pillars[i].position = new Vector3(transform.position.x, -5, transform.position.z);
+        }
+    }
+
+    private void OnSideChangedEvent(string name)
+    {
         h1.SetActive(false);
         h2.SetActive(false);
         h3.SetActive(false);
@@ -167,7 +183,7 @@ public class Fortune : Enemy
         h5.SetActive(false);
         h6.SetActive(false);
 
-        switch (highestFilling.name)
+        switch (name)
         {
             case "Num1":
                 h1.SetActive(true);
@@ -193,7 +209,7 @@ public class Fortune : Enemy
         {
             //StartCoroutine("Impale");
         }
-        else if(h2.activeInHierarchy)
+        else if (h2.activeInHierarchy)
         {
 
         }
@@ -207,54 +223,11 @@ public class Fortune : Enemy
         }
         else if (h5.activeInHierarchy)
         {
-
+            //SetState(State.MISSILE);
         }
         else if (h6.activeInHierarchy)
         {
-
+            //SetState(State.CAGE);
         }
-    }
-
-    private IEnumerator Impale()
-    {
-        float distance = float.MaxValue;
-        while(distance > 2f)
-        {
-            pillar.transform.position = Vector3.MoveTowards(pillar.transform.position, player.position, impaleSpeed * Time.deltaTime);
-            distance = Vector3.Distance(player.position, pillar.transform.position);
-            yield return null;
-        }
-        pillar.transform.localPosition = initialPillarPosition;
-    }
-
-    private void ProjectMovement(Vector3 direction)
-    {
-        Vector3 newPosition = transform.position + direction;
-        float distanceToPlayer = (player.position - newPosition).magnitude;
-        listOfDistance.Add(distanceToPlayer);
-    }
-
-
-    private IEnumerator Roll(Vector3 direction)
-    {
-        isMoving = true;
-
-        float remainingAngle = 90;
-
-        Vector3 rotationCenter = body.transform.position + direction / 2 + Vector3.down / 2;
-        Vector3 rotationAxis = Vector3.Cross(Vector3.up, direction);
-
-        while (remainingAngle > 0)
-        {
-            float rotationAngle = Mathf.Min(rollSpeed * Time.deltaTime, remainingAngle);
-            body.transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
-            transform.position = body.transform.position;
-            remainingAngle -= rotationAngle;
-            yield return null;
-        }
-
-        isMoving = false;
-
-        DetermineSideFacingUp();
     }
 }

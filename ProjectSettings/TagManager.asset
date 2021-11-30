@@ -10,6 +10,7 @@ TagManager:
   - Sword
   - EventSystem
   - Canvas
+  - Gate
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Heart
   - Sword
   - Projectile
-  - 
+  - Pillar
   - 
   - 
   - 
