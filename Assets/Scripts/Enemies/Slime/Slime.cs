@@ -131,6 +131,7 @@ public class Slime : Enemy
                 // Bounce slime back
                 Vector3 dirToInitialPos = (jumpPosition - player.position).normalized;
                 rb.AddForce(dirToInitialPos * 200);
+                playerHealth.DealDamage();
             }
             // Missed the player
             else if (collision.collider.CompareTag("Floor"))

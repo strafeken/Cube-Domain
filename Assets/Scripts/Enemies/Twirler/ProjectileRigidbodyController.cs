@@ -48,12 +48,12 @@ public class ProjectileRigidbodyController : MonoBehaviour
 
     private void OnFireballState()
     {
-        rb.isKinematic = false;
+        rb.isKinematic = true;
     }
 
     private void OnMultipleFireballState()
     {
-        rb.isKinematic = false;
+        rb.isKinematic = true;
     }
 
     private void OnSpinState()

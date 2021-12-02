@@ -19,10 +19,13 @@ public class FollowCurveRoute : MonoBehaviour
     public Action<bool> OnEndPointReached;
     private bool hitPlayer;
 
+    private Health playerHealth;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<TrailRenderer>();
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
     }
 
     void OnEnable()
@@ -31,17 +34,18 @@ public class FollowCurveRoute : MonoBehaviour
         StartCoroutine(MoveCoroutine);
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         // Because collision is still triggered even if this script is disabled
         if (!enabled)
             return;
 
-        if (collision.collider.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             hitPlayer = true;
             StopCoroutine(MoveCoroutine);
             enabled = false;
+            playerHealth.DealDamage();
         }
     }
 

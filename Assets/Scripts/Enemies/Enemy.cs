@@ -4,6 +4,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("Player attributes")]
     [SerializeField] protected Transform player;
+    [SerializeField] protected Health playerHealth;
 
     protected float simulationSpeed = 1f;
 
@@ -12,7 +13,7 @@ public abstract class Enemy : MonoBehaviour
     {
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         player = p.GetComponent<Transform>();
-        //playerHP = p.GetComponent<Health>();
+        playerHealth = p.GetComponent<Health>();
     }
 
     protected virtual void Update()
