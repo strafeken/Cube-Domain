@@ -7,14 +7,23 @@ public class Heart : MonoBehaviour
 {
     [SerializeField] private int health = 3;
     public event Action OnHeartHit;
+    public event Action OnHeartDestroyed;
 
     void OnTriggerEnter(Collider other)
     {
         --health;
-        if(health < 1)
+        
+        OnHeartHit?.Invoke();
+
+        if (health < 1)
         {
+            OnHeartDestroyed?.Invoke();
             gameObject.SetActive(false);
-            OnHeartHit?.Invoke();
         }
+    }
+
+    public int GetCurrentHealth()
+    {
+        return health;
     }
 }

@@ -11,6 +11,8 @@ TagManager:
   - EventSystem
   - Canvas
   - Gate
+  - SceneLoadManager
+  - Enemy
   layers:
   - Default
   - TransparentFX

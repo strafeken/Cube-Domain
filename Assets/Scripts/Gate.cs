@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float openingSpeed = 1f;
+
+    public void OpenGate()
     {
-        
+        StartCoroutine(Opening());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CloseGate()
     {
-        transform.position += transform.up * 1 * Time.deltaTime;
+        StartCoroutine(Closing());
+    }
+
+    private IEnumerator Opening()
+    {
+        while(transform.position.y < 5f)
+        {
+            transform.position += Vector3.up * openingSpeed * Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private IEnumerator Closing()
+    {
+        while (transform.position.y > 0f)
+        {
+            transform.position -= Vector3.up * openingSpeed * Time.deltaTime;
+            yield return null;
+        }
     }
 }

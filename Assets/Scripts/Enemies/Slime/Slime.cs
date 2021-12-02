@@ -42,7 +42,10 @@ public class Slime : Enemy
     void OnEnable()
     {
         for (int i = 0; i < hearts.Count; ++i)
-            hearts[i].OnHeartHit += OnHeartHit;
+        {
+            hearts[i].OnHeartHit += OnDamagedEvent;
+            hearts[i].OnHeartDestroyed += OnHeartDestroyedEvent;
+        }
     }
 
     protected override void Start()
@@ -102,6 +105,9 @@ public class Slime : Enemy
             case State.ATTACKING:
                 break;
             case State.DEAD:
+                {
+                    Destroy(gameObject);
+                }
                 break;
         }
     }
@@ -109,7 +115,10 @@ public class Slime : Enemy
     void OnDisable()
     {
         for (int i = 0; i < hearts.Count; ++i)
-            hearts[i].OnHeartHit -= OnHeartHit;
+        {
+            hearts[i].OnHeartHit -= OnDamagedEvent;
+            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -204,11 +213,18 @@ public class Slime : Enemy
         SetState(State.JUMPING);
     }
 
-    private void OnHeartHit()
+    private void OnDamagedEvent()
+    {
+
+    }
+
+    private void OnHeartDestroyedEvent()
     {
         --numOfHearts;
-        if (numOfHearts < 1)
-            gameObject.SetActive(false);
+        if(numOfHearts < 1)
+        {
+            SetState(State.DEAD);
+        }
     }
 
     private void DisableAgent()

@@ -6,28 +6,25 @@ using System;
 
 public class FortuneBodyMovement : MonoBehaviour
 {
-    [SerializeField] private float rollSpeed = 10f;
-
     [SerializeField] private Transform[] sides;
 
-    private List<float> listOfDistance = new List<float>();
+    [SerializeField] private float rollSpeed = 10f;
+    [SerializeField] private float rollCooldown = 4f;
+    private float rollCooldownTimer = 0f;
 
     private bool isMoving;
 
-    [SerializeField] private Transform player;
+    private Transform player;
 
-    public Transform body;
+    [SerializeField] private Transform body;
 
-    private Fortune fortune;
-
-    [SerializeField] private float rollCooldown = 4f;
-    private float rollCooldownTimer = 0f;
+    private List<float> listOfDistance = new List<float>();
 
     public Action<string> OnSideChanged;
 
     void Awake()
     {
-        fortune = GetComponent<Fortune>();    
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     void Start()
@@ -123,19 +120,18 @@ public class FortuneBodyMovement : MonoBehaviour
 
     private void DetermineSideFacingUp()
     {
-        //sides = sides.OrderBy(sides => sides.transform.position.y).ToArray();
         GameObject highestFilling = null;
         float highestPosition = float.MinValue;
         for (int f = 0; f < sides.Length; f++)
         {
-            float thisY = sides[f].transform.position.y; //cache this, because calculating it twice is also slower than need be
+            float thisY = sides[f].transform.position.y;
             if (thisY > highestPosition)
             {
                 highestPosition = thisY;
                 highestFilling = sides[f].gameObject;
             }
         }
-        Debug.Log(highestFilling.name);
+
         OnSideChanged?.Invoke(highestFilling.name);
     }
 }

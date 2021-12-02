@@ -99,12 +99,14 @@ public class Twirler : Enemy
                         if (GetDistanceToPlayer() < spinAttackRange)
                         {
                             SetState(State.SPIN);
+                            break;
                         }
 
                         // When it hasn't shot a projectile or has hit a projectile
                         if (!shot)
                         {
                             SetState(State.FIREBALL);
+                            break;
                         }
                         else if (shot && southHitPlayer)
                         {
@@ -113,11 +115,15 @@ public class Twirler : Enemy
                             {
                                 SetState(State.FIREBALL);
                                 shootCooldownTimer = 0f;
+                                break;
                             }
                         }
                         // When the shot misses
                         else if (!southHitPlayer)
+                        {
                             SetState(State.MULTIPLE_FIREBALL);
+                            break;
+                        }
                     }
                 }
                 break;

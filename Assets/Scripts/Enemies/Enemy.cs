@@ -22,8 +22,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected void OnDestroy()
     {
-        //if (EnemyManager.Instance != null)
-            //EnemyManager.Instance.RemoveFromList(gameObject);
+        if (EnemyManager.Instance != null)
+            EnemyManager.Instance.RemoveFromList(gameObject);
     }
 
     protected virtual void OnDrawGizmosSelected()
