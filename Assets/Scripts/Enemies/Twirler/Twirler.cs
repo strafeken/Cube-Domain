@@ -27,7 +27,7 @@ public class Twirler : Enemy
     private ControlBezierCurve eRoute;
     private ControlBezierCurve wRoute;
 
-    private Heart heart;
+    private List<Heart> hearts = new List<Heart>();
     private int numOfHearts;
 
     [Header("VFX")]
@@ -68,14 +68,20 @@ public class Twirler : Enemy
         eRoute = routes.Find("EastRoute").GetComponent<ControlBezierCurve>();
         wRoute = routes.Find("WestRoute").GetComponent<ControlBezierCurve>();
 
-        heart = transform.Find("Heart").GetComponent<Heart>();
+        hearts.AddRange(GetComponentsInChildren<Heart>());
     }
 
     protected override void Start()
     {
         base.Start();
 
-        numOfHearts = 1;
+        for (int i = 0; i < hearts.Count; ++i)
+        {
+            hearts[i].OnHeartHit += OnDamagedEvent;
+            hearts[i].OnHeartDestroyed += OnHeartDestroyedEvent;
+        }
+
+        numOfHearts = hearts.Count;
 
         southCube.OnEndPointReached += OnProjectileReachEnd;
         eastCube.OnEndPointReached += OnProjectileReachEnd;
@@ -155,6 +161,11 @@ public class Twirler : Enemy
                     SetState(State.IDLE);
                 }
                 break;
+            case State.DEAD:
+                {
+                    Destroy(gameObject);
+                }
+                break;
         }
     }
 
@@ -163,6 +174,12 @@ public class Twirler : Enemy
         southCube.OnEndPointReached -= OnProjectileReachEnd;
         eastCube.OnEndPointReached -= OnProjectileReachEnd;
         westCube.OnEndPointReached -= OnProjectileReachEnd;
+
+        for (int i = 0; i < hearts.Count; ++i)
+        {
+            hearts[i].OnHeartHit -= OnDamagedEvent;
+            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
+        }
     }
 
     public State GetCurrentState()
@@ -233,6 +250,21 @@ public class Twirler : Enemy
             case State.MULTIPLE_FIREBALL:
                 SetState(State.CHASE);
                 break;
+        }
+    }
+
+    private void OnDamagedEvent()
+    {
+
+    }
+
+    private void OnHeartDestroyedEvent()
+    {
+        --numOfHearts;
+
+        if (numOfHearts < 1)
+        {
+            SetState(State.DEAD);
         }
     }
 }

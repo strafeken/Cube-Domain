@@ -222,6 +222,7 @@ public class Slime : Enemy
     private void OnHeartDestroyedEvent()
     {
         --numOfHearts;
+
         if(numOfHearts < 1)
         {
             SetState(State.DEAD);

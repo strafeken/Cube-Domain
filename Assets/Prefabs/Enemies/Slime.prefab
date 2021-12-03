@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  sparksVFX: {fileID: 2208148902106606192, guid: 006b3cada4abc9a4198d677a01a6b6b8, type: 3}
 --- !u!1 &1336141087779578751
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerHealth: {fileID: 0}
   rotationSpeed: 50
   attackCooldown: 1.5
   attackRange: 5

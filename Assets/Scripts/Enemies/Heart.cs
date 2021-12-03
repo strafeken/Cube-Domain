@@ -9,8 +9,13 @@ public class Heart : MonoBehaviour
     public event Action OnHeartHit;
     public event Action OnHeartDestroyed;
 
+    [SerializeField] private GameObject sparksVFX;
+
     void OnTriggerEnter(Collider other)
     {
+        GameObject vfx = Instantiate(sparksVFX, other.transform.position, Quaternion.identity);
+        Destroy(vfx, 1f);
+
         --health;
         
         OnHeartHit?.Invoke();

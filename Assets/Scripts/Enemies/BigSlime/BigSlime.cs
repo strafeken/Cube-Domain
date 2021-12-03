@@ -57,7 +57,10 @@ public class BigSlime : Enemy
     void OnEnable()
     {
         for (int i = 0; i < hearts.Count; ++i)
-            hearts[i].OnHeartHit += OnHeartHit;
+        {
+            hearts[i].OnHeartHit += OnDamagedEvent;
+            hearts[i].OnHeartDestroyed += OnHeartDestroyedEvent;
+        }
     }
 
     protected override void Start()
@@ -65,7 +68,7 @@ public class BigSlime : Enemy
         base.Start();
 
         numOfHearts = hearts.Count;
-
+        Debug.Log(numOfHearts);
         SetState(State.IDLE);
     }
 
@@ -142,7 +145,10 @@ public class BigSlime : Enemy
     void OnDisable()
     {
         for (int i = 0; i < hearts.Count; ++i)
-            hearts[i].OnHeartHit -= OnHeartHit;
+        {
+            hearts[i].OnHeartHit -= OnDamagedEvent;
+            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -189,7 +195,7 @@ public class BigSlime : Enemy
                 attackCooldownTimer = attackCooldown; // ensure that slime immediately attacks player
                 break;
             case State.DEAD:
-
+                Destroy(gameObject);
                 break;
         }
     }
@@ -232,11 +238,19 @@ public class BigSlime : Enemy
         ++numOfJumps;
     }
 
-    void OnHeartHit()
+    void OnDamagedEvent()
+    {
+
+    }
+
+    private void OnHeartDestroyedEvent()
     {
         --numOfHearts;
+
         if (numOfHearts < 1)
-            gameObject.SetActive(false);
+        {
+            SetState(State.DEAD);
+        }
     }
 
     private void DisableAgent()

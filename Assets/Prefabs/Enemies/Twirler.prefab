@@ -1446,6 +1446,7 @@ GameObject:
   - component: {fileID: 5680501518387052738}
   - component: {fileID: 5680501518387052741}
   - component: {fileID: 5680501518387052740}
+  - component: {fileID: 2541337524153093606}
   m_Layer: 9
   m_Name: Heart
   m_TagString: Heart
@@ -1529,6 +1530,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2541337524153093606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680501518387052742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f07073727152b409a25e2020e8f9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  sparksVFX: {fileID: 2208148902106606192, guid: 006b3cada4abc9a4198d677a01a6b6b8, type: 3}
 --- !u!1 &5680501518585955035
 GameObject:
   m_ObjectHideFlags: 0
