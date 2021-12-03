@@ -40,7 +40,10 @@ public class BigSlime : Enemy
     private float jumpCooldown = 1f;
     private float jumpCooldownTimer = 0f;
 
-    private State currentState;
+    [SerializeField] private State currentState;
+
+    private bool hitPlayer;
+    private bool attackedPlayer;
 
     public State GetCurrentState()
     {
@@ -68,7 +71,7 @@ public class BigSlime : Enemy
         base.Start();
 
         numOfHearts = hearts.Count;
-        Debug.Log(numOfHearts);
+
         SetState(State.IDLE);
     }
 
@@ -128,6 +131,14 @@ public class BigSlime : Enemy
                         return;
                     }
 
+                    if(attackedPlayer && !hitPlayer)
+                    {
+                        if(rb.velocity.magnitude < 1)
+                        {
+                            FacePlayer();
+                        }
+                    }
+
                     attackCooldownTimer += Time.deltaTime;
                     if (attackCooldownTimer > attackCooldown)
                     {
@@ -142,6 +153,12 @@ public class BigSlime : Enemy
         }
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
     void OnDisable()
     {
         for (int i = 0; i < hearts.Count; ++i)
@@ -153,10 +170,17 @@ public class BigSlime : Enemy
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Player"))
+        if(currentState == State.ATTACK)
         {
-            rb.AddForce(transform.forward * -400f);
+            if (collision.collider.CompareTag("Player"))
+            {
+                hitPlayer = true;
+                playerHealth.DealDamage();
+                rb.AddForce(transform.forward * -400f);
+                attackedPlayer = false;
+            }
         }
+
 
         /*        if (!jumped)
                     return;*/
@@ -223,6 +247,8 @@ public class BigSlime : Enemy
         DisableAgent();
 
         rb.AddForce(transform.forward * 500f);
+        attackedPlayer = true;
+        hitPlayer = false;
     }
 
     void Jump(Vector3 direction, float upMagnitude, float forwardMagnitude)
