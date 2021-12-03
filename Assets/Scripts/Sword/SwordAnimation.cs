@@ -9,6 +9,7 @@ public class SwordAnimation : MonoBehaviour
         IDLE,
         HORIZONTAL_SLASH,
         DIAGONAL_SLASH,
+        VERTICAL_SLASH,
         STAB,
         SHEATHE
     }
@@ -49,6 +50,10 @@ public class SwordAnimation : MonoBehaviour
                     StopCoroutine("SheatheTimer");
                     animator.SetInteger("SwordState", (int)SwordState.DIAGONAL_SLASH);
                     break;
+                case SwordState.VERTICAL_SLASH:
+                    StopCoroutine("SheatheTimer");
+                    animator.SetInteger("SwordState", (int)SwordState.VERTICAL_SLASH);
+                    break;
                 case SwordState.STAB:
                     break;
             }
@@ -68,6 +73,8 @@ public class SwordAnimation : MonoBehaviour
                 break;
             case SwordState.DIAGONAL_SLASH:
                 break;
+            case SwordState.VERTICAL_SLASH:
+                break;
             case SwordState.STAB:
                 break;
             case SwordState.SHEATHE:
@@ -84,8 +91,15 @@ public class SwordAnimation : MonoBehaviour
 
     private void OnDiagonalSlashFinished()
     {
+        SetState(SwordState.VERTICAL_SLASH);
+        StartCoroutine("SheatheTimer");
+    }
+
+    private void OnVerticalSlashFinished()
+    {
         SheatheSword();
     }
+
     private void OnSheatheFinished()
     {
         SetState(SwordState.IDLE);
