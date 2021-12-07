@@ -27,9 +27,9 @@ TagManager:
   - Sword
   - Projectile
   - Pillar
-  - 
-  - 
-  - 
+  - EnemyCollider
+  - Enemy
+  - Barrier
   - 
   - 
   - 

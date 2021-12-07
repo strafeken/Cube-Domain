@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5079616203388042129}
   - component: {fileID: 5079616203388042128}
   - component: {fileID: 5079616203388042135}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: CageBarrierOfFortune
   m_TagString: Untagged
   m_Icon: {fileID: 0}

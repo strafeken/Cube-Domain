@@ -8,12 +8,14 @@ using UnityEngine;
 public class MissileOfFortune : MonoBehaviour
 {
     private Transform player;
+    private Health playerHP;
 
     private bool isShot = false;
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        playerHP = player.gameObject.GetComponent<Health>();
     }
 
     void Start()
@@ -21,9 +23,12 @@ public class MissileOfFortune : MonoBehaviour
         StartCoroutine("FacePlayer");
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.CompareTag("Player"))
+        {
+            playerHP.DealDamage();
+        }
     }
 
     public void Shoot(Vector3 target, float moveSpeed)

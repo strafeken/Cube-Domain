@@ -90,20 +90,21 @@ public class HeartFormation : MonoBehaviour
         else if (h4.activeInHierarchy)
         {
             activeHeart = h4;
-
+            fortune.SetState(Fortune.State.LASER);
+            OnUsedSkillEvent();
         }
         else if (h5.activeInHierarchy)
         {
             activeHeart = h5;
-            //SetState(State.MISSILE);
+            fortune.SetState(Fortune.State.MISSILE);
+            OnUsedSkillEvent();
         }
         else if (h6.activeInHierarchy)
         {
             activeHeart = h6;
-            //SetState(State.CAGE);
+            fortune.SetState(Fortune.State.CAGE);
+            OnUsedSkillEvent();
         }
-
-        OnUsedSkillEvent();
     }
 
     private void OnUsedSkillEvent()

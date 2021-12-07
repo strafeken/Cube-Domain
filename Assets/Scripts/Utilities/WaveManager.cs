@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Must run before SceneLoadManager so that it can subscribe before it invokes the event
@@ -33,7 +34,12 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private List<WaveEnemiesController> waveEnemiesController;
 
+    [SerializeField] private TMP_Text waveText;
+    private float waveTimer;
+
     private int currentWave = 0;
+
+    [SerializeField] private GameObject spawnedFortune;
 
     void Awake()
     {
@@ -50,6 +56,7 @@ public class WaveManager : MonoBehaviour
     {
         sceneLoadManager.OnSceneFinishedLoading += OnSceneLoaded;
         EnemyManager.Instance.OnAllEnemiesDead += StartNewWave;
+        waveTimer = timeTillFirstWaveStarts;
     }
 
     void OnDestroy()
@@ -65,6 +72,15 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SceneCountdown()
     {
+        while(waveTimer > 0f)
+        {
+            waveTimer -= Time.deltaTime;
+            waveText.text = "Next wave: " + Mathf.Round(waveTimer % 60) + "s";
+            yield return null;
+        }
+
+        waveText.gameObject.SetActive(false);
+
         yield return new WaitForSeconds(timeTillFirstWaveStarts);
 
         for (int i = 0; i < 8; ++i)
@@ -96,8 +112,13 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
             Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), Quaternion.identity);
 
-        for (int i = 0; i < waveEnemiesController[currentWave].numOfFortunes; ++i)
-            Instantiate(fortune, new Vector3(enemyCages[i].position.x, fortuneY.position.y, enemyCages[i].position.z), Quaternion.identity);
+        if(currentWave == 3)
+        {
+            spawnedFortune.SetActive(true);
+        }
+
+        //for (int i = 0; i < waveEnemiesController[currentWave].numOfFortunes; ++i)
+        //    Instantiate(fortune, new Vector3(enemyCages[i].position.x, fortuneY.position.y, enemyCages[i].position.z), Quaternion.identity);
 
         EnemyManager.Instance.AddEnemies();
     }
@@ -110,7 +131,17 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator NewWave()
     {
-        yield return new WaitForSeconds(waveBufferTime);
+        waveTimer = waveBufferTime;
+        waveText.gameObject.SetActive(true);
+
+        while (waveTimer > 0f)
+        {
+            waveTimer -= Time.deltaTime;
+            waveText.text = "Next wave: " + Mathf.Round(waveTimer % 60) + "s";
+            yield return null;
+        }
+
+        // yield return new WaitForSeconds(waveBufferTime);
 
         for (int i = 0; i < 8; ++i)
         {
@@ -118,6 +149,8 @@ public class WaveManager : MonoBehaviour
         }
 
         SpawnEnemies();
+
+        waveText.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(gatesClosingTime);
 

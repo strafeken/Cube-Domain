@@ -15,7 +15,6 @@ public class BigSlime : Enemy
         DEAD
     }
 
-    private NavMeshAgent agent;
     private Rigidbody rb;
     private List<Heart> hearts = new List<Heart>();
     private int numOfHearts;
@@ -25,8 +24,6 @@ public class BigSlime : Enemy
 
     [SerializeField] private float rotationSpeed = 1f;
 
-    [SerializeField] private float attackCooldown = 1.5f;
-    private float attackCooldownTimer = 0f;
     [SerializeField] private float attackRange = 5f;
 
     private Vector3 jumpPosition;
@@ -42,8 +39,14 @@ public class BigSlime : Enemy
 
     [SerializeField] private State currentState;
 
-    private bool hitPlayer;
-    private bool attackedPlayer;
+    private bool forceApplied;
+
+    [SerializeField] private BigSlimeCollision collisionDetector;
+
+    [SerializeField] private float idleTime = 4f;
+    private float idleTimer = 0f;
+
+    private bool isAttacking;
 
     public State GetCurrentState()
     {
@@ -52,13 +55,14 @@ public class BigSlime : Enemy
 
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         hearts.AddRange(GetComponentsInChildren<Heart>()); // FIGURE OUT HOW TO SUBSCRIBE TO EACH ONE OF THEM
     }
 
     void OnEnable()
     {
+        collisionDetector.OnCollisionDetected += OnCollisionEvent;
+
         for (int i = 0; i < hearts.Count; ++i)
         {
             hearts[i].OnHeartHit += OnDamagedEvent;
@@ -72,7 +76,9 @@ public class BigSlime : Enemy
 
         numOfHearts = hearts.Count;
 
-        SetState(State.IDLE);
+        rb.freezeRotation = true;
+
+        SetState(State.CHASE);
     }
 
     protected override void Update()
@@ -80,15 +86,22 @@ public class BigSlime : Enemy
         switch (currentState)
         {
             case State.IDLE:
-                FacePlayer();
+                {
+                    idleTimer += Time.deltaTime;
+                    if (idleTimer > idleTime)
+                    {
+                        SetState(State.CHASE);
+                        idleTimer = 0f;
+                    }
+                }
                 break;
             case State.CHASE:
                 {
-                    if (numOfJumps > numOfJumpsBeforeShooting - 1)
-                    {
-                        SetState(State.SHOOT);
-                        return;
-                    }
+                    //if (numOfJumps > numOfJumpsBeforeShooting - 1)
+                    //{
+                    //    SetState(State.SHOOT);
+                    //    return;
+                    //}
 
                     if (Vector3.Distance(transform.position, player.position) < attackRange)
                     {
@@ -96,15 +109,19 @@ public class BigSlime : Enemy
                         return;
                     }
 
-                    agent.SetDestination(player.position);
+                    FacePlayer();
 
-                    jumpCooldownTimer += Time.deltaTime;
-                    if (jumpCooldownTimer > jumpCooldown)
-                    {
-                        Vector3 dirToPlayer = GetDirectionToPlayer();
-                        Jump(dirToPlayer, 250, 100);
-                        jumpCooldownTimer = 0f;
-                    }
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.position.x, 1.5f, player.position.z), 2f * Time.deltaTime);
+
+                    //agent.SetDestination(player.position);
+
+                    //jumpCooldownTimer += Time.deltaTime;
+                    //if (jumpCooldownTimer > jumpCooldown)
+                    //{
+                    //    Vector3 dirToPlayer = GetDirectionToPlayer();
+                    //    Jump(dirToPlayer, 250, 100);
+                    //    jumpCooldownTimer = 0f;
+                    //}
 
                     break;
                 }
@@ -125,31 +142,39 @@ public class BigSlime : Enemy
                 }
             case State.ATTACK:
                 {
-                    if (Vector3.Distance(transform.position, player.position) > attackRange)
+                    if (Vector3.Distance(transform.position, player.position) > attackRange && !isAttacking)
                     {
                         SetState(State.CHASE);
                         return;
                     }
-
-                    if(attackedPlayer && !hitPlayer)
-                    {
-                        if(rb.velocity.magnitude < 1)
-                        {
-                            FacePlayer();
-                        }
-                    }
-
-                    attackCooldownTimer += Time.deltaTime;
-                    if (attackCooldownTimer > attackCooldown)
-                    {
-                        Attack();
-                        attackCooldownTimer = 0f;
-                    }
-
-                    break;
                 }
+                break;
             case State.DEAD:
                 break;
+        }
+    }
+    void FixedUpdate()
+    {
+        if (currentState != State.ATTACK)
+            return;
+
+        if (!forceApplied)
+            return;
+
+        if (rb.velocity.magnitude < 0.1f)
+        {
+            SetState(State.IDLE);
+        }
+    }
+
+    void OnDisable()
+    {
+        collisionDetector.OnCollisionDetected -= OnCollisionEvent;
+
+        for (int i = 0; i < hearts.Count; ++i)
+        {
+            hearts[i].OnHeartHit -= OnDamagedEvent;
+            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
         }
     }
 
@@ -159,46 +184,6 @@ public class BigSlime : Enemy
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
-    void OnDisable()
-    {
-        for (int i = 0; i < hearts.Count; ++i)
-        {
-            hearts[i].OnHeartHit -= OnDamagedEvent;
-            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if(currentState == State.ATTACK)
-        {
-            if (collision.collider.CompareTag("Player"))
-            {
-                hitPlayer = true;
-                playerHealth.DealDamage();
-                rb.AddForce(transform.forward * -400f);
-                attackedPlayer = false;
-            }
-        }
-
-
-        /*        if (!jumped)
-                    return;*/
-
-        /*        if (state == State.JUMPING)
-                {
-                    SetState(State.IDLE);
-                }*/
-
-        if (currentState == State.JUMPING)
-        {
-            if (collision.collider.CompareTag("Floor"))
-            {
-                SetState(State.CHASE);
-            }
-        }
-    }
-
     public void SetState(State nextState)
     {
         currentState = nextState;
@@ -206,17 +191,19 @@ public class BigSlime : Enemy
         switch (currentState)
         {
             case State.IDLE:
-                DisableAgent();
+                rb.isKinematic = true;
+                isAttacking = false;
+                forceApplied = false;
                 break;
             case State.CHASE:
-                ActivateAgent();
+                rb.isKinematic = true;
                 break;
             case State.SHOOT:
-                DisableAgent();
                 numOfJumps = 0;
                 break;
             case State.ATTACK:
-                attackCooldownTimer = attackCooldown; // ensure that slime immediately attacks player
+                rb.isKinematic = false;
+                StartCoroutine("ApplyForce");
                 break;
             case State.DEAD:
                 Destroy(gameObject);
@@ -224,38 +211,34 @@ public class BigSlime : Enemy
         }
     }
 
+    private IEnumerator ApplyForce()
+    {
+        isAttacking = true;
+        
+        rb.AddForce(transform.forward * 300f);
+        
+        yield return new WaitForSeconds(0.1f);
+        
+        forceApplied = true;
+        
+        yield return new WaitForSeconds(1f);
+        
+        if(rb.velocity.magnitude > 0f)
+            rb.velocity = Vector3.zero;
+    }
+
     private void FacePlayer()
     {
         Vector3 dirToPlayer = GetDirectionToPlayer();
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dirToPlayer.x, 0, dirToPlayer.z));
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-
-        // Change state once it is facing the player
-        if (Quaternion.Angle(transform.rotation, lookRotation) < 0.01f)
-        {
-            switch (currentState)
-            {
-                case State.IDLE:
-                    SetState(State.CHASE);
-                    break;
-            }
-        }
-    }
-
-    void Attack()
-    {
-        DisableAgent();
-
-        rb.AddForce(transform.forward * 500f);
-        attackedPlayer = true;
-        hitPlayer = false;
     }
 
     void Jump(Vector3 direction, float upMagnitude, float forwardMagnitude)
     {
-        agent.SetDestination(transform.position); // Stops agent from moving
+        //agent.SetDestination(transform.position); // Stops agent from moving
 
-        DisableAgent();
+        //DisableAgent();
 
         rb.AddForce(transform.up * upMagnitude + direction * forwardMagnitude);
 
@@ -279,27 +262,11 @@ public class BigSlime : Enemy
         }
     }
 
-    private void DisableAgent()
+    private void OnCollisionEvent()
     {
-        agent.SetDestination(transform.position);
-        agent.isStopped = true;
-        agent.updatePosition = false;
-        agent.updateRotation = false;
-
-        rb.freezeRotation = true;
-        rb.isKinematic = false;
-        rb.useGravity = true;
-    }
-
-    private void ActivateAgent()
-    {
-        agent.nextPosition = rb.position;
-        agent.isStopped = false;
-        agent.updatePosition = true;
-        agent.updateRotation = true;
-
-        rb.freezeRotation = false;
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        if (currentState == State.ATTACK)
+        {
+            playerHealth.DealDamage();
+        }
     }
 }

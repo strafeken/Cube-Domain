@@ -53,6 +53,7 @@ public class Fortune : Enemy
     {
         base.Start();
 
+        //StartCoroutine(Laser());
         //laser.SetActive(true);
         //StartCoroutine(Missile());
         //StartCoroutine(Cage());
@@ -84,16 +85,16 @@ public class Fortune : Enemy
                 //ResetPillars();
                 break;
             case State.LASER:
-                //GetComponent<FortuneBodyMovement>().enabled = false;
-                //StartCoroutine("Missile");
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                StartCoroutine("Laser");
                 break;
             case State.MISSILE:
-                //<FortuneBodyMovement>().enabled = false;
-                //StartCoroutine("Missile");
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                StartCoroutine("Missile");
                 break;
             case State.CAGE:
-                //GetComponent<FortuneBodyMovement>().enabled = false;
-                //StartCoroutine("Cage");
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                StartCoroutine("Cage");
                 break;
         }
     }
@@ -123,6 +124,8 @@ public class Fortune : Enemy
         }
 
         laser.SetActive(false);
+
+        SetState(State.CHASE);
     }
 
     private IEnumerator Missile()
@@ -144,7 +147,9 @@ public class Fortune : Enemy
             yield return new WaitForSeconds(shootingCooldown);
         }
 
-        //SetState(State.CHASE);
+        yield return new WaitForSeconds(1f);
+        
+        SetState(State.CHASE);
     }
 
     private IEnumerator Cage()
@@ -157,6 +162,10 @@ public class Fortune : Enemy
             cageTransform.position += Vector3.up * risingSpeed * Time.deltaTime;
             yield return null;
         }
+
+        yield return new WaitForSeconds(10f);
+
+        SetState(State.CHASE);
     }
 
     private void ResetPillars()
