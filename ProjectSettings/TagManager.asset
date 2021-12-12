@@ -24,7 +24,7 @@ TagManager:
   - Ground
   - SwordArea
   - Heart
-  - Sword
+  - 
   - Projectile
   - Pillar
   - EnemyCollider
@@ -43,9 +43,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - Sword
+  - SwordCollider
+  - Building
   m_SortingLayers:
   - name: Default
     uniqueID: 0
