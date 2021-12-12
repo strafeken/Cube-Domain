@@ -26,17 +26,22 @@ public class Slime : Enemy
     private float attackCooldownTimer = 0f;
     [SerializeField] private float attackRange = 5f;
 
+    [SerializeField] private float jumpCooldown = 0.5f;
+    private float jumpCooldownTimer = 0f;
+
     private Vector3 jumpPosition;
 
     private State currentState;
 
-    #region MonoBehaviour Callbacks
+    private Material material;
+    private Color defaultColor;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         hearts.AddRange(GetComponentsInChildren<Heart>());
+        material = GetComponent<Renderer>().material;
     }
 
     void OnEnable()
@@ -53,6 +58,8 @@ public class Slime : Enemy
         base.Start();
 
         numOfHearts = hearts.Count;
+
+        defaultColor = material.GetColor("_FresnelColor");
 
         SetState(State.IDLE);
     }
@@ -72,8 +79,13 @@ public class Slime : Enemy
                         return;
                     }
 
-                    Vector3 dirToPlayer = GetDirectionToPlayer();
-                    Jump(dirToPlayer, 250, 100);
+                    jumpCooldownTimer += Time.deltaTime;
+                    if(jumpCooldownTimer > jumpCooldown)
+                    {
+                        Vector3 dirToPlayer = GetDirectionToPlayer();
+                        Jump(dirToPlayer, 250, 100);
+                        jumpCooldownTimer = 0f;
+                    }
 
                     break;
                 }
@@ -149,10 +161,6 @@ public class Slime : Enemy
         }
     }
 
-    #endregion
-
-    #region Public Methods
-
     public void SetState(State nextState)
     {
         currentState = nextState;
@@ -160,14 +168,18 @@ public class Slime : Enemy
         switch (currentState)
         {
             case State.IDLE:
+                material.SetColor("_FresnelColor", defaultColor);
                 DisableAgent();
                 break;
             case State.CHASE:
+                material.SetColor("_FresnelColor", defaultColor);
+                jumpCooldownTimer = 0f;
                 ActivateAgent();
                 break;
             case State.JUMPING:
                 break;
             case State.READY_TO_ATTACK:
+                material.SetColor("_FresnelColor", new Color(1, 0, 0, 0.5f));
                 DisableAgent();
                 break;
             case State.DEAD:
@@ -175,10 +187,6 @@ public class Slime : Enemy
                 break;
         }
     }
-
-    #endregion
-
-    #region Private Methods
 
     private void FacePlayer()
     {
@@ -252,6 +260,4 @@ public class Slime : Enemy
         rb.isKinematic = true;
         rb.useGravity = false;
     }
-
-    #endregion
 }

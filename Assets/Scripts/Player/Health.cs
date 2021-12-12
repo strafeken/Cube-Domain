@@ -8,6 +8,8 @@ public class Health : MonoBehaviour
     [SerializeField] private int health = 10;
     private int maxHealth;
 
+    [SerializeField] private CameraShake cameraShake;
+
     public event Action OnDamaged;
     public event Action OnDeath;
 

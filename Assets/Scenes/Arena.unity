@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: ea1ba5e84f7dde74e80c40915e1f131f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -6187,7 +6187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1381783950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6687,7 +6687,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 327558db3118b62459bf83e064eb69f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7287,10 +7287,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1336141087779578746, guid: d3977a841879dbe44a6fb6523d2bd511, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 62335f93e3bce0f45be73cce18bea0c1, type: 2}
     - target: {fileID: 1336141087779578751, guid: d3977a841879dbe44a6fb6523d2bd511, type: 3}
       propertyPath: m_Name
       value: Slime
@@ -7365,10 +7361,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1884545408842186985, guid: 55a31ab30bcfcbe4d9b2669818d0b46d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 1884545408842186986, guid: 55a31ab30bcfcbe4d9b2669818d0b46d, type: 3}
       propertyPath: cageEndPosition
       value: 
@@ -7692,6 +7684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 25
+  cameraShake: {fileID: 0}
 --- !u!4 &2693030122475159808
 Transform:
   m_ObjectHideFlags: 0

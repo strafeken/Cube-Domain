@@ -11,6 +11,7 @@ public class BigSlime : Enemy
         CHASE,
         SHOOT,
         ATTACK,
+        RELAX,
         JUMPING,
         DEAD
     }
@@ -48,6 +49,9 @@ public class BigSlime : Enemy
 
     private bool isAttacking;
 
+    private Material material;
+    private Color defaultColor;
+
     public State GetCurrentState()
     {
         return currentState;
@@ -57,6 +61,7 @@ public class BigSlime : Enemy
     {
         rb = GetComponent<Rigidbody>();
         hearts.AddRange(GetComponentsInChildren<Heart>()); // FIGURE OUT HOW TO SUBSCRIBE TO EACH ONE OF THEM
+        material = GetComponent<Renderer>().material;
     }
 
     void OnEnable()
@@ -78,6 +83,8 @@ public class BigSlime : Enemy
 
         rb.freezeRotation = true;
 
+        defaultColor = material.GetColor("_BaseColor");
+
         SetState(State.CHASE);
     }
 
@@ -87,12 +94,7 @@ public class BigSlime : Enemy
         {
             case State.IDLE:
                 {
-                    idleTimer += Time.deltaTime;
-                    if (idleTimer > idleTime)
-                    {
-                        SetState(State.CHASE);
-                        idleTimer = 0f;
-                    }
+                    FacePlayer();
                 }
                 break;
             case State.CHASE:
@@ -149,6 +151,16 @@ public class BigSlime : Enemy
                     }
                 }
                 break;
+            case State.RELAX:
+                {
+                    idleTimer += Time.deltaTime;
+                    if (idleTimer > idleTime)
+                    {
+                        SetState(State.IDLE);
+                        idleTimer = 0f;
+                    }
+                }
+                break;
             case State.DEAD:
                 break;
         }
@@ -163,7 +175,7 @@ public class BigSlime : Enemy
 
         if (rb.velocity.magnitude < 0.1f)
         {
-            SetState(State.IDLE);
+            SetState(State.RELAX);
         }
     }
 
@@ -191,17 +203,21 @@ public class BigSlime : Enemy
         switch (currentState)
         {
             case State.IDLE:
+                material.SetColor("_BaseColor", defaultColor);
                 rb.isKinematic = true;
                 isAttacking = false;
                 forceApplied = false;
                 break;
             case State.CHASE:
+                material.SetColor("_BaseColor", defaultColor);
                 rb.isKinematic = true;
                 break;
             case State.SHOOT:
+                material.SetColor("_BaseColor", defaultColor);
                 numOfJumps = 0;
                 break;
             case State.ATTACK:
+                material.SetColor("_BaseColor", new Color(1, 0, 0, 0.5f));
                 rb.isKinematic = false;
                 StartCoroutine("ApplyForce");
                 break;
@@ -232,6 +248,16 @@ public class BigSlime : Enemy
         Vector3 dirToPlayer = GetDirectionToPlayer();
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dirToPlayer.x, 0, dirToPlayer.z));
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+
+        if (Quaternion.Angle(transform.rotation, lookRotation) < 0.01f)
+        {
+            switch (currentState)
+            {
+                case State.IDLE:
+                    SetState(State.CHASE);
+                    break;
+            }
+        }
     }
 
     void Jump(Vector3 direction, float upMagnitude, float forwardMagnitude)
