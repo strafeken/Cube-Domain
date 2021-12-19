@@ -38,10 +38,10 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(highJumpHeight * -2f * gravity);
-        }
+        //if(Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
+        //{
+        //    velocity.y = Mathf.Sqrt(highJumpHeight * -2f * gravity);
+        //}
 
         velocity.y += gravity * Time.deltaTime;
     

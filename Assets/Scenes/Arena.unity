@@ -6187,7 +6187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1381783950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6240,11 +6240,6 @@ MonoBehaviour:
     numOfSlimes: 3
     numOfBigSlimes: 1
     numOfTwirlers: 1
-    numOfFortunes: 0
-  - waveNumber: 0
-    numOfSlimes: 8
-    numOfBigSlimes: 0
-    numOfTwirlers: 0
     numOfFortunes: 0
   waveText: {fileID: 1048083320}
   spawnedFortune: {fileID: 1884545409149546653}
@@ -7627,7 +7622,7 @@ MonoBehaviour:
   controller: {fileID: 2693030121871721592}
   speed: 12
   gravity: -19.62
-  jumpHeight: 3
+  jumpHeight: 1.5
   highJumpHeight: 10
   rotationSpeed: 100
   groundCheck: {fileID: 2693030121647944955}
@@ -7683,7 +7678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd0e42a441686645b106417dadda50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 25
+  health: 30
   cameraShake: {fileID: 0}
 --- !u!4 &2693030122475159808
 Transform:
