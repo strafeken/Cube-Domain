@@ -22,6 +22,8 @@ public class SwordAnimation : MonoBehaviour
     [SerializeField] private float sheatheTimerCooldown = 2f;
     private bool sheathed = true;
 
+    private bool swing;
+
     void Awake()
     {
 
@@ -34,7 +36,7 @@ public class SwordAnimation : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(swing)
         {
             if(state == SwordState.IDLE && sheathed)
             {
@@ -57,6 +59,7 @@ public class SwordAnimation : MonoBehaviour
                 case SwordState.STAB:
                     break;
             }
+            swing = false;
         }
     }
 
@@ -118,5 +121,10 @@ public class SwordAnimation : MonoBehaviour
     private void SheatheSword()
     {
         SetState(SwordState.SHEATHE);
+    }
+
+    public void OnLMBClicked()
+    {
+        swing = true;
     }
 }
