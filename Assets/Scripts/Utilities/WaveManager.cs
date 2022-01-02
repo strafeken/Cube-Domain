@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 /// <summary>
 /// Must run before SceneLoadManager so that it can subscribe before it invokes the event
@@ -11,6 +12,7 @@ public class WaveManager : MonoBehaviour
     private SceneLoadManager sceneLoadManager;
 
     [SerializeField] private Transform[] enemyCages;
+    private Transform[] spawnDirection;
 
     private GameObject[] gatesObject;
     private Gate[] gates;
@@ -50,6 +52,10 @@ public class WaveManager : MonoBehaviour
         gates = new Gate[8];
         for (int i = 0; i < 8; ++i)
             gates[i] = gatesObject[i].GetComponent<Gate>();
+
+        spawnDirection = new Transform[8];
+        for(int i = 0; i < 8; ++i)
+            spawnDirection[i] = enemyCages[i].Find("SpawnDirection").GetComponent<Transform>();
     }
 
     void Start()
@@ -94,23 +100,31 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < 8; ++i)
         {
-            gates[i].CloseGate();
+            //gates[i].CloseGate();
         }
     }
 
     private void SpawnEnemies()
     {
+        int cageIndex;
+        int[] previousSpawnIndex = new int[waveEnemiesController[currentWave].numOfSlimes];
         for (int i = 0; i < waveEnemiesController[currentWave].numOfSlimes; ++i)
         {
-            int cageIndex = Random.Range(0, 7);
-            Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), Quaternion.identity);
+            // Spawn Slime at a new cage
+            do
+            {
+                cageIndex = Random.Range(0, 7);
+            } while (previousSpawnIndex.Contains(cageIndex));
+
+            Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            previousSpawnIndex[i] = cageIndex;
         }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfBigSlimes; ++i)
-            Instantiate(bigSlime, new Vector3(enemyCages[i].position.x, bigSlimeY.position.y, enemyCages[i].position.z), Quaternion.identity);
+            Instantiate(bigSlime, new Vector3(enemyCages[i].position.x, bigSlimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
-            Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), Quaternion.identity);
+            Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
         if(currentWave == 3)
         {

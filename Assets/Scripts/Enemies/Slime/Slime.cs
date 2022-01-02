@@ -7,6 +7,7 @@ public class Slime : Enemy
 {
     public enum State
     {
+        SPAWNED,
         IDLE,
         CHASE,
         JUMPING,
@@ -68,6 +69,9 @@ public class Slime : Enemy
     {
         switch (currentState)
         {
+            case State.SPAWNED:
+
+                break;
             case State.IDLE:
                 FacePlayer();
                 break;
