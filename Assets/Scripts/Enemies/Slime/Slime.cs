@@ -21,6 +21,9 @@ public class Slime : Enemy
     private List<Heart> hearts = new List<Heart>();
     private int numOfHearts;
 
+    private float spawnDuration = 2f;
+    private float spawnedTimer = 0f;
+
     [SerializeField] private float rotationSpeed = 1f;
 
     [SerializeField] private float attackCooldown = 1.5f;
@@ -62,7 +65,8 @@ public class Slime : Enemy
 
         defaultColor = material.GetColor("_FresnelColor");
 
-        SetState(State.IDLE);
+        SetState(State.SPAWNED);
+        //SetState(State.IDLE);
     }
 
     protected override void Update()
@@ -70,7 +74,13 @@ public class Slime : Enemy
         switch (currentState)
         {
             case State.SPAWNED:
+                {
+                    agent.SetDestination(player.position);
 
+                    spawnedTimer += Time.deltaTime;
+                    if(spawnedTimer > spawnDuration)
+                        SetState(State.IDLE);
+                }
                 break;
             case State.IDLE:
                 FacePlayer();
@@ -171,6 +181,10 @@ public class Slime : Enemy
 
         switch (currentState)
         {
+            case State.SPAWNED:
+                ActivateAgent();
+
+                break;
             case State.IDLE:
                 material.SetColor("_FresnelColor", defaultColor);
                 DisableAgent();

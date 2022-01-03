@@ -100,7 +100,7 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < 8; ++i)
         {
-            //gates[i].CloseGate();
+            gates[i].CloseGate();
         }
     }
 

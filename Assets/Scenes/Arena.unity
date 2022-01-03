@@ -6707,7 +6707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd0e42a441686645b106417dadda50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 30
   cameraShake: {fileID: 0}
 --- !u!1001 &1206693294
 PrefabInstance:

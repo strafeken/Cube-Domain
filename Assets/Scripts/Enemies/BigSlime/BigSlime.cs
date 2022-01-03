@@ -113,6 +113,8 @@ public class BigSlime : Enemy
 
                     FacePlayer();
 
+                    //rb.AddForce((player.position - transform.position).normalized * 100f, ForceMode.Acceleration);
+
                     transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.position.x, 1.5f, player.position.z), 2f * Time.deltaTime);
 
                     //agent.SetDestination(player.position);
@@ -230,16 +232,16 @@ public class BigSlime : Enemy
     private IEnumerator ApplyForce()
     {
         isAttacking = true;
-        
-        rb.AddForce(transform.forward * 300f);
-        
+
+        rb.AddForce(transform.forward * 3000f);
+
         yield return new WaitForSeconds(0.1f);
-        
+
         forceApplied = true;
-        
+
         yield return new WaitForSeconds(1f);
-        
-        if(rb.velocity.magnitude > 0f)
+
+        if (rb.velocity.magnitude > 0f)
             rb.velocity = Vector3.zero;
     }
 
