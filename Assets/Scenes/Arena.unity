@@ -5597,17 +5597,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346049537}
   m_CullTransparentMesh: 1
---- !u!114 &454663713 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8884193119972231723, guid: 5acfe5d64a316464aab547c90af92b84, type: 3}
-  m_PrefabInstance: {fileID: 7785520131236231067}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9a329996242274f902a68cd063cf22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &456215779 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7449934331566482341, guid: 57fa1263c271f374c930d779c80fcafa, type: 3}
@@ -8695,14 +8684,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7785520130536443290, guid: 5acfe5d64a316464aab547c90af92b84, type: 3}
-      propertyPath: m_Mass
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7785520130536443291, guid: 5acfe5d64a316464aab547c90af92b84, type: 3}
-      propertyPath: collisionDetector
-      value: 
-      objectReference: {fileID: 454663713}
     - target: {fileID: 7785520130536443293, guid: 5acfe5d64a316464aab547c90af92b84, type: 3}
       propertyPath: m_RootOrder
       value: 10
