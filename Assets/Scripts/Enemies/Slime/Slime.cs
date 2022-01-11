@@ -54,6 +54,10 @@ public class Slime : Enemy
     private Material material;
     private Color defaultColor;
 
+    /// <summary>
+    /// TODO: Transition to attack mode -> gradient from green to red
+    /// </summary>
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

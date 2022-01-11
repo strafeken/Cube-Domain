@@ -42,11 +42,6 @@ public class BigSlimeHeartMovement : MonoBehaviour
                 break;
             case BigSlime.State.CHASE:
                 break;
-            case BigSlime.State.JUMPING:
-                center.Rotate(Vector3.right * (jumpingRotationSpeed * Time.deltaTime));
-                break;
-            case BigSlime.State.SHOOT:
-                break;
             case BigSlime.State.ATTACK:
                 break;
             case BigSlime.State.DEAD:
