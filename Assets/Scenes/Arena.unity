@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 1, g: 0.5019608, b: 0, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 98217382}
   - component: {fileID: 98217383}
   m_Layer: 0
-  m_Name: =====SPAWN POSITIONS=====
+  m_Name: =====FIXED POSITIONS=====
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 1, g: 0, b: 1, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 0, g: 1, b: 1, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 185971926}
   m_Layer: 0
   m_Name: CenterOfArena
-  m_TagString: Untagged
+  m_TagString: CenterOfArena
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5564,7 +5564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 0, g: 1, b: 0, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}
@@ -5935,7 +5935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 0, g: 0, b: 1, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}
@@ -6061,7 +6061,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &717754368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6226,7 +6226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &965762003
 Transform:
   m_ObjectHideFlags: 0
@@ -7128,7 +7128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1381783950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7509,7 +7509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1570167850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7602,7 +7602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text_Color: {r: 0, g: 0, b: 0, a: 1}
-  TextStyle: 0
+  TextStyle: 3
   Background_Color: {r: 1, g: 0, b: 0, a: 0.5019608}
   Custom_Inactive_Colors: 0
   Text_Color_Inactive: {r: 0, g: 0, b: 0, a: 1}

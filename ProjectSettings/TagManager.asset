@@ -13,6 +13,7 @@ TagManager:
   - Gate
   - SceneLoadManager
   - Enemy
+  - CenterOfArena
   layers:
   - Default
   - TransparentFX
