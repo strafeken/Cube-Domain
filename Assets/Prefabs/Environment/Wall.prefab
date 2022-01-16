@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2559470690095259344}
   m_Layer: 31
   m_Name: LeftWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -89,7 +89,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520932357082220388}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 35b215f85e529d644a0b1fa47da80a77, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 300676065146216508}
   m_Layer: 31
   m_Name: TopWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -830,7 +830,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7068919296292025394}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 35b215f85e529d644a0b1fa47da80a77, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -850,7 +850,7 @@ GameObject:
   - component: {fileID: 8690067836760973385}
   m_Layer: 15
   m_Name: GateBarrier
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -925,7 +925,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7518586068787001709}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 35b215f85e529d644a0b1fa47da80a77, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 5591380646068282173}
   m_Layer: 31
   m_Name: RightWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1050,7 +1050,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7592363788169556799}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 35b215f85e529d644a0b1fa47da80a77, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

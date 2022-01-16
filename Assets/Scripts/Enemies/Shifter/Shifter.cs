@@ -36,6 +36,8 @@ public class Shifter : Enemy
 
     [SerializeField] private float emergeForce = 10f;
     [SerializeField] private float emergeRange = 5f;
+    [SerializeField] private float emergingSpeed = 10f;
+    [SerializeField] private float maxEmergeHeight = 2f;
 
     private LayerMask emergeMask;
     private Vector3 emergePosition;
@@ -49,6 +51,9 @@ public class Shifter : Enemy
 
     [Header("Others")]
     private Vector3 centerOfArena;
+
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform wallCheck;
 
     void Awake()
     {
@@ -67,6 +72,8 @@ public class Shifter : Enemy
     protected override void Start()
     {
         base.Start();
+
+        centerOfArena = GameObject.FindGameObjectWithTag("CenterOfArena").GetComponent<Transform>().position;
 
         emergeMask = LayerMask.GetMask("EmergingPoints");
     }
@@ -90,15 +97,26 @@ public class Shifter : Enemy
                 break;
             case State.DISAPPEAR:
                 {
-
+                    FacePlayer();
                 }
                 break;
             case State.EMERGE:
                 {
-
+                    FacePlayer();
+                }
+                break;
+            case State.ATTACKING:
+                {
+                    if(transform.position.y < 0f)
+                        SetState(State.DEAD);
                 }
                 break;
         }
+    }
+
+    void FixedUpdate()
+    {
+
     }
 
     void OnDisable()
@@ -107,9 +125,81 @@ public class Shifter : Enemy
         heart.OnHeartDestroyed -= OnHeartDestroyedEvent;
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        switch (currentState)
+        {
+            case State.ATTACKING:
+                {
+                    // Hit the player
+                    if (other.CompareTag("Player"))
+                    {
+                        playerHealth.DealDamage();
+                    }
+                    else if(other.CompareTag("Wall"))
+                    {
+                        boxCollider.isTrigger = false;
+                        SetState(State.DISAPPEAR);
+                    }
+                    // Missed the player
+                    else if (other.CompareTag("Floor"))
+                    {
+                        // Only solidify if it's already going down from attacking
+                        if (rb.velocity.y < 0f)
+                        {
+                            boxCollider.isTrigger = false;
+                            SetState(State.DISAPPEAR);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Permeate after passing through player
+    /// </summary>
+    void OnTriggerExit(Collider other)
+    {
+        switch (currentState)
+        {
+            case State.ATTACKING:
+                {
+                    if (other.CompareTag("Player"))
+                    {
+                        boxCollider.isTrigger = false;
+                    }
+                }
+                break;
+        }
+    }
+
+
     void OnCollisionEnter(Collision collision)
     {
+        switch (currentState)
+        {
+            /// When it already finished attacking
+            case State.ATTACKING:
+                {
+                    // Hit the player
+                    if (collision.collider.CompareTag("Player"))
+                    {
 
+                    }
+                    // Missed the player
+                    else if (collision.collider.CompareTag("Wall"))
+                    {
+
+                    }
+                    // Missed the player
+                    else if (collision.collider.CompareTag("Floor"))
+                    {
+                        SetState(State.DISAPPEAR);
+                    }
+                }
+                break;
+        }
     }
 
     private void OnDamagedEvent()
@@ -137,8 +227,10 @@ public class Shifter : Enemy
                 StartCoroutine(Emerge());
                 break;
             case State.ATTACKING:
+                boxCollider.isTrigger = true;
                 break;
             case State.DEAD:
+                Destroy(gameObject);
                 break;
         }
     }
@@ -150,10 +242,23 @@ public class Shifter : Enemy
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
     }
 
-    public void Disappear()
+    private IEnumerator DisappearCountdown()
     {
+        rb.velocity = Vector3.zero;
+
+        disappearInstantiatedVFX = Instantiate(disappearVFX, new Vector3(transform.position.x, 0.1f, transform.position.z), Quaternion.identity);
+
+        yield return new WaitForSeconds(timeToDisappear);
+
         boxCollider.enabled = false;
         rb.isKinematic = true;
+
+        animator.SetInteger("State", 1); // Start animation
+    }
+
+    public void Disappear()
+    {
+        Destroy(disappearInstantiatedVFX);
 
         foreach (Transform child in transform)
             child.gameObject.SetActive(false);
@@ -161,26 +266,23 @@ public class Shifter : Enemy
         SetState(State.EMERGE);
     }
 
-    private IEnumerator DisappearCountdown()
-    {
-        yield return new WaitForSeconds(timeToDisappear);
-
-        animator.SetInteger("State", 1); // Start animation
-    }
-
     private IEnumerator Emerge()
     {
-        animator.SetInteger("State", 0);
+        animator.SetInteger("State", 0); // Reset animation
 
         yield return new WaitForSeconds(timeToEmerge);
 
         Vector3 randomPosition = GetRandomPosition();
 
-        Collider[] hitColliders = Physics.OverlapSphere(randomPosition, 5f, emergeMask);
+        Collider[] hitColliders = Physics.OverlapSphere(randomPosition, emergeRange, emergeMask);
 
-        if(hitColliders.Length > 0)
+        if (hitColliders.Length > 0)
         {
             emergePosition = hitColliders[0].ClosestPoint(randomPosition);
+
+            if (emergePosition.y > 2f)
+                emergePosition.y = Mathf.Clamp(emergePosition.y, 0f, maxEmergeHeight);
+
             transform.position = emergePosition;
         }
         else
@@ -191,31 +293,78 @@ public class Shifter : Enemy
         foreach (Transform child in transform)
             child.gameObject.SetActive(true);
 
-        if(hitColliders[0].CompareTag("Wall"))
+        if (hitColliders[0].CompareTag("Wall"))
         {
-            boxCollider.enabled = false;
-            rb.isKinematic = true;
+            Vector3 dirToEmerge = new Vector3(0, emergePosition.y, 0);
 
-            Vector3 dirToEmerge = Vector3.zero - emergePosition; 
-            dirToEmerge.y = 0f;
+            emergeInstantiatedVFX = Instantiate(emergeVFX, transform.position, Quaternion.LookRotation(dirToEmerge));
 
-            rb.AddForce(dirToEmerge.normalized * emergeForce, ForceMode.Impulse);
+            StartCoroutine(Pass());
         }
         else
         {
-            boxCollider.enabled = true;
-            rb.isKinematic = false;
+            emergeInstantiatedVFX = Instantiate(emergeVFX, new Vector3(transform.position.x, 0.1f, transform.position.z), Quaternion.identity);
 
-            Vector3 dirToEmerge = player.position - emergePosition;
+            transform.position -= Vector3.up;
 
-            rb.AddForce(dirToEmerge * emergeForce, ForceMode.Impulse);
+            StartCoroutine(Rise());
         }
+    }
+
+    private IEnumerator Rise()
+    {
+        bool isFullyVisible = false;
+        while (!isFullyVisible)
+        {
+            transform.position += Vector3.up * emergingSpeed * Time.deltaTime;
+
+            if (Physics.CheckSphere(groundCheck.position, 0.001f, emergeMask))
+                isFullyVisible = true;
+
+            yield return null;
+        }
+
+        boxCollider.enabled = true;
+        rb.isKinematic = false;
+
+        Vector3 attackDir = (player.transform.position - new Vector3(transform.position.x, 0, transform.position.z)).normalized;
+        Vector3 emergeDir = attackDir + Vector3.up * 0.1f;
+        rb.AddForce(emergeDir * emergeForce, ForceMode.Impulse);
+
+        Destroy(emergeInstantiatedVFX);
+
+        SetState(State.ATTACKING);
+    }
+
+    private IEnumerator Pass()
+    {
+        bool isFullyVisible = false;
+        while (!isFullyVisible)
+        {
+            transform.position += transform.forward * emergingSpeed * Time.deltaTime;
+
+            if (Physics.CheckSphere(wallCheck.position, 0.001f, emergeMask))
+                isFullyVisible = true;
+
+            yield return null;
+        }
+
+        boxCollider.enabled = true;
+        rb.isKinematic = false;
+
+        Vector3 attackDir = emergeInstantiatedVFX.transform.up;
+        Vector3 emergeDir = attackDir + Vector3.up * 0.1f;
+        rb.AddForce(emergeDir * emergeForce, ForceMode.Impulse);
+
+        Destroy(emergeInstantiatedVFX);
+
+        SetState(State.ATTACKING);
     }
 
     private Vector3 GetRandomPosition()
     {
         float x = player.position.x + Random.Range(-emergeRange, emergeRange);
-        float y = Random.Range(0, emergeRange);
+        float y = Random.Range(0, maxEmergeHeight);
         float z = player.position.z + Random.Range(-emergeRange, emergeRange);
 
         return new Vector3(x, y, z);
