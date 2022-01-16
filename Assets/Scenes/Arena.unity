@@ -6590,7 +6590,7 @@ GameObject:
   - component: {fileID: 637297711}
   - component: {fileID: 637297708}
   - component: {fileID: 637297712}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shifter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6619,7 +6619,7 @@ MonoBehaviour:
   timeToEmerge: 1
   emergeForce: 5
   emergeRange: 5
-  disappearVFX: {fileID: 0}
+  disappearVFX: {fileID: 8601040074032618806, guid: 778a60dfcee990b4ba0de90dcc49a81e, type: 3}
   emergeVFX: {fileID: 0}
 --- !u!65 &637297709
 BoxCollider:
@@ -6881,7 +6881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &717754368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7142,7 +7142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &965762003
 Transform:
   m_ObjectHideFlags: 0
@@ -8346,7 +8346,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1381783950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8856,7 +8856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1570167850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9763,7 +9763,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 1308ff7d1a028cf4daccbc8d674de259, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
