@@ -98,9 +98,9 @@ public class BigSlime : Enemy
                     FacePlayer();
 
                     moveCooldownTimer += Time.deltaTime;
-                    if(moveCooldownTimer > moveCooldown)
+                    if (moveCooldownTimer > moveCooldown)
                     {
-                        rb.AddForce((player.position - transform.position).normalized * moveForce, ForceMode.Impulse);
+                        animator.SetInteger("State", 1);
                         moveCooldownTimer = 0f;
                     }
 
@@ -216,6 +216,12 @@ public class BigSlime : Enemy
                     break;
             }
         }
+    }
+
+    public void StartMove()
+    {
+        rb.AddForce((player.position - transform.position).normalized * moveForce, ForceMode.Impulse);
+        animator.SetInteger("State", 0);
     }
 
     private IEnumerator Attack()

@@ -14,6 +14,7 @@ TagManager:
   - SceneLoadManager
   - Enemy
   - CenterOfArena
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -43,7 +44,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - EmergingPoints
   - Sword
   - SwordCollider
   - Building
