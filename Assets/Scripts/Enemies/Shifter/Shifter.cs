@@ -37,7 +37,9 @@ public class Shifter : Enemy
     [SerializeField] private float emergeForce = 10f;
     [SerializeField] private float emergeRange = 5f;
     [SerializeField] private float emergingSpeed = 10f;
+    [SerializeField] private float minEmergeHeight = 1.5f;
     [SerializeField] private float maxEmergeHeight = 2f;
+    [SerializeField] private float wallEmergeDistance = 35f;
 
     private LayerMask emergeMask;
     private Vector3 emergePosition;
@@ -107,7 +109,7 @@ public class Shifter : Enemy
                 break;
             case State.ATTACKING:
                 {
-                    if(transform.position.y < 0f)
+                    if (transform.position.y < 0f)
                         SetState(State.DEAD);
                 }
                 break;
@@ -136,10 +138,10 @@ public class Shifter : Enemy
                     {
                         playerHealth.DealDamage();
                     }
-                    else if(other.CompareTag("Wall"))
+                    else if (other.CompareTag("Wall"))
                     {
-                        boxCollider.isTrigger = false;
-                        SetState(State.DISAPPEAR);
+                        //boxCollider.isTrigger = false;
+                        //SetState(State.DISAPPEAR);
                     }
                     // Missed the player
                     else if (other.CompareTag("Floor"))
@@ -238,8 +240,11 @@ public class Shifter : Enemy
     private void FacePlayer()
     {
         Vector3 dirToPlayer = GetDirectionToPlayer();
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dirToPlayer.x, 0, dirToPlayer.z));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        if(!Equals(Vector3.zero, new Vector3(dirToPlayer.x, 0, dirToPlayer.z)))
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dirToPlayer.x, 0, dirToPlayer.z));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
     private IEnumerator DisappearCountdown()
@@ -272,16 +277,24 @@ public class Shifter : Enemy
 
         yield return new WaitForSeconds(timeToEmerge);
 
+        // Get emerge position
         Vector3 randomPosition = GetRandomPosition();
 
         Collider[] hitColliders = Physics.OverlapSphere(randomPosition, emergeRange, emergeMask);
 
+        int closestIndex = 0;
+
         if (hitColliders.Length > 0)
         {
-            emergePosition = hitColliders[0].ClosestPoint(randomPosition);
+            closestIndex = GetClosestCollider(hitColliders, randomPosition);
 
-            if (emergePosition.y > 2f)
-                emergePosition.y = Mathf.Clamp(emergePosition.y, 0f, maxEmergeHeight);
+            emergePosition = hitColliders[closestIndex].ClosestPoint(randomPosition);
+
+            Vector3 origin = new Vector3(0, emergePosition.y, 0);
+            if(Vector3.Distance(emergePosition, origin) > wallEmergeDistance)
+            {
+                emergePosition.y = Mathf.Clamp(emergePosition.y, minEmergeHeight, maxEmergeHeight);
+            }
 
             transform.position = emergePosition;
         }
@@ -293,22 +306,54 @@ public class Shifter : Enemy
         foreach (Transform child in transform)
             child.gameObject.SetActive(true);
 
-        if (hitColliders[0].CompareTag("Wall"))
+        // Set emerge position
+        if(hitColliders.Length > 0)
         {
-            Vector3 dirToEmerge = new Vector3(0, emergePosition.y, 0);
+            if(hitColliders[closestIndex].CompareTag("Wall"))
+            {
+                Vector3 originPoint = new Vector3(0, emergePosition.y, 0);
 
-            emergeInstantiatedVFX = Instantiate(emergeVFX, transform.position, Quaternion.LookRotation(dirToEmerge));
+                emergeInstantiatedVFX = Instantiate(emergeVFX, emergePosition, Quaternion.identity);
 
-            StartCoroutine(Pass());
+                if (Physics.Raycast(originPoint, emergePosition, out RaycastHit hit, emergeMask))
+                {
+                    emergeInstantiatedVFX.transform.up = hit.normal;
+                }
+
+                StartCoroutine(Pass());
+            }
+            else
+            {
+                emergeInstantiatedVFX = Instantiate(emergeVFX, new Vector3(transform.position.x, 0.1f, transform.position.z), Quaternion.identity);
+                transform.position -= Vector3.up; // Move down
+                StartCoroutine(Rise());
+            }
         }
         else
         {
             emergeInstantiatedVFX = Instantiate(emergeVFX, new Vector3(transform.position.x, 0.1f, transform.position.z), Quaternion.identity);
-
-            transform.position -= Vector3.up;
-
+            transform.position -= Vector3.up; // Move down
             StartCoroutine(Rise());
         }
+    }
+
+    private int GetClosestCollider(Collider[] hitColliders, Vector3 randomPosition)
+    {
+        int closestIndex = -1;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < hitColliders.Length; ++i)
+        {
+            float newClosestDistance = Vector3.Distance(randomPosition, hitColliders[i].transform.position);
+
+            if (newClosestDistance < closestDistance)
+            {
+                closestDistance = newClosestDistance;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
     }
 
     private IEnumerator Rise()
@@ -352,9 +397,9 @@ public class Shifter : Enemy
         boxCollider.enabled = true;
         rb.isKinematic = false;
 
-        Vector3 attackDir = emergeInstantiatedVFX.transform.up;
-        Vector3 emergeDir = attackDir + Vector3.up * 0.1f;
-        rb.AddForce(emergeDir * emergeForce, ForceMode.Impulse);
+        Vector3 attackDir = GetDirectionToPlayer();
+        attackDir.y = 0.1f;
+        rb.AddForce(attackDir * emergeForce, ForceMode.Impulse);
 
         Destroy(emergeInstantiatedVFX);
 

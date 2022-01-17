@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 13720780}
   - component: {fileID: 13720779}
   m_Layer: 28
-  m_Name: Plane (2)
+  m_Name: East
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 13720777}
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 39.4, y: 5, z: 0}
-  m_LocalScale: {x: 3, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 2
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 51042578}
   - component: {fileID: 51042577}
   m_Layer: 28
-  m_Name: Plane (1)
+  m_Name: NorthEast
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,8 +296,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51042575}
   m_LocalRotation: {x: -0.6532815, y: 0.27059805, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 27, y: 5, z: 27}
-  m_LocalScale: {x: 3.5000005, y: 1, z: 1}
+  m_LocalPosition: {x: 27.3, y: 5, z: 27.3}
+  m_LocalScale: {x: 3.5000005, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 1
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 58055285}
   - component: {fileID: 58055284}
   m_Layer: 28
-  m_Name: Plane (4)
+  m_Name: South
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 58055282}
   m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 5, z: -39.4}
-  m_LocalScale: {x: 3, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 4
@@ -5890,7 +5890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &282095753
 Transform:
   m_ObjectHideFlags: 0
@@ -6178,7 +6178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &532886694
 Transform:
   m_ObjectHideFlags: 0
@@ -6274,7 +6274,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &600517807
 Transform:
   m_ObjectHideFlags: 0
@@ -6370,7 +6370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &619053721
 Transform:
   m_ObjectHideFlags: 0
@@ -6612,7 +6612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &717754368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6843,7 +6843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &965762003
 Transform:
   m_ObjectHideFlags: 0
@@ -7579,7 +7579,7 @@ GameObject:
   - component: {fileID: 1284668804}
   - component: {fileID: 1284668803}
   m_Layer: 28
-  m_Name: Plane (3)
+  m_Name: SouthEast
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7593,8 +7593,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284668801}
   m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: 0.6532815, w: 0.27059805}
-  m_LocalPosition: {x: 27, y: 5, z: -27}
-  m_LocalScale: {x: 3.5000005, y: 1, z: 1}
+  m_LocalPosition: {x: 27.3, y: 5, z: -27.3}
+  m_LocalScale: {x: 3.5000005, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 3
@@ -7680,7 +7680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1364923026
 Transform:
   m_ObjectHideFlags: 0
@@ -7774,7 +7774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1381783950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8122,7 +8122,7 @@ GameObject:
   - component: {fileID: 1526478655}
   - component: {fileID: 1526478654}
   m_Layer: 28
-  m_Name: Plane (7)
+  m_Name: NorthWest
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8136,8 +8136,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526478652}
   m_LocalRotation: {x: 0.65328145, y: 0.2705982, z: 0.2705982, w: -0.65328145}
-  m_LocalPosition: {x: -27, y: 5, z: 27}
-  m_LocalScale: {x: 3.5000007, y: 1, z: 1}
+  m_LocalPosition: {x: -27.3, y: 5, z: 27.3}
+  m_LocalScale: {x: 3.5, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 7
@@ -8284,7 +8284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1570167850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8558,7 +8558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1825885926
 Transform:
   m_ObjectHideFlags: 0
@@ -8780,7 +8780,7 @@ GameObject:
   - component: {fileID: 1900015871}
   - component: {fileID: 1900015870}
   m_Layer: 28
-  m_Name: Plane
+  m_Name: North
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8795,7 +8795,7 @@ Transform:
   m_GameObject: {fileID: 1900015868}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 5, z: 39.4}
-  m_LocalScale: {x: 3, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 0
@@ -9047,7 +9047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2032230472
 Transform:
   m_ObjectHideFlags: 0
@@ -9205,7 +9205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2046510448
 Transform:
   m_ObjectHideFlags: 0
@@ -9296,7 +9296,7 @@ GameObject:
   - component: {fileID: 2049121728}
   - component: {fileID: 2049121727}
   m_Layer: 28
-  m_Name: Plane (5)
+  m_Name: SouthWest
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9310,8 +9310,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049121725}
   m_LocalRotation: {x: 0.27059793, y: 0.65328157, z: 0.65328157, w: -0.27059793}
-  m_LocalPosition: {x: -27, y: 5, z: -27}
-  m_LocalScale: {x: 3.5000002, y: 1, z: 1}
+  m_LocalPosition: {x: -27.3, y: 5, z: -27.3}
+  m_LocalScale: {x: 3.5000002, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 5
@@ -9397,7 +9397,7 @@ GameObject:
   - component: {fileID: 2144322295}
   - component: {fileID: 2144322294}
   m_Layer: 28
-  m_Name: Plane (6)
+  m_Name: West
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9412,7 +9412,7 @@ Transform:
   m_GameObject: {fileID: 2144322292}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: -0.5}
   m_LocalPosition: {x: -39.4, y: 5, z: 0}
-  m_LocalScale: {x: 3, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
   m_RootOrder: 6

@@ -153,6 +153,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeMode"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f57f6bd0-b282-4ba2-8088-effdc5ad8279"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Stab"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d7d5b2e-2d2d-4a29-b082-f2b452a31731"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -164,6 +180,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Swing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d20cb1d0-34d4-47c4-aaed-ef31665ec1c2"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a152b85e-6412-4f36-b210-f1be53313c18"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,6 +219,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         // SwordAttack
         m_SwordAttack = asset.FindActionMap("SwordAttack", throwIfNotFound: true);
         m_SwordAttack_Swing = m_SwordAttack.FindAction("Swing", throwIfNotFound: true);
+        m_SwordAttack_ChangeMode = m_SwordAttack.FindAction("ChangeMode", throwIfNotFound: true);
+        m_SwordAttack_Stab = m_SwordAttack.FindAction("Stab", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -288,11 +328,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_SwordAttack;
     private ISwordAttackActions m_SwordAttackActionsCallbackInterface;
     private readonly InputAction m_SwordAttack_Swing;
+    private readonly InputAction m_SwordAttack_ChangeMode;
+    private readonly InputAction m_SwordAttack_Stab;
     public struct SwordAttackActions
     {
         private @PlayerControls m_Wrapper;
         public SwordAttackActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Swing => m_Wrapper.m_SwordAttack_Swing;
+        public InputAction @ChangeMode => m_Wrapper.m_SwordAttack_ChangeMode;
+        public InputAction @Stab => m_Wrapper.m_SwordAttack_Stab;
         public InputActionMap Get() { return m_Wrapper.m_SwordAttack; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -305,6 +349,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swing.started -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnSwing;
                 @Swing.performed -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnSwing;
                 @Swing.canceled -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnSwing;
+                @ChangeMode.started -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnChangeMode;
+                @ChangeMode.performed -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnChangeMode;
+                @ChangeMode.canceled -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnChangeMode;
+                @Stab.started -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnStab;
+                @Stab.performed -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnStab;
+                @Stab.canceled -= m_Wrapper.m_SwordAttackActionsCallbackInterface.OnStab;
             }
             m_Wrapper.m_SwordAttackActionsCallbackInterface = instance;
             if (instance != null)
@@ -312,6 +362,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swing.started += instance.OnSwing;
                 @Swing.performed += instance.OnSwing;
                 @Swing.canceled += instance.OnSwing;
+                @ChangeMode.started += instance.OnChangeMode;
+                @ChangeMode.performed += instance.OnChangeMode;
+                @ChangeMode.canceled += instance.OnChangeMode;
+                @Stab.started += instance.OnStab;
+                @Stab.performed += instance.OnStab;
+                @Stab.canceled += instance.OnStab;
             }
         }
     }
@@ -326,5 +382,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public interface ISwordAttackActions
     {
         void OnSwing(InputAction.CallbackContext context);
+        void OnChangeMode(InputAction.CallbackContext context);
+        void OnStab(InputAction.CallbackContext context);
     }
 }
