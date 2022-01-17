@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RigidbodyCharacterController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private float fallMultiplier = 2.5f;
 
-    private Vector2 horizontalInput;
+    private Vector2 walkInput;
 
     private Vector3 moveDirection;
 
@@ -47,7 +48,7 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private void MovePlayer()
     {
-        moveDirection = transform.forward * horizontalInput.y + transform.right * horizontalInput.x;
+        moveDirection = transform.forward * walkInput.y + transform.right * walkInput.x;
 
         if (!isGrounded)
             return;
@@ -65,12 +66,12 @@ public class RigidbodyCharacterController : MonoBehaviour
             rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
     }
 
-    public void ReceiveInput(Vector2 _horizontalInput)
+    public void ReceiveInput(Vector2 _walkInput)
     {
-        horizontalInput = _horizontalInput;
+        walkInput = _walkInput;
     }
 
-    public void OnJumpPressed()
+    public void JumpOnGround(InputAction.CallbackContext context)
     {
         jump = true;
     }

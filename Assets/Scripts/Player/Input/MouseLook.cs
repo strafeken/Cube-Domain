@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    float sensitivityX = 8f;
-    float sensitivityY = 0.5f;
+    float sensitivity = 8f;
     float mouseX;
     float mouseY;
 
@@ -43,7 +42,7 @@ public class MouseLook : MonoBehaviour
 
     public void ReceiveInput(Vector2 mouseInput)
     {
-        mouseX = mouseInput.x * sensitivityX * Time.deltaTime;
-        mouseY = mouseInput.y * sensitivityX * Time.deltaTime;
+        mouseX = mouseInput.x * sensitivity * Time.deltaTime;
+        mouseY = mouseInput.y * sensitivity * Time.deltaTime;
     }
 }

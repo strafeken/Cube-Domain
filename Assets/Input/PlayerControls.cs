@@ -19,7 +19,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""id"": ""0bab2409-3ef2-48bb-adca-7f251a507203"",
             ""actions"": [
                 {
-                    ""name"": ""HorizontalMovement"",
+                    ""name"": ""Movement"",
                     ""type"": ""PassThrough"",
                     ""id"": ""b9a3c695-ac09-4996-bd19-78c8e5ffb21a"",
                     ""expectedControlType"": ""Vector2"",
@@ -59,7 +59,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HorizontalMovement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -70,7 +70,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HorizontalMovement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -81,7 +81,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HorizontalMovement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -92,7 +92,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HorizontalMovement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -103,7 +103,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""HorizontalMovement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -186,7 +186,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d20cb1d0-34d4-47c4-aaed-ef31665ec1c2"",
-                    ""path"": """",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -212,7 +212,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
 }");
         // GroundMovement
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
-        m_GroundMovement_HorizontalMovement = m_GroundMovement.FindAction("HorizontalMovement", throwIfNotFound: true);
+        m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
         m_GroundMovement_MouseX = m_GroundMovement.FindAction("MouseX", throwIfNotFound: true);
         m_GroundMovement_MouseY = m_GroundMovement.FindAction("MouseY", throwIfNotFound: true);
@@ -270,7 +270,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     // GroundMovement
     private readonly InputActionMap m_GroundMovement;
     private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
-    private readonly InputAction m_GroundMovement_HorizontalMovement;
+    private readonly InputAction m_GroundMovement_Movement;
     private readonly InputAction m_GroundMovement_Jump;
     private readonly InputAction m_GroundMovement_MouseX;
     private readonly InputAction m_GroundMovement_MouseY;
@@ -278,7 +278,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @HorizontalMovement => m_Wrapper.m_GroundMovement_HorizontalMovement;
+        public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
         public InputAction @Jump => m_Wrapper.m_GroundMovement_Jump;
         public InputAction @MouseX => m_Wrapper.m_GroundMovement_MouseX;
         public InputAction @MouseY => m_Wrapper.m_GroundMovement_MouseY;
@@ -291,9 +291,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_GroundMovementActionsCallbackInterface != null)
             {
-                @HorizontalMovement.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnHorizontalMovement;
-                @HorizontalMovement.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnHorizontalMovement;
-                @HorizontalMovement.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnHorizontalMovement;
+                @Movement.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
                 @Jump.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnJump;
@@ -307,9 +307,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @HorizontalMovement.started += instance.OnHorizontalMovement;
-                @HorizontalMovement.performed += instance.OnHorizontalMovement;
-                @HorizontalMovement.canceled += instance.OnHorizontalMovement;
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -374,7 +374,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public SwordAttackActions @SwordAttack => new SwordAttackActions(this);
     public interface IGroundMovementActions
     {
-        void OnHorizontalMovement(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMouseX(InputAction.CallbackContext context);
         void OnMouseY(InputAction.CallbackContext context);

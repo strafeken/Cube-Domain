@@ -6,7 +6,7 @@
             "id": "0bab2409-3ef2-48bb-adca-7f251a507203",
             "actions": [
                 {
-                    "name": "HorizontalMovement",
+                    "name": "Movement",
                     "type": "PassThrough",
                     "id": "b9a3c695-ac09-4996-bd19-78c8e5ffb21a",
                     "expectedControlType": "Vector2",
@@ -46,7 +46,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMovement",
+                    "action": "Movement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -57,7 +57,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMovement",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -68,7 +68,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMovement",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -79,7 +79,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMovement",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -90,7 +90,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HorizontalMovement",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -173,7 +173,7 @@
                 {
                     "name": "",
                     "id": "d20cb1d0-34d4-47c4-aaed-ef31665ec1c2",
-                    "path": "",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -6,33 +6,30 @@ public class InputManager : MonoBehaviour
 {
     private RigidbodyCharacterController rigidbodyController;
 
+    private PlayerControls controls;
+    
+    private Vector2 walkInput;
+
     [SerializeField] private MouseLook mouseLook;
-
-    PlayerControls controls;
-    PlayerControls.GroundMovementActions groundMovement;
-
-    Vector2 horizontalInput;
-
-    Vector2 mouseInput;
+    private Vector2 mouseInput;
 
     [SerializeField] private SwordAnimation sword;
-
-    PlayerControls.SwordAttackActions swordAttack;
 
     void Awake()
     {
         rigidbodyController = GetComponent<RigidbodyCharacterController>();
 
         controls = new PlayerControls();
-        groundMovement = controls.GroundMovement;
 
-        groundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
-        groundMovement.Jump.performed += _ => rigidbodyController.OnJumpPressed();
+        PlayerControls.GroundMovementActions groundMovement = controls.GroundMovement;
+        groundMovement.Movement.performed += ctx => walkInput = ctx.ReadValue<Vector2>();
+
+        groundMovement.Jump.performed += rigidbodyController.JumpOnGround;
 
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
 
-        swordAttack = controls.SwordAttack;
+        PlayerControls.SwordAttackActions swordAttack = controls.SwordAttack;
         swordAttack.Swing.performed += _ => sword.OnLMBClicked();
     }
 
@@ -43,7 +40,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        rigidbodyController.ReceiveInput(horizontalInput);
+        rigidbodyController.ReceiveInput(walkInput);
         mouseLook.ReceiveInput(mouseInput);
     }
 
