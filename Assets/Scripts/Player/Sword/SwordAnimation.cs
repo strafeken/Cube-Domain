@@ -4,112 +4,103 @@ using UnityEngine;
 
 public class SwordAnimation : MonoBehaviour
 {
-    public enum SwordState
+    public enum SwordMode
     {
-        IDLE,
-        HORIZONTAL_SLASH,
-        DIAGONAL_SLASH,
-        VERTICAL_SLASH,
-        STAB,
-        SHEATHE
+        SLASH,
+        STAB
     }
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
 
-    private SwordState state;
+    private SwordMode mode;
 
     [SerializeField] private float sheatheTimerCooldown = 2f;
-    private bool sheathed = true;
 
-    private bool swing;
+    const string IDLE = "Idle";
+    const string HORIZONTAL_SLASH = "HorizontalSlash";
+    const string DIAGONAL_SLASH = "DiagonalSlash";
+    const string VERTICAL_SLASH = "VerticalSlash";
+    const string SHEATHE = "Sheathe";
 
-    void Awake()
-    {
+    const string STAB = "Stab";
 
-    }
+    private bool isAnimationPlaying = false;
+
+    private string currentState;
+    private string stateBeforeStab;
 
     void Start()
     {
-        SetState(SwordState.IDLE);
+        mode = SwordMode.SLASH;
+
+        currentState = IDLE;
     }
 
-    void Update()
+    public void OnLMBClicked()
     {
-        if(swing)
-        {
-            if(state == SwordState.IDLE && sheathed)
-            {
-                SetState(SwordState.HORIZONTAL_SLASH);
-            }
+        if (isAnimationPlaying)
+            return;
 
-            switch(state)
+        if (mode == SwordMode.SLASH)
+        {
+            switch (currentState)
             {
-                case SwordState.HORIZONTAL_SLASH:
-                    animator.SetInteger("SwordState", (int)SwordState.HORIZONTAL_SLASH);
+                case IDLE:
+                    PlayAnimation(HORIZONTAL_SLASH);
                     break;
-                case SwordState.DIAGONAL_SLASH:
+                case HORIZONTAL_SLASH:
                     StopCoroutine("SheatheTimer");
-                    animator.SetInteger("SwordState", (int)SwordState.DIAGONAL_SLASH);
+                    PlayAnimation(DIAGONAL_SLASH);
                     break;
-                case SwordState.VERTICAL_SLASH:
+                case DIAGONAL_SLASH:
                     StopCoroutine("SheatheTimer");
-                    animator.SetInteger("SwordState", (int)SwordState.VERTICAL_SLASH);
-                    break;
-                case SwordState.STAB:
+                    PlayAnimation(VERTICAL_SLASH);
                     break;
             }
-            swing = false;
+        }
+        else
+        {
+            StopCoroutine("SheatheTimer");
+            PlayAnimation(STAB);
         }
     }
 
-    private void SetState(SwordState nextState)
+    private void PlayAnimation(string newState)
     {
-        state = nextState;
-        switch(state)
+        if(mode == SwordMode.SLASH)
         {
-            case SwordState.IDLE:
-                animator.SetInteger("SwordState", (int)SwordState.IDLE);
-                break;
-            case SwordState.HORIZONTAL_SLASH:
-                sheathed = false;
-                break;
-            case SwordState.DIAGONAL_SLASH:
-                break;
-            case SwordState.VERTICAL_SLASH:
-                break;
-            case SwordState.STAB:
-                break;
-            case SwordState.SHEATHE:
-                animator.SetInteger("SwordState", (int)SwordState.SHEATHE);
-                break;
+            if (string.Compare(currentState, newState) == 0)
+                return;
+
+            animator.Play(newState);
         }
+        else
+        {
+            animator.Play(STAB, -1, 0f);
+        }
+
+        currentState = newState;
+
+        isAnimationPlaying = true;
     }
 
     private void OnHorizontalSlashFinished()
     {
-        SetState(SwordState.DIAGONAL_SLASH);
+        isAnimationPlaying = false;
         StartCoroutine("SheatheTimer");
     }
 
     private void OnDiagonalSlashFinished()
     {
-        SetState(SwordState.VERTICAL_SLASH);
+        isAnimationPlaying = false;
         StartCoroutine("SheatheTimer");
     }
 
     private void OnVerticalSlashFinished()
     {
+        isAnimationPlaying = false;
         SheatheSword();
-    }
-
-    private void OnSheatheFinished()
-    {
-        SetState(SwordState.IDLE);
-    }
-    private void OnIdle()
-    {
-        sheathed = true;
     }
 
     private IEnumerator SheatheTimer()
@@ -120,11 +111,45 @@ public class SwordAnimation : MonoBehaviour
 
     private void SheatheSword()
     {
-        SetState(SwordState.SHEATHE);
+        mode = SwordMode.SLASH;
+        PlayAnimation(SHEATHE);
     }
 
-    public void OnLMBClicked()
+    private void OnSheatheFinished()
     {
-        swing = true;
+        isAnimationPlaying = false;
+        PlayAnimation(IDLE);
+    }
+
+    private void OnIdle()
+    {
+        isAnimationPlaying = false;
+    }
+
+    private void OnStabFinished()
+    {
+        isAnimationPlaying = false;
+        StartCoroutine("SheatheTimer");
+    }
+
+    public void ReceiveInput(float value)
+    {
+        if (currentState == IDLE || currentState == SHEATHE)
+            return;
+
+        if (value > 0)
+        {
+            stateBeforeStab = currentState; // Save state before stab
+            mode = SwordMode.STAB;
+        }
+        else if (value < 0)
+        {
+            if (mode == SwordMode.SLASH)
+                return;
+
+            mode = SwordMode.SLASH;
+
+            currentState = stateBeforeStab;
+        }
     }
 }

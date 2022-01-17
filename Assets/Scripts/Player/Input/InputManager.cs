@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private Vector2 mouseInput;
 
     [SerializeField] private SwordAnimation sword;
+    [SerializeField] private float mouseScrollY;
 
     void Awake()
     {
@@ -31,6 +32,7 @@ public class InputManager : MonoBehaviour
 
         PlayerControls.SwordAttackActions swordAttack = controls.SwordAttack;
         swordAttack.Swing.performed += _ => sword.OnLMBClicked();
+        swordAttack.ChangeMode.performed += ctx => mouseScrollY = ctx.ReadValue<float>();
     }
 
     void OnEnable()
@@ -42,6 +44,7 @@ public class InputManager : MonoBehaviour
     {
         rigidbodyController.ReceiveInput(walkInput);
         mouseLook.ReceiveInput(mouseInput);
+        sword.ReceiveInput(mouseScrollY);
     }
 
     void OnDisable()
