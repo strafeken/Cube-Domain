@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class RigidbodyCharacterController : MonoBehaviour
 {
     private Rigidbody rb;
+    private CapsuleCollider bodyCollider;
 
     [Header("Walk")]
     [SerializeField] private float movementSpeed = 12f;
@@ -31,6 +32,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        bodyCollider = GetComponent<CapsuleCollider>();
     }
 
     void Start()
@@ -41,15 +43,18 @@ public class RigidbodyCharacterController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if (isGrounded)
-            dashed = false;
+        if(groundCheck.position.y < 0f)
+        {
+            transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+        }
         MovePlayer();
     }
 
     private void FixedUpdate()
     {
         rb.AddForce(moveDirection.normalized * movementSpeed * movementMultiplier, ForceMode.Acceleration);
-        FallToGround();
+        if(!dashed)
+            FallToGround();
     }
 
     private void MovePlayer()
@@ -102,9 +107,11 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private IEnumerator DashAttack()
     {
+        bodyCollider.isTrigger = true;
         rb.AddForce(Camera.main.transform.forward * dashForce, ForceMode.Impulse);
         dashed = true;
         yield return new WaitForSeconds(dashDuration);
+        bodyCollider.isTrigger = false;
         rb.velocity = Vector3.zero;
     }
 }
