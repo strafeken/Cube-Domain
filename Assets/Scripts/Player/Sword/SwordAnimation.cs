@@ -173,7 +173,10 @@ public class SwordAnimation : MonoBehaviour
 
     public void Dash()
     {
-        animator.Play("Dash");
-        isAnimationPlaying = true;
+        if(!isAnimationPlaying)
+        {
+            animator.Play("Dash", -1, 0f);
+            isAnimationPlaying = true;
+        }
     }
 }
