@@ -84,12 +84,14 @@ MonoBehaviour:
   currentState: 0
   spawnBufferDuration: 2
   rotationSpeed: 50
-  timeToDisappear: 1.5
-  timeToEmerge: 1
+  timeToDisappear: 2
+  timeToEmerge: 3
   emergeForce: 8
   emergeRange: 5
-  emergingSpeed: 1
+  emergingSpeed: 0.5
+  minEmergeHeight: 1.5
   maxEmergeHeight: 2
+  wallEmergeDistance: 35
   disappearVFX: {fileID: 8601040074032618806, guid: 778a60dfcee990b4ba0de90dcc49a81e, type: 3}
   emergeVFX: {fileID: 8601040074032618806, guid: 778a60dfcee990b4ba0de90dcc49a81e, type: 3}
   groundCheck: {fileID: 1970884332494814688}

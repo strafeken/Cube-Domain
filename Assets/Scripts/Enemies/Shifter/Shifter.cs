@@ -40,6 +40,7 @@ public class Shifter : Enemy
     [SerializeField] private float minEmergeHeight = 1.5f;
     [SerializeField] private float maxEmergeHeight = 2f;
     [SerializeField] private float wallEmergeDistance = 35f;
+    [SerializeField] private float timeToAttack = 3f;
 
     private LayerMask emergeMask;
     private Vector3 emergePosition;
@@ -233,6 +234,10 @@ public class Shifter : Enemy
                 break;
             case State.DEAD:
                 Destroy(gameObject);
+                if (disappearInstantiatedVFX)
+                    Destroy(disappearInstantiatedVFX);
+                if (emergeInstantiatedVFX)
+                    Destroy(emergeInstantiatedVFX);
                 break;
         }
     }
@@ -369,6 +374,8 @@ public class Shifter : Enemy
             yield return null;
         }
 
+        yield return new WaitForSeconds(timeToAttack);
+
         boxCollider.enabled = true;
         rb.isKinematic = false;
 
@@ -393,6 +400,8 @@ public class Shifter : Enemy
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(timeToAttack);
 
         boxCollider.enabled = true;
         rb.isKinematic = false;
