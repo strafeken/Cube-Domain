@@ -26,6 +26,7 @@ public class InputManager : MonoBehaviour
         groundMovement.Movement.performed += ctx => walkInput = ctx.ReadValue<Vector2>();
 
         groundMovement.Jump.performed += rigidbodyController.JumpOnGround;
+        groundMovement.Dash.performed += rigidbodyController.Dash;
 
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();

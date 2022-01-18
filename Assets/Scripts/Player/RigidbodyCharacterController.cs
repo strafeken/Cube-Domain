@@ -10,6 +10,8 @@ public class RigidbodyCharacterController : MonoBehaviour
     [Header("Walk")]
     [SerializeField] private float movementSpeed = 12f;
     [SerializeField] private float movementMultiplier = 10f;
+    private Vector2 walkInput;
+    private Vector3 moveDirection;
 
     [Header("Jump")]
     private bool jump;
@@ -20,9 +22,11 @@ public class RigidbodyCharacterController : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private float fallMultiplier = 2.5f;
 
-    private Vector2 walkInput;
-
-    private Vector3 moveDirection;
+    [Header("Dash")]
+    [SerializeField] private float dashForce = 5f;
+    [SerializeField] private float dashDuration = 2f;
+    private bool dashed = false;
+    [SerializeField] private SwordAnimation sword;
 
     void Awake()
     {
@@ -37,6 +41,8 @@ public class RigidbodyCharacterController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (isGrounded)
+            dashed = false;
         MovePlayer();
     }
 
@@ -62,8 +68,16 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private void FallToGround()
     {
-        if (rb.velocity.y < 0f)
-            rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
+        if(dashed)
+        {
+            if (rb.velocity.y < 0f)
+                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier * 5f - 1f) * Time.deltaTime;
+        }
+        else
+        {
+            if (rb.velocity.y < 0f)
+                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
+        }
     }
 
     public void ReceiveInput(Vector2 _walkInput)
@@ -74,5 +88,23 @@ public class RigidbodyCharacterController : MonoBehaviour
     public void JumpOnGround(InputAction.CallbackContext context)
     {
         jump = true;
+    }
+
+    public void Dash(InputAction.CallbackContext context)
+    {
+        sword.Dash();
+    }
+
+    public void StartDash()
+    {
+        StartCoroutine("DashAttack");
+    }
+
+    private IEnumerator DashAttack()
+    {
+        rb.AddForce(Camera.main.transform.forward * dashForce, ForceMode.Impulse);
+        dashed = true;
+        yield return new WaitForSeconds(dashDuration);
+        rb.velocity = Vector3.zero;
     }
 }

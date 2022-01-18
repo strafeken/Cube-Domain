@@ -5773,6 +5773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 260748590}
   sheatheTimerCooldown: 2
+  rigidbodyController: {fileID: 1185955021}
 --- !u!95 &260748590
 Animator:
   serializedVersion: 3
@@ -7218,6 +7219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseLook: {fileID: 235336703}
   sword: {fileID: 260748589}
+  mouseScrollY: 0
 --- !u!114 &1185955021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7239,6 +7241,9 @@ MonoBehaviour:
     m_Bits: 128
   groundDistance: 0.4
   fallMultiplier: 2.5
+  dashForce: 100
+  dashDuration: 2
+  sword: {fileID: 260748589}
 --- !u!54 &1185955022
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -49,6 +49,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""28139b61-0e85-4cc1-a72d-4812be3887f3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -139,6 +147,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""MouseY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7febd67b-8378-4dc5-966f-eb82164e2670"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -216,6 +235,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
         m_GroundMovement_MouseX = m_GroundMovement.FindAction("MouseX", throwIfNotFound: true);
         m_GroundMovement_MouseY = m_GroundMovement.FindAction("MouseY", throwIfNotFound: true);
+        m_GroundMovement_Dash = m_GroundMovement.FindAction("Dash", throwIfNotFound: true);
         // SwordAttack
         m_SwordAttack = asset.FindActionMap("SwordAttack", throwIfNotFound: true);
         m_SwordAttack_Swing = m_SwordAttack.FindAction("Swing", throwIfNotFound: true);
@@ -274,6 +294,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_GroundMovement_Jump;
     private readonly InputAction m_GroundMovement_MouseX;
     private readonly InputAction m_GroundMovement_MouseY;
+    private readonly InputAction m_GroundMovement_Dash;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -282,6 +303,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_GroundMovement_Jump;
         public InputAction @MouseX => m_Wrapper.m_GroundMovement_MouseX;
         public InputAction @MouseY => m_Wrapper.m_GroundMovement_MouseY;
+        public InputAction @Dash => m_Wrapper.m_GroundMovement_Dash;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -303,6 +325,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MouseY.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMouseY;
                 @MouseY.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMouseY;
                 @MouseY.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMouseY;
+                @Dash.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -319,6 +344,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MouseY.started += instance.OnMouseY;
                 @MouseY.performed += instance.OnMouseY;
                 @MouseY.canceled += instance.OnMouseY;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -378,6 +406,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnMouseX(InputAction.CallbackContext context);
         void OnMouseY(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface ISwordAttackActions
     {

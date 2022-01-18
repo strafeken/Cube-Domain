@@ -30,6 +30,8 @@ public class SwordAnimation : MonoBehaviour
     private string currentState;
     private string stateBeforeStab;
 
+    [SerializeField] private RigidbodyCharacterController rigidbodyController;
+
     void Start()
     {
         mode = SwordMode.SLASH;
@@ -132,6 +134,22 @@ public class SwordAnimation : MonoBehaviour
         StartCoroutine("SheatheTimer");
     }
 
+    private void OnDashStart()
+    {
+        StopCoroutine("SheatheTimer");
+    }
+
+    private void OnDashAttack()
+    {
+        rigidbodyController.StartDash();
+    }
+
+    private void OnDashFinished()
+    {
+        isAnimationPlaying = false;
+        StartCoroutine("SheatheTimer");
+    }
+
     public void ReceiveInput(float value)
     {
         if (currentState == IDLE || currentState == SHEATHE)
@@ -151,5 +169,11 @@ public class SwordAnimation : MonoBehaviour
 
             currentState = stateBeforeStab;
         }
+    }
+
+    public void Dash()
+    {
+        animator.Play("Dash");
+        isAnimationPlaying = true;
     }
 }
