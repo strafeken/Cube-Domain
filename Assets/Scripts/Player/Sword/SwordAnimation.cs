@@ -22,6 +22,7 @@ public class SwordAnimation : MonoBehaviour
     const string DIAGONAL_SLASH = "DiagonalSlash";
     const string VERTICAL_SLASH = "VerticalSlash";
     const string SHEATHE = "Sheathe";
+    const string LEFT_SLASH = "LeftSlash";
 
     const string STAB = "Stab";
 
@@ -46,20 +47,25 @@ public class SwordAnimation : MonoBehaviour
 
         if (mode == SwordMode.SLASH)
         {
-            switch (currentState)
-            {
-                case IDLE:
-                    PlayAnimation(HORIZONTAL_SLASH);
-                    break;
-                case HORIZONTAL_SLASH:
-                    StopCoroutine("SheatheTimer");
-                    PlayAnimation(DIAGONAL_SLASH);
-                    break;
-                case DIAGONAL_SLASH:
-                    StopCoroutine("SheatheTimer");
-                    PlayAnimation(VERTICAL_SLASH);
-                    break;
-            }
+            animator.Play(LEFT_SLASH, -1, 0f);
+            //switch (currentState)
+            //{
+            //    case IDLE:
+            //        PlayAnimation(HORIZONTAL_SLASH);
+            //        break;
+            //    case HORIZONTAL_SLASH:
+            //        StopCoroutine("SheatheTimer");
+            //        PlayAnimation(DIAGONAL_SLASH);
+            //        break;
+            //    case DIAGONAL_SLASH:
+            //        StopCoroutine("SheatheTimer");
+            //        PlayAnimation(VERTICAL_SLASH);
+            //        break;
+            //    case LEFT_SLASH:
+            //        animator.Play(LEFT_SLASH, -1, 0f);
+            //        //PlayAnimation(LEFT_SLASH);
+            //        break;
+            //}
         }
         else
         {

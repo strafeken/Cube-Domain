@@ -11,7 +11,7 @@ public class DashController : MonoBehaviour
     private Rigidbody rb;
 
     [Header("Properties")]
-    [SerializeField] private float dashForce = 5f;
+    [SerializeField] private float dashForce = 100f;
     [SerializeField] private float dashDuration = 2f;
     [SerializeField] private float dashCooldown = 8f;
     private float dashCooldownTimer = 0f;
@@ -19,6 +19,7 @@ public class DashController : MonoBehaviour
     private bool canDash = true;
 
     [Header("Others")]
+    [SerializeField] private ParticleSystem dashParticleSystem;
     [SerializeField] private SwordAnimation sword;
 
     [Header("UI")]
@@ -71,6 +72,7 @@ public class DashController : MonoBehaviour
     {
         icon.SetActive(true);
         iconImage.color = inCooldownColor;
+        dashParticleSystem.Play();
 
         while (dashCooldownTimer < dashCooldown)
         {
