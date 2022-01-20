@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class RigidbodyCharacterController : MonoBehaviour
 {
     private Rigidbody rb;
-    private CapsuleCollider bodyCollider;
 
     [Header("Walk")]
     [SerializeField] private float movementSpeed = 12f;
@@ -23,16 +22,9 @@ public class RigidbodyCharacterController : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private float fallMultiplier = 2.5f;
 
-    [Header("Dash")]
-    [SerializeField] private float dashForce = 5f;
-    [SerializeField] private float dashDuration = 2f;
-    private bool dashed = false;
-    [SerializeField] private SwordAnimation sword;
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        bodyCollider = GetComponent<CapsuleCollider>();
     }
 
     void Start()
@@ -43,7 +35,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if(groundCheck.position.y < 0f)
+        if (groundCheck.position.y < 0f)
         {
             transform.position = new Vector3(transform.position.x, 1, transform.position.z);
         }
@@ -53,8 +45,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.AddForce(moveDirection.normalized * movementSpeed * movementMultiplier, ForceMode.Acceleration);
-        if(!dashed)
-            FallToGround();
+        FallToGround();
     }
 
     private void MovePlayer()
@@ -73,16 +64,8 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private void FallToGround()
     {
-        if(dashed)
-        {
-            if (rb.velocity.y < 0f)
-                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier * 5f - 1f) * Time.deltaTime;
-        }
-        else
-        {
-            if (rb.velocity.y < 0f)
-                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
-        }
+        if (rb.velocity.y < 0f)
+            rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
     }
 
     public void ReceiveInput(Vector2 _walkInput)
@@ -93,25 +76,5 @@ public class RigidbodyCharacterController : MonoBehaviour
     public void JumpOnGround(InputAction.CallbackContext context)
     {
         jump = true;
-    }
-
-    public void Dash(InputAction.CallbackContext context)
-    {
-        sword.Dash();
-    }
-
-    public void StartDash()
-    {
-        StartCoroutine("DashAttack");
-    }
-
-    private IEnumerator DashAttack()
-    {
-        bodyCollider.isTrigger = true;
-        rb.AddForce(Camera.main.transform.forward * dashForce, ForceMode.Impulse);
-        dashed = true;
-        yield return new WaitForSeconds(dashDuration);
-        bodyCollider.isTrigger = false;
-        rb.velocity = Vector3.zero;
     }
 }

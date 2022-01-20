@@ -6,6 +6,8 @@ public class InputManager : MonoBehaviour
 {
     private RigidbodyCharacterController rigidbodyController;
 
+    private DashController dashController;
+
     private PlayerControls controls;
     
     private Vector2 walkInput;
@@ -19,6 +21,7 @@ public class InputManager : MonoBehaviour
     void Awake()
     {
         rigidbodyController = GetComponent<RigidbodyCharacterController>();
+        dashController = GetComponent<DashController>();
 
         controls = new PlayerControls();
 
@@ -26,7 +29,7 @@ public class InputManager : MonoBehaviour
         groundMovement.Movement.performed += ctx => walkInput = ctx.ReadValue<Vector2>();
 
         groundMovement.Jump.performed += rigidbodyController.JumpOnGround;
-        groundMovement.Dash.performed += rigidbodyController.Dash;
+        groundMovement.Dash.performed += dashController.Dash;
 
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();

@@ -5777,7 +5777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 260748590}
   sheatheTimerCooldown: 2
-  rigidbodyController: {fileID: 1185955021}
+  dashController: {fileID: 1185955028}
 --- !u!95 &260748590
 Animator:
   serializedVersion: 3
@@ -6318,16 +6318,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588570074}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000023961067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 592225633}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &588570076
 MonoBehaviour:
@@ -6450,10 +6450,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 2143057352}
   m_HandleRect: {fileID: 0}
   m_Direction: 2
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 1
+  m_MaxValue: 9
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7373,7 +7373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7612,6 +7612,7 @@ GameObject:
   - component: {fileID: 1185955022}
   - component: {fileID: 1185955020}
   - component: {fileID: 1185955021}
+  - component: {fileID: 1185955028}
   - component: {fileID: 1185955027}
   m_Layer: 6
   m_Name: Player
@@ -7656,9 +7657,6 @@ MonoBehaviour:
     m_Bits: 128
   groundDistance: 0.4
   fallMultiplier: 2.5
-  dashForce: 100
-  dashDuration: 2
-  sword: {fileID: 260748589}
 --- !u!54 &1185955022
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7767,6 +7765,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 30
+--- !u!114 &1185955028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185955019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73191a0d09c7a5d449fe4cf428ada225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashForce: 100
+  dashDuration: 2
+  dashCooldown: 8
+  sword: {fileID: 260748589}
+  icon: {fileID: 592225632}
+  iconImage: {fileID: 1574026152}
+  defaultColor: {r: 0, g: 0, b: 0, a: 1}
+  inCooldownColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  cooldownSlider: {fileID: 592225634}
+  cooldownText: {fileID: 2080255112}
 --- !u!1 &1196197384
 GameObject:
   m_ObjectHideFlags: 0
@@ -7817,7 +7837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8060,8 +8080,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: e243a5ecf50dbe245b9d739ac085e240, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -8864,7 +8884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9613,8 +9633,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: e243a5ecf50dbe245b9d739ac085e240, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -10181,7 +10201,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080255110}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000023961067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 592225633}
@@ -10189,7 +10209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2080255112

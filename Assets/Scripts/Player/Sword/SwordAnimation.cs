@@ -30,7 +30,7 @@ public class SwordAnimation : MonoBehaviour
     private string currentState;
     private string stateBeforeStab;
 
-    [SerializeField] private RigidbodyCharacterController rigidbodyController;
+    [SerializeField] private DashController dashController;
 
     void Start()
     {
@@ -141,7 +141,7 @@ public class SwordAnimation : MonoBehaviour
 
     private void OnDashAttack()
     {
-        rigidbodyController.StartDash();
+        dashController.StartDash();
     }
 
     private void OnDashFinished()
