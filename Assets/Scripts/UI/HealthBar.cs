@@ -1,23 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class HealthBar : MonoBehaviour
 {
     private TMP_Text text;
-
+    private Slider slider;
     [SerializeField] private Health health;
 
     void Awake()
     {
-        text = GetComponent<TMP_Text>();
+        text = GetComponentInChildren<TMP_Text>();
+        slider = GetComponent<Slider>();
+    }
+
+    void OnEnable()
+    {
+        health.OnDamaged += UpdateHealthBar;
     }
 
     void Start()
     {
-        health.OnDamaged += UpdateHealthBar;
         text.text = "HP: " + health.GetCurrentHealth() + " / " + health.GetMaxHealth();
+        slider.value = health.GetMaxHealth();
     }
 
     void OnDestroy()
@@ -28,5 +35,6 @@ public class HealthBar : MonoBehaviour
     private void UpdateHealthBar()
     {
         text.text = "HP: " + health.GetCurrentHealth() + " / " + health.GetMaxHealth();
+        slider.value = health.GetCurrentHealth();
     }
 }
