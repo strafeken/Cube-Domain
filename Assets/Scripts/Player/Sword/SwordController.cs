@@ -20,22 +20,32 @@ public class SwordController : MonoBehaviour
     const string RIGHT_SLASH = "RightSlash";
     const string LEFT_SLASH = "LeftSlash";
 
+    private IEnumerator regenCoroutine;
+    private bool isRegenCoroutineRunning;
+
     [Header("UI")]
     [SerializeField] private GameObject icon;
     [SerializeField] private Image iconImage;
     [SerializeField] private Color defaultColor = Color.black;
     [SerializeField] private Color inCooldownColor = Color.white;
-    [SerializeField] private Slider cooldownSlider;
+    private Slider cooldownSlider;
     [SerializeField] private TMP_Text cooldownText;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+
+        cooldownSlider = icon.GetComponent<Slider>();
     }
 
     void Start()
     {
+        icon.SetActive(false);
+
         currentSlashCharges = maxSlashCharges;
+        cooldownText.text = currentSlashCharges.ToString();
+
+        regenCoroutine = RegenCharges();
     }
 
     public void OnLMBClicked()
@@ -46,7 +56,7 @@ public class SwordController : MonoBehaviour
         if (currentSlashCharges < 1)
             return;
 
-        if(doRightSlash)
+        if (doRightSlash)
         {
             PlayAnimation(RIGHT_SLASH);
             doRightSlash = false;
@@ -61,6 +71,44 @@ public class SwordController : MonoBehaviour
     private void PlayAnimation(string slash)
     {
         animator.Play(slash);
+        --currentSlashCharges;
+        Debug.Log("PlayAnimation");
+        if (!isRegenCoroutineRunning)
+        {
+            Debug.Log("StartCoroutine");
+            StartCoroutine(regenCoroutine);
+        }
+    }
+
+    private IEnumerator RegenCharges()
+    {
+        Debug.Log("Running");
+        isRegenCoroutineRunning = true;
+
+        icon.SetActive(true);
+        iconImage.color = inCooldownColor;
+
+        while (currentSlashCharges < maxSlashCharges)
+        {
+            slashRegenTimer += Time.deltaTime;
+            cooldownSlider.value = slashRegenTimer;
+
+            if (slashRegenTimer > slashRegenRate)
+            {
+                ++currentSlashCharges;
+                slashRegenTimer = 0f;
+            }
+
+            cooldownText.text = currentSlashCharges.ToString();
+
+            yield return null;
+        }
+
+        icon.SetActive(false);
+        iconImage.color = defaultColor;
+
+        isRegenCoroutineRunning = false;
+        Debug.Log("Finished");
     }
 
     private void OnRightSlashStart()

@@ -27,13 +27,16 @@ public class DashController : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private Color defaultColor = Color.black;
     [SerializeField] private Color inCooldownColor = Color.white;
-    [SerializeField] private Slider cooldownSlider;
-    [SerializeField] private TMP_Text cooldownText;
+    private Slider cooldownSlider;
+    private TMP_Text cooldownText;
 
     void Awake()
     {
         bodyCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+
+        cooldownSlider = icon.GetComponent<Slider>();
+        cooldownText = icon.GetComponentInChildren<TMP_Text>();
     }
 
     void Start()
