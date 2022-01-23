@@ -20,7 +20,7 @@ public class DashController : MonoBehaviour
 
     [Header("Others")]
     [SerializeField] private ParticleSystem dashParticleSystem;
-    [SerializeField] private SwordAnimation sword;
+    [SerializeField] private SwordController sword;
 
     [Header("UI")]
     [SerializeField] private GameObject icon;

@@ -8,6 +8,8 @@ public class SwordController : MonoBehaviour
 {
     private Animator animator;
 
+    [SerializeField] private DashController dashController;
+
     [Header("Properties")]
     [SerializeField] private int maxSlashCharges = 8;
     private float currentSlashCharges;
@@ -16,11 +18,16 @@ public class SwordController : MonoBehaviour
 
     private bool isAnimationPlaying = false;
     private bool doRightSlash = true;
+    private bool doLeftSlash = true;
 
     const string RIGHT_SLASH = "RightSlash";
     const string LEFT_SLASH = "LeftSlash";
+    const string MIDDLE_SLASH = "MiddleSlash";
 
-    const string STAB = "Stab";
+    const string DASH = "Dash";
+    const string DASH_SHEATHE = "DashSheathe";
+
+    [SerializeField] private float dashSheatheBufferTime = 1f;
 
     private bool isRegenCoroutineRunning;
 
@@ -59,11 +66,18 @@ public class SwordController : MonoBehaviour
         {
             PlayAnimation(RIGHT_SLASH);
             doRightSlash = false;
+            doLeftSlash = true;
+        }
+        else if (doLeftSlash)
+        {
+            PlayAnimation(LEFT_SLASH);
+            doLeftSlash = false;
         }
         else
         {
-            PlayAnimation(LEFT_SLASH);
+            PlayAnimation(MIDDLE_SLASH);
             doRightSlash = true;
+            doLeftSlash = false;
         }
     }
 
@@ -71,6 +85,14 @@ public class SwordController : MonoBehaviour
     {
         if (isAnimationPlaying)
             return;
+    }
+
+    public void Dash()
+    {
+        if (isAnimationPlaying)
+            return;
+
+        animator.Play(DASH, -1, 0f);
     }
 
     private void PlayAnimation(string slash)
@@ -117,6 +139,7 @@ public class SwordController : MonoBehaviour
     private void OnRightSlashStart()
     {
         isAnimationPlaying = true;
+        StopCoroutine("DashSheatheBuffer");
     }
 
     private void OnRightSlashFinished()
@@ -127,10 +150,55 @@ public class SwordController : MonoBehaviour
     private void OnLeftSlashStart()
     {
         isAnimationPlaying = true;
+        StopCoroutine("DashSheatheBuffer");
     }
 
     private void OnLeftSlashFinished()
     {
         isAnimationPlaying = false;
+    }
+
+    private void OnMiddleSlashStart()
+    {
+        isAnimationPlaying = true;
+        StopCoroutine("DashSheatheBuffer");
+    }
+
+    private void OnMiddleSlashFinished()
+    {
+        isAnimationPlaying = false;
+    }
+
+    private void OnDashStart()
+    {
+        isAnimationPlaying = true;
+    }
+
+    private void OnDashAttack()
+    {
+        dashController.StartDash();
+    }
+
+    private void OnDashFinished()
+    {
+        isAnimationPlaying = false;
+        StartCoroutine("DashSheatheBuffer");
+    }
+
+    private IEnumerator DashSheatheBuffer()
+    {
+        yield return new WaitForSeconds(dashSheatheBufferTime);
+        animator.Play(DASH_SHEATHE);
+    }
+
+    private void OnDashSheatheStart()
+    {
+        isAnimationPlaying = true;
+    }
+
+    private void OnDashSheatheFinished()
+    {
+        isAnimationPlaying = false;
+        animator.Play("Idle");
     }
 }
