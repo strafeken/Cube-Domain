@@ -6077,8 +6077,6 @@ MonoBehaviour:
   slashRegenRate: 3
   icon: {fileID: 446053720}
   iconImage: {fileID: 1140389302}
-  defaultColor: {r: 0, g: 0, b: 0, a: 1}
-  inCooldownColor: {r: 1, g: 1, b: 1, a: 1}
   cooldownText: {fileID: 147185764}
 --- !u!1 &263400988
 GameObject:
@@ -11329,10 +11327,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1421955201}
   m_HandleRect: {fileID: 0}
   m_Direction: 2
-  m_MinValue: 1
+  m_MinValue: 0
   m_MaxValue: 3
   m_WholeNumbers: 0
-  m_Value: 3
+  m_Value: 1.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

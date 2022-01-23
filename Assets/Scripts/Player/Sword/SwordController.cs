@@ -20,14 +20,15 @@ public class SwordController : MonoBehaviour
     const string RIGHT_SLASH = "RightSlash";
     const string LEFT_SLASH = "LeftSlash";
 
-    private IEnumerator regenCoroutine;
+    const string STAB = "Stab";
+
     private bool isRegenCoroutineRunning;
 
     [Header("UI")]
     [SerializeField] private GameObject icon;
     [SerializeField] private Image iconImage;
-    [SerializeField] private Color defaultColor = Color.black;
-    [SerializeField] private Color inCooldownColor = Color.white;
+    //[SerializeField] private Color defaultColor = Color.black;
+    //[SerializeField] private Color inCooldownColor = Color.white;
     private Slider cooldownSlider;
     [SerializeField] private TMP_Text cooldownText;
 
@@ -44,8 +45,6 @@ public class SwordController : MonoBehaviour
 
         currentSlashCharges = maxSlashCharges;
         cooldownText.text = currentSlashCharges.ToString();
-
-        regenCoroutine = RegenCharges();
     }
 
     public void OnLMBClicked()
@@ -68,25 +67,30 @@ public class SwordController : MonoBehaviour
         }
     }
 
+    public void OnEClicked()
+    {
+        if (isAnimationPlaying)
+            return;
+    }
+
     private void PlayAnimation(string slash)
     {
         animator.Play(slash);
         --currentSlashCharges;
-        Debug.Log("PlayAnimation");
+        cooldownText.text = currentSlashCharges.ToString();
+
         if (!isRegenCoroutineRunning)
         {
-            Debug.Log("StartCoroutine");
-            StartCoroutine(regenCoroutine);
+            StartCoroutine("RegenCharges");
         }
     }
 
     private IEnumerator RegenCharges()
     {
-        Debug.Log("Running");
         isRegenCoroutineRunning = true;
 
         icon.SetActive(true);
-        iconImage.color = inCooldownColor;
+        //iconImage.color = inCooldownColor;
 
         while (currentSlashCharges < maxSlashCharges)
         {
@@ -105,10 +109,9 @@ public class SwordController : MonoBehaviour
         }
 
         icon.SetActive(false);
-        iconImage.color = defaultColor;
+        //iconImage.color = defaultColor;
 
         isRegenCoroutineRunning = false;
-        Debug.Log("Finished");
     }
 
     private void OnRightSlashStart()
