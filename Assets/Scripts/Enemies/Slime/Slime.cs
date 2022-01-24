@@ -26,23 +26,31 @@ public class Slime : Enemy
     [Header("State")]
     [SerializeField] private State currentState;
 
+    [Header("Spawn")]
     [SerializeField] private float spawnBufferDuration = 2f;
     private float spawnedTimer = 0f;
 
+    [Header("Attack")]
     [SerializeField] private float attackCooldown = 1.5f;
     private float attackCooldownTimer = 0f;
     [SerializeField] private float attackRange = 5f;
 
+    [Header("Jump")]
     [SerializeField] private float jumpCooldown = 0.5f;
     private float jumpCooldownTimer = 0f;
-
-    [Header("Movement")]
-    [SerializeField] private float rotationSpeed = 1f;
-
     [SerializeField] private Vector2 normalJumpForce;
     [SerializeField] private Vector2 attackJumpForce;
     private Vector3 jumpPosition;
     private Vector3 resultantJumpForce;
+
+    [Header("Color")]
+    private Material material;
+    [SerializeField] private Color attackColor = new Color(1, 0, 0, 0.5f);
+    [SerializeField] private float colorTransitionDuration = 1f;
+    private Color defaultColor;
+
+    [Header("Movement")]
+    [SerializeField] private float rotationSpeed = 50f;
 
     [Header("VFX")]
     [SerializeField] private GameObject attackVFX;
@@ -50,13 +58,6 @@ public class Slime : Enemy
 
     [Header("Others")]
     private Vector3 centerOfArena;
-
-    private Material material;
-    private Color defaultColor;
-
-    /// <summary>
-    /// TODO: Transition to attack mode -> gradient from green to red
-    /// </summary>
 
     void Awake()
     {
@@ -149,6 +150,7 @@ public class Slime : Enemy
                 break;
             case State.DEAD:
                 {
+                    Destroy(instantiatedVFX);
                     Destroy(gameObject);
                 }
                 break;
@@ -228,16 +230,32 @@ public class Slime : Enemy
             case State.JUMPING:
                 break;
             case State.READY_TO_ATTACK:
-                material.SetColor("_FresnelColor", new Color(1, 0, 0, 0.5f));
+                {
+                    StartCoroutine("ColorTransition");
+
+                    ResetAnimationToIdle();
                 
-                ResetAnimationToIdle();
-                
-                instantiatedVFX = Instantiate(attackVFX, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
+                    instantiatedVFX = Instantiate(attackVFX, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
+                }
                 break;
             case State.DEAD:
                 ResetAnimationToIdle();
                 break;
         }
+    }
+
+    private IEnumerator ColorTransition()
+    {
+        float timeElapsed = 0f;
+        while(timeElapsed < colorTransitionDuration)
+        {
+            Color gradient = Color.Lerp(defaultColor, attackColor, timeElapsed / colorTransitionDuration);
+            material.SetColor("_FresnelColor", gradient);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        material.SetColor("_FresnelColor", attackColor); // Fix margin error
     }
 
     private void FacePlayer()
