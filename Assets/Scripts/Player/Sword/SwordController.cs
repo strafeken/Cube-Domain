@@ -31,6 +31,10 @@ public class SwordController : MonoBehaviour
 
     private bool isRegenCoroutineRunning;
 
+    [SerializeField] private ParticleSystem dashStabParticleSystem;
+
+    [SerializeField] private GameObject trail;
+
     [Header("UI")]
     [SerializeField] private GameObject icon;
     [SerializeField] private Image iconImage;
@@ -52,6 +56,8 @@ public class SwordController : MonoBehaviour
 
         currentSlashCharges = maxSlashCharges;
         cooldownText.text = currentSlashCharges.ToString();
+
+        trail.SetActive(false);
     }
 
     public void OnLMBClicked()
@@ -139,43 +145,51 @@ public class SwordController : MonoBehaviour
     private void OnRightSlashStart()
     {
         isAnimationPlaying = true;
+        trail.SetActive(true);
         StopCoroutine("DashSheatheBuffer");
     }
 
     private void OnRightSlashFinished()
     {
         isAnimationPlaying = false;
+        trail.SetActive(false);
     }
 
     private void OnLeftSlashStart()
     {
         isAnimationPlaying = true;
+        trail.SetActive(true);
         StopCoroutine("DashSheatheBuffer");
     }
 
     private void OnLeftSlashFinished()
     {
         isAnimationPlaying = false;
+        trail.SetActive(false);
     }
 
     private void OnMiddleSlashStart()
     {
         isAnimationPlaying = true;
+        trail.SetActive(true);
         StopCoroutine("DashSheatheBuffer");
     }
 
     private void OnMiddleSlashFinished()
     {
         isAnimationPlaying = false;
+        trail.SetActive(false);
     }
 
     private void OnDashStart()
     {
         isAnimationPlaying = true;
+        dashStabParticleSystem.Play();
     }
 
     private void OnDashAttack()
     {
+        dashStabParticleSystem.Stop();
         dashController.StartDash();
     }
 
