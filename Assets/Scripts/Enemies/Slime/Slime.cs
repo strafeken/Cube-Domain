@@ -108,6 +108,10 @@ public class Slime : Enemy
                     if (Vector3.Distance(transform.position, player.position) < attackRange)
                     {
                         SetState(State.READY_TO_ATTACK);
+
+                        StopCoroutine("NormalColorTransition");
+                        StopCoroutine("AttackColorTransition");
+                        StartCoroutine("AttackColorTransition");
                         return;
                     }
 
@@ -128,6 +132,10 @@ public class Slime : Enemy
                     if (Vector3.Distance(transform.position, player.position) > attackRange)
                     {
                         SetState(State.CHASE);
+
+                        StopCoroutine("AttackColorTransition");
+                        StopCoroutine("NormalColorTransition");
+                        StartCoroutine("NormalColorTransition");
                         return;
                     }
 
@@ -174,11 +182,13 @@ public class Slime : Enemy
                 Vector3 dirToInitialPos = (jumpPosition - player.position).normalized;
                 rb.AddForce(dirToInitialPos * 100);
                 playerHealth.DealDamage();
+                StartCoroutine("NormalColorTransition");
             }
             // Missed the player
             else if (collision.collider.CompareTag("Floor"))
             {
                 SetState(State.IDLE);
+                StartCoroutine("NormalColorTransition");
             }
         }
 
@@ -211,28 +221,26 @@ public class Slime : Enemy
                 ResetAnimationToIdle();
                 break;
             case State.IDLE:
-                material.SetColor("_FresnelColor", defaultColor);
-                
-                ResetAnimationToIdle();
+                {
+                    ResetAnimationToIdle();
+                }
                 break;
             case State.CHASE:
-                material.SetColor("_FresnelColor", defaultColor);
-
-                if(instantiatedVFX)
-                    Destroy(instantiatedVFX);
+                {
+                    if (instantiatedVFX)
+                        Destroy(instantiatedVFX);
                 
-                attackCooldownTimer = 0f;
+                    attackCooldownTimer = 0f;
                 
-                ResetAnimationToIdle();
+                    ResetAnimationToIdle();
                
-                jumpCooldownTimer = 0f;
+                    jumpCooldownTimer = 0f;
+                }
                 break;
             case State.JUMPING:
                 break;
             case State.READY_TO_ATTACK:
                 {
-                    StartCoroutine("ColorTransition");
-
                     ResetAnimationToIdle();
                 
                     instantiatedVFX = Instantiate(attackVFX, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
@@ -244,7 +252,7 @@ public class Slime : Enemy
         }
     }
 
-    private IEnumerator ColorTransition()
+    private IEnumerator AttackColorTransition()
     {
         float timeElapsed = 0f;
         while(timeElapsed < colorTransitionDuration)
@@ -256,6 +264,20 @@ public class Slime : Enemy
         }
 
         material.SetColor("_FresnelColor", attackColor); // Fix margin error
+    }
+
+    private IEnumerator NormalColorTransition()
+    {
+        float timeElapsed = 0f;
+        while (timeElapsed < colorTransitionDuration)
+        {
+            Color gradient = Color.Lerp(attackColor, defaultColor, timeElapsed / colorTransitionDuration);
+            material.SetColor("_FresnelColor", gradient);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        material.SetColor("_FresnelColor", defaultColor); // Fix margin error
     }
 
     private void FacePlayer()
