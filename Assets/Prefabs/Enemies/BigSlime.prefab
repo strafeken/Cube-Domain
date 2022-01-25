@@ -113,14 +113,15 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   animator: {fileID: 2930978945720652126}
   currentState: 0
-  relaxTime: 4
+  moveCooldown: 2
+  moveForce: 80
+  isReadyToMove: 0
   attackCooldown: 3
   attackRange: 8
   attackForce: 150
+  relaxTime: 4
   rotationSpeed: 50
-  moveCooldown: 2
-  moveForce: 80
-  isAtOriginalSize: 0
+  chargeVFX: {fileID: 6209505652878117633}
   attackVFX: {fileID: 1072807866770366361}
 --- !u!1 &2930978943805304736
 GameObject:
@@ -899,7 +900,7 @@ GameObject:
   - component: {fileID: 6209505652878117633}
   - component: {fileID: 2876700210053182455}
   m_Layer: 0
-  m_Name: Clockwise
+  m_Name: Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -927,15 +928,15 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3712531113819576736}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 3
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 0
-  playOnAwake: 1
+  prewarm: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -1171,8 +1172,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.17
-      minScalar: 0.05
+      scalar: 0.3
+      minScalar: 0.6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4821,7 +4822,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 1
+    enabled: 0
     mode: 0
     ratio: 1
     lifetime:
@@ -5655,7 +5656,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 69c9965dde316a54da78c83d492dc412, type: 2}
-  - {fileID: 2100000, guid: 69c9965dde316a54da78c83d492dc412, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5713,7 +5713,7 @@ GameObject:
   - component: {fileID: 1072807866770366361}
   - component: {fileID: 264496022361859934}
   m_Layer: 6
-  m_Name: MoveParticleSystem
+  m_Name: MoveVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

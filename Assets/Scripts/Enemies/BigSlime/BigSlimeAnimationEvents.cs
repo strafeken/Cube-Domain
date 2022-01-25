@@ -13,21 +13,20 @@ public class BigSlimeAnimationEvents : MonoBehaviour
 
     public void OnShiftStart()
     {
-        bigSlime.isAtOriginalSize = false;
+        bigSlime.isReadyToMove = false;
     }
 
     public void Move()
     {
         bigSlime.StartMove();
     }
+    public void Attack()
+    {
+        bigSlime.StartAttack();
+    }
 
     public void OnSizeReverted()
     {
         bigSlime.SizeReverted();
-    }
-
-    public void Attack()
-    {
-        bigSlime.StartAttack();
     }
 }

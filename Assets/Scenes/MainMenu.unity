@@ -1540,6 +1540,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Settings
       objectReference: {fileID: 0}
+    - target: {fileID: 1315598661489817171, guid: ea38611ada2bc2242bc1534ff8f96b23, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5469211768261279907, guid: ea38611ada2bc2242bc1534ff8f96b23, type: 3}
       propertyPath: m_Transition
       value: 2

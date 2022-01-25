@@ -24,25 +24,27 @@ public class BigSlime : Enemy
     [Header("State")]
     [SerializeField] private State currentState;
 
-    [SerializeField] private float relaxTime = 4f;
-    private float relaxTimer = 0f;
-
-    [SerializeField] private float attackCooldown = 1.5f;
-    [SerializeField] private float attackRange = 5f;
-    [SerializeField] private float attackForce = 100f;
-
-    [Header("Movement")]
-    [SerializeField] private float rotationSpeed = 1f;
-
+    [Header("Chase")]
     [SerializeField] private float moveCooldown = 2f;
     private float moveCooldownTimer = 0f;
     [SerializeField] private float moveForce = 10f;
 
-    public bool isAtOriginalSize = false;
+    public bool isReadyToMove = false;
 
+    [Header("Attack")]
+    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float attackForce = 100f;
 
-    private bool isAttacking;
+    [Header("Relax")]
+    [SerializeField] private float relaxTime = 4f;
+    private float relaxTimer = 0f;
 
+    [Header("Movement")]
+    [SerializeField] private float rotationSpeed = 50f;
+
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem chargeVFX;
     [SerializeField] private ParticleSystem attackVFX;
 
     //private Material material;
@@ -75,8 +77,6 @@ public class BigSlime : Enemy
 
         numOfHearts = hearts.Count;
 
-        rb.freezeRotation = true;
-
         //defaultColor = material.GetColor("_BaseColor");
 
         SetState(State.CHASE);
@@ -93,7 +93,7 @@ public class BigSlime : Enemy
                 break;
             case State.CHASE:
                 {
-                    if (Vector3.Distance(transform.position, player.position) < attackRange && isAtOriginalSize)
+                    if (GetDistanceToPlayer() < attackRange && isReadyToMove)
                     {
                         SetState(State.ATTACK);
                         return;
@@ -112,7 +112,7 @@ public class BigSlime : Enemy
                 }
             case State.ATTACK:
                 {
-                    if (Vector3.Distance(transform.position, player.position) > attackRange && !isAttacking && isAtOriginalSize)
+                    if (GetDistanceToPlayer() > attackRange && isReadyToMove)
                     {
                         SetState(State.CHASE);
                         return;
@@ -190,7 +190,6 @@ public class BigSlime : Enemy
         {
             case State.IDLE:
                 //material.SetColor("_BaseColor", defaultColor);
-                isAttacking = false;
                 break;
             case State.CHASE:
                 //material.SetColor("_BaseColor", defaultColor);
@@ -233,18 +232,20 @@ public class BigSlime : Enemy
     {
         attackVFX.Stop();
         animator.SetInteger("State", 0);
-        isAtOriginalSize = true;
+        isReadyToMove = true;
     }
 
     public void StartAttack()
     {
-        rb.AddForce((player.position - transform.position).normalized * attackForce, ForceMode.Impulse);
+        rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
         attackVFX.Play();
+        chargeVFX.Stop();
     }
 
     private IEnumerator Attack()
     {
         yield return new WaitForSeconds(attackCooldown);
+        chargeVFX.Play();
         animator.SetInteger("State", 2);
     }
 }
