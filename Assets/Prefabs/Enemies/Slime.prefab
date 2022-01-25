@@ -147,6 +147,7 @@ Transform:
   m_Children:
   - {fileID: 7312891628219488192}
   - {fileID: 7312891629200292477}
+  - {fileID: 2880328189644662966}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -199,10 +200,12 @@ MonoBehaviour:
   attackCooldown: 1.5
   attackRange: 5
   jumpCooldown: 0.5
-  rotationSpeed: 50
   normalJumpForce: {x: 125, y: 50}
   attackJumpForce: {x: 100, y: 100}
-  attackVFX: {fileID: 3445312296555097796, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+  attackColor: {r: 1, g: 0, b: 0, a: 0.5}
+  colorTransitionDuration: 1
+  rotationSpeed: 50
+  attackVFX: {fileID: 2880328188377458663}
 --- !u!195 &8161521841870194600
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -335,3 +338,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   sparksVFX: {fileID: 2208148902106606192, guid: 006b3cada4abc9a4198d677a01a6b6b8, type: 3}
+--- !u!1001 &587946791062980213
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7312891628243121653}
+    m_Modifications:
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445312296555097796, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+      propertyPath: m_Name
+      value: SlimeAttackVFX
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+--- !u!4 &2880328189644662966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3445312296555097795, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+  m_PrefabInstance: {fileID: 587946791062980213}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2880328188377458663 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3445312297301156242, guid: bb662fdddf5c55b4889fbd922b612cc0, type: 3}
+  m_PrefabInstance: {fileID: 587946791062980213}
+  m_PrefabAsset: {fileID: 0}

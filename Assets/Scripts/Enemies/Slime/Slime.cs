@@ -53,8 +53,7 @@ public class Slime : Enemy
     [SerializeField] private float rotationSpeed = 50f;
 
     [Header("VFX")]
-    [SerializeField] private GameObject attackVFX;
-    private GameObject instantiatedVFX;
+    [SerializeField] private ParticleSystem attackVFX;
 
     [Header("Others")]
     private Vector3 centerOfArena;
@@ -158,7 +157,6 @@ public class Slime : Enemy
                 break;
             case State.DEAD:
                 {
-                    Destroy(instantiatedVFX);
                     Destroy(gameObject);
                 }
                 break;
@@ -227,9 +225,8 @@ public class Slime : Enemy
                 break;
             case State.CHASE:
                 {
-                    if (instantiatedVFX)
-                        Destroy(instantiatedVFX);
-                
+                    attackVFX.Stop();
+
                     attackCooldownTimer = 0f;
                 
                     ResetAnimationToIdle();
@@ -242,8 +239,8 @@ public class Slime : Enemy
             case State.READY_TO_ATTACK:
                 {
                     ResetAnimationToIdle();
-                
-                    instantiatedVFX = Instantiate(attackVFX, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
+
+                    attackVFX.Play();
                 }
                 break;
             case State.DEAD:
@@ -305,7 +302,7 @@ public class Slime : Enemy
 
     public void StartJump()
     {
-        Destroy(instantiatedVFX);
+        attackVFX.Stop();
 
         rb.AddForce(resultantJumpForce);
 
