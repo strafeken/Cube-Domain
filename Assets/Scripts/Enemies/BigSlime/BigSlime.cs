@@ -50,11 +50,6 @@ public class BigSlime : Enemy
     //private Material material;
     //private Color defaultColor;
 
-    public State GetCurrentState()
-    {
-        return currentState;
-    }
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();

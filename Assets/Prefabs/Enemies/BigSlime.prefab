@@ -196,7 +196,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2930978944471767375}
-  - component: {fileID: 2930978944471767360}
   m_Layer: 0
   m_Name: Hearts
   m_TagString: Untagged
@@ -221,27 +220,6 @@ Transform:
   m_Father: {fileID: 2930978943730317314}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2930978944471767360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2930978944471767374}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ed60c34351911c49a2d6e67400692c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topLeftHeart: {fileID: 2930978945062468116}
-  topRightHeart: {fileID: 2930978945786265803}
-  bottomLeftHeart: {fileID: 2930978944651242710}
-  bottomRightHeart: {fileID: 2930978945748299610}
-  topPosition: {fileID: 2930978944295937834}
-  bottomPosition: {fileID: 2930978943805304737}
-  front: {fileID: 2930978945739001817}
-  back: {fileID: 2930978944770132342}
-  center: {fileID: 2930978945278913503}
 --- !u!1 &2930978944651242709
 GameObject:
   m_ObjectHideFlags: 0

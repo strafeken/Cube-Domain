@@ -156,9 +156,6 @@ public class Slime : Enemy
             case State.ATTACKING:
                 break;
             case State.DEAD:
-                {
-                    Destroy(gameObject);
-                }
                 break;
         }
     }
@@ -244,7 +241,7 @@ public class Slime : Enemy
                 }
                 break;
             case State.DEAD:
-                ResetAnimationToIdle();
+                Destroy(gameObject);
                 break;
         }
     }
