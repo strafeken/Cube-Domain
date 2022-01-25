@@ -27,8 +27,7 @@ public class Twirler : Enemy
     private ControlBezierCurve eRoute;
     private ControlBezierCurve wRoute;
 
-    private List<Heart> hearts = new List<Heart>();
-    private int numOfHearts;
+    private Heart heart;
 
     [Header("VFX")]
     [SerializeField] private GameObject swirlVFX;
@@ -67,21 +66,16 @@ public class Twirler : Enemy
         sRoute = routes.Find("SouthRoute").GetComponent<ControlBezierCurve>();
         eRoute = routes.Find("EastRoute").GetComponent<ControlBezierCurve>();
         wRoute = routes.Find("WestRoute").GetComponent<ControlBezierCurve>();
-
-        hearts.AddRange(GetComponentsInChildren<Heart>());
+    
+        heart = GetComponentInChildren<Heart>();
     }
 
     protected override void Start()
     {
         base.Start();
 
-        for (int i = 0; i < hearts.Count; ++i)
-        {
-            hearts[i].OnHeartHit += OnDamagedEvent;
-            hearts[i].OnHeartDestroyed += OnHeartDestroyedEvent;
-        }
-
-        numOfHearts = hearts.Count;
+        heart.OnHeartHit += OnDamagedEvent;
+        heart.OnHeartDestroyed += OnHeartDestroyedEvent;
 
         southCube.OnEndPointReached += OnProjectileReachEnd;
         eastCube.OnEndPointReached += OnProjectileReachEnd;
@@ -139,7 +133,7 @@ public class Twirler : Enemy
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
                     transform.position = Vector3.MoveTowards(transform.position, player.position, movementSpeed * Time.deltaTime);
-                    
+
                     if (GetDistanceToPlayer() < spinAttackRange)
                     {
                         SetState(State.SPIN);
@@ -175,11 +169,8 @@ public class Twirler : Enemy
         eastCube.OnEndPointReached -= OnProjectileReachEnd;
         westCube.OnEndPointReached -= OnProjectileReachEnd;
 
-        for (int i = 0; i < hearts.Count; ++i)
-        {
-            hearts[i].OnHeartHit -= OnDamagedEvent;
-            hearts[i].OnHeartDestroyed -= OnHeartDestroyedEvent;
-        }
+        heart.OnHeartHit -= OnDamagedEvent;
+        heart.OnHeartDestroyed -= OnHeartDestroyedEvent;
     }
 
     public State GetCurrentState()
@@ -231,7 +222,7 @@ public class Twirler : Enemy
             case State.READY_TO_ATTACK:
                 break;
             case State.DEAD:
-
+                Destroy(gameObject);
                 break;
         }
     }
@@ -260,11 +251,6 @@ public class Twirler : Enemy
 
     private void OnHeartDestroyedEvent()
     {
-        --numOfHearts;
-
-        if (numOfHearts < 1)
-        {
-            SetState(State.DEAD);
-        }
+        SetState(State.DEAD);
     }
 }
