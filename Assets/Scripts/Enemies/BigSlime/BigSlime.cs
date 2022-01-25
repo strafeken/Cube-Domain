@@ -38,8 +38,12 @@ public class BigSlime : Enemy
     private float moveCooldownTimer = 0f;
     [SerializeField] private float moveForce = 10f;
 
+    public bool isAtOriginalSize = false;
+
 
     private bool isAttacking;
+
+    [SerializeField] private ParticleSystem attackVFX;
 
     //private Material material;
     //private Color defaultColor;
@@ -89,7 +93,7 @@ public class BigSlime : Enemy
                 break;
             case State.CHASE:
                 {
-                    if (Vector3.Distance(transform.position, player.position) < attackRange)
+                    if (Vector3.Distance(transform.position, player.position) < attackRange && isAtOriginalSize)
                     {
                         SetState(State.ATTACK);
                         return;
@@ -108,7 +112,7 @@ public class BigSlime : Enemy
                 }
             case State.ATTACK:
                 {
-                    if (Vector3.Distance(transform.position, player.position) > attackRange && !isAttacking)
+                    if (Vector3.Distance(transform.position, player.position) > attackRange && !isAttacking && isAtOriginalSize)
                     {
                         SetState(State.CHASE);
                         return;
@@ -194,6 +198,7 @@ public class BigSlime : Enemy
             case State.ATTACK:
                 //material.SetColor("_BaseColor", new Color(1, 0, 0, 0.5f));
                 StartCoroutine("Attack");
+                
                 break;
             case State.DEAD:
                 Destroy(gameObject);
@@ -221,12 +226,25 @@ public class BigSlime : Enemy
     public void StartMove()
     {
         rb.AddForce((player.position - transform.position).normalized * moveForce, ForceMode.Impulse);
+        attackVFX.Play();
+    }
+
+    public void SizeReverted()
+    {
+        attackVFX.Stop();
         animator.SetInteger("State", 0);
+        isAtOriginalSize = true;
+    }
+
+    public void StartAttack()
+    {
+        rb.AddForce((player.position - transform.position).normalized * attackForce, ForceMode.Impulse);
+        attackVFX.Play();
     }
 
     private IEnumerator Attack()
     {
         yield return new WaitForSeconds(attackCooldown);
-        rb.AddForce((player.position - transform.position).normalized * attackForce, ForceMode.Impulse);
+        animator.SetInteger("State", 2);
     }
 }
