@@ -43,6 +43,9 @@ public class SwordController : MonoBehaviour
     private Slider cooldownSlider;
     [SerializeField] private TMP_Text cooldownText;
 
+    [SerializeField] private BoxCollider hitCollider;
+    [SerializeField] private Vector3 dashColliderSize = new Vector3(10, 1, 50);
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -191,11 +194,13 @@ public class SwordController : MonoBehaviour
     {
         dashStabParticleSystem.Stop();
         dashController.StartDash();
+        hitCollider.size = dashColliderSize;
     }
 
     private void OnDashFinished()
     {
         isAnimationPlaying = false;
+        hitCollider.size = Vector3.one;
         StartCoroutine("DashSheatheBuffer");
     }
 
