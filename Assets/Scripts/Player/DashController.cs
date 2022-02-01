@@ -21,6 +21,9 @@ public class DashController : MonoBehaviour
     [Header("Others")]
     [SerializeField] private ParticleSystem dashParticleSystem;
     [SerializeField] private SwordController sword;
+    private int playerLayer;
+    private int enemyLayer;
+    private int heartLayer;
 
     [Header("UI")]
     [SerializeField] private GameObject icon;
@@ -37,12 +40,17 @@ public class DashController : MonoBehaviour
 
         cooldownSlider = icon.GetComponent<Slider>();
         cooldownText = icon.GetComponentInChildren<TMP_Text>();
+
+        playerLayer = LayerMask.NameToLayer("Player");
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+        heartLayer = LayerMask.NameToLayer("Heart");
     }
 
     void Start()
     {
         icon.SetActive(false);
         cooldownSlider.maxValue = dashCooldown;
+
     }
 
     public void Dash(InputAction.CallbackContext context)
@@ -59,7 +67,10 @@ public class DashController : MonoBehaviour
 
     private IEnumerator DashAttack()
     {
-        bodyCollider.isTrigger = true; // Invincibility
+        // Invincibility
+        Physics.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+        Physics.IgnoreLayerCollision(playerLayer, heartLayer, true);
+
         rb.AddForce(Camera.main.transform.forward * dashForce, ForceMode.Impulse);
 
         canDash = false;
@@ -67,7 +78,9 @@ public class DashController : MonoBehaviour
         yield return new WaitForSeconds(dashDuration);
 
         // Reset properties
-        bodyCollider.isTrigger = false;
+        Physics.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+        Physics.IgnoreLayerCollision(playerLayer, heartLayer, false);
+
         rb.velocity = Vector3.zero;
     }
 
