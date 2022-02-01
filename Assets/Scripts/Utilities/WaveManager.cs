@@ -48,7 +48,6 @@ public class WaveManager : MonoBehaviour
         sceneLoadManager = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
 
         gatesObject = GameObject.FindGameObjectsWithTag("Gate");
-
         gates = new Gate[8];
         for (int i = 0; i < 8; ++i)
             gates[i] = gatesObject[i].GetComponent<Gate>();
@@ -81,27 +80,21 @@ public class WaveManager : MonoBehaviour
         while(waveTimer > 0f)
         {
             waveTimer -= Time.deltaTime;
-            waveText.text = "Next wave: " + Mathf.Round(waveTimer % 60) + "s";
+            waveText.text = Mathf.Round(waveTimer % 60) + "s";
             yield return null;
         }
 
         waveText.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(timeTillFirstWaveStarts);
-
         for (int i = 0; i < 8; ++i)
-        {
             gates[i].OpenGate();
-        }
 
         SpawnEnemies();
 
         yield return new WaitForSeconds(gatesClosingTime);
 
         for (int i = 0; i < 8; ++i)
-        {
             gates[i].CloseGate();
-        }
     }
 
     private void SpawnEnemies()
@@ -151,26 +144,20 @@ public class WaveManager : MonoBehaviour
         while (waveTimer > 0f)
         {
             waveTimer -= Time.deltaTime;
-            waveText.text = "Next wave: " + Mathf.Round(waveTimer % 60) + "s";
+            waveText.text = Mathf.Round(waveTimer % 60) + "s";
             yield return null;
         }
 
-        // yield return new WaitForSeconds(waveBufferTime);
-
+        waveText.gameObject.SetActive(false);
+        
         for (int i = 0; i < 8; ++i)
-        {
             gates[i].OpenGate();
-        }
 
         SpawnEnemies();
-
-        waveText.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(gatesClosingTime);
 
         for (int i = 0; i < 8; ++i)
-        {
             gates[i].CloseGate();
-        }
     }
 }
