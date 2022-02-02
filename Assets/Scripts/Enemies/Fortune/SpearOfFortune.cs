@@ -6,7 +6,8 @@ public class SpearOfFortune : MonoBehaviour
 {
     private Transform player;
     private Health playerHP;
-    private Transform tip;
+    [SerializeField] private Transform tip;
+    [SerializeField] private Transform tail;
 
     private Renderer mat;
 
@@ -19,7 +20,6 @@ public class SpearOfFortune : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         playerHP = player.gameObject.GetComponent<Health>();
-        tip = transform.Find("Tip").GetComponent<Transform>();
         mat = GetComponent<Renderer>();
     }
 
@@ -47,7 +47,7 @@ public class SpearOfFortune : MonoBehaviour
         isCoroutineRunning = true;
 
         // Sometimes passes through due to high movement speed
-        while (Vector3.Distance(tip.position, target) > 0.1f)
+        while (Vector3.Distance(tip.position, target) > 0.1f && tail.position.y < 0f)
         {
             transform.position += transform.up * moveSpeed * Time.deltaTime;
             yield return null;

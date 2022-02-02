@@ -22337,6 +22337,7 @@ MonoBehaviour:
   groundCrack: {fileID: 7025530989633287938, guid: 569280f1fb3bbb5419fcfa52baa1e546, type: 3}
   targetCrackScale: {x: 0.5, y: 0.5, z: 0.5}
   scaleDuration: 1.5
+  body: {fileID: 1960301475}
 --- !u!1 &619053720
 GameObject:
   m_ObjectHideFlags: 0
@@ -45431,24 +45432,34 @@ MonoBehaviour:
   waveBufferTime: 3
   waveEnemiesController:
   - waveNumber: 0
-    numOfSlimes: 2
+    numOfSlimes: 1
     numOfBigSlimes: 0
     numOfTwirlers: 0
     numOfFortunes: 0
   - waveNumber: 1
-    numOfSlimes: 2
-    numOfBigSlimes: 1
+    numOfSlimes: 1
+    numOfBigSlimes: 0
     numOfTwirlers: 0
     numOfFortunes: 0
   - waveNumber: 2
-    numOfSlimes: 0
+    numOfSlimes: 1
     numOfBigSlimes: 0
-    numOfTwirlers: 1
+    numOfTwirlers: 0
     numOfFortunes: 0
   - waveNumber: 3
-    numOfSlimes: 3
-    numOfBigSlimes: 1
-    numOfTwirlers: 1
+    numOfSlimes: 1
+    numOfBigSlimes: 0
+    numOfTwirlers: 0
+    numOfFortunes: 0
+  - waveNumber: 4
+    numOfSlimes: 1
+    numOfBigSlimes: 0
+    numOfTwirlers: 0
+    numOfFortunes: 0
+  - waveNumber: 5
+    numOfSlimes: 1
+    numOfBigSlimes: 0
+    numOfTwirlers: 0
     numOfFortunes: 0
   waveText: {fileID: 1048083320}
 --- !u!4 &1381783951
@@ -46450,31 +46461,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.92387956
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5
+      value: -0.38268343
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0069a35e7edabc24ab4a6125f66ade4c, type: 3}
       propertyPath: m_CastShadows

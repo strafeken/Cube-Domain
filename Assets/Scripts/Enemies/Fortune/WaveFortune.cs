@@ -42,6 +42,8 @@ public class WaveFortune : MonoBehaviour
     private Vector3 originalCrackScale = new Vector3(0.1f, 0.5f, 0.1f);
     [SerializeField] private float scaleDuration = 1.5f;
 
+    [Header("Wave")]
+    [SerializeField] private Transform body;
     private bool isWaveOngoing = false;
 
     void Awake()
@@ -66,21 +68,28 @@ public class WaveFortune : MonoBehaviour
         switch (waveCount)
         {
             case 0:
-                StartCoroutine("Cage");
-                //StartCoroutine("Impale");
+                body.rotation = Quaternion.Euler(0, 0, -90);
+                //body.Rotate(0, 0, -90);
+                StartCoroutine("Impale");
+                //StartCoroutine("Cage");
                 //StartCoroutine("Missile");
                 break;
             case 1:
+                body.rotation = Quaternion.Euler(-90, 0, 0);
                 //StartCoroutine("Missile");
                 break;
             case 2:
+                body.rotation = Quaternion.Euler(0, 0, 180);
                 break;
             case 3:
+                body.rotation = Quaternion.Euler(0, 0, 0);
                 break;
             case 4:
+                body.rotation = Quaternion.Euler(90, 0, 0);
                 StartCoroutine("Missile");
                 break;
             case 5:
+                body.rotation = Quaternion.Euler(0, 0, 90);
                 StartCoroutine("Cage");
                 break;
         }
