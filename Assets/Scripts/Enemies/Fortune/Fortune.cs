@@ -25,6 +25,7 @@ public class Fortune : Enemy
     [SerializeField] private GameObject spear;
     [SerializeField] private float spearSpeed = 10f;
     [SerializeField] private float spearTravelTime = 1.5f;
+    [SerializeField] private float emergeDistanceFromPlayer = 10f;
 
     [Header("Laser")]
     [SerializeField] private GameObject laser;
@@ -107,10 +108,15 @@ public class Fortune : Enemy
 
     private IEnumerator Impale()
     {
-        Vector3 spawnPoint = player.position + player.forward * 10;
-        GameObject spearObject = Instantiate(spear, new Vector3(spawnPoint.x, -2.5f, spawnPoint.z), Quaternion.identity);
-        spearObject.transform.up = (player.position - spearObject.transform.position).normalized;
-        spearObject.GetComponent<SpearOfFortune>().Shoot(player.position + (Vector3.up * 0.5f), spearSpeed, spearTravelTime);
+        GameObject spawnedSpear = Instantiate(spear);
+
+        Transform spearTransform = spawnedSpear.transform;
+        
+        Vector3 spawnPoint = player.position + player.forward * emergeDistanceFromPlayer;
+        spearTransform.position = new Vector3(spawnPoint.x, -2.5f, spawnPoint.z);
+        spearTransform.up = (player.position - spearTransform.position).normalized;
+
+        spawnedSpear.GetComponent<SpearOfFortune>().Shoot(player.position + (Vector3.up * 0.5f), spearSpeed, spearTravelTime);
 
         yield return new WaitForSeconds(1f);
 

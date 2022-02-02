@@ -6,11 +6,14 @@ public class SpearOfFortune : MonoBehaviour
 {
     private Transform player;
     private Health playerHP;
+    private Transform tip;
+    [SerializeField] private GameObject groundCrack;
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         playerHP = player.gameObject.GetComponent<Health>();
+        tip = transform.Find("Tip").GetComponent<Transform>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -28,6 +31,8 @@ public class SpearOfFortune : MonoBehaviour
 
     private IEnumerator MoveToTarget(Vector3 target, float moveSpeed, float travelTime)
     {
+        Instantiate(groundCrack, new Vector3(tip.position.x, 0.01f, tip.position.z), Quaternion.identity);
+        Debug.Break();
         float timer = 0f;
 
         while (timer < travelTime)
