@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GroundCrackWall
-  m_Shader: {fileID: -6465566751694194690, guid: b366596aa3e6e1241b663254e6ba9ca2, type: 3}
+  m_Name: SpearDissolve
+  m_Shader: {fileID: -6465566751694194690, guid: c9afd8a9662d5ce4abbbb16689745578, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -32,7 +32,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_264be8f7e2834112b9ecd5c10ee63e31: 1
+    - Alpha_Ref: 0.5
+    - Edge_Width_Ref: 1
+    - Noise_Scale_Ref: 20
     m_Colors:
-    - Color_b2f2882a6653401fb497eccb9f88e4ef: {r: 144.09929, g: 0, b: 0, a: 0}
+    - Edge_Color_Ref: {r: 64, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

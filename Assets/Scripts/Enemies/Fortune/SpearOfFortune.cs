@@ -7,13 +7,20 @@ public class SpearOfFortune : MonoBehaviour
     private Transform player;
     private Health playerHP;
     private Transform tip;
-    [SerializeField] private GameObject groundCrack;
+
+    private Renderer mat;
+
+    [SerializeField] private float timeTillDissolve = 0.5f;
+
+    private bool isCoroutineRunning = false;
+    private IEnumerator coroutine;
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         playerHP = player.gameObject.GetComponent<Health>();
         tip = transform.Find("Tip").GetComponent<Transform>();
+        mat = GetComponent<Renderer>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -21,25 +28,54 @@ public class SpearOfFortune : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerHP.DealDamage();
+            if(isCoroutineRunning)
+            {
+                StopCoroutine(coroutine);
+                StartCoroutine("Dissolve");
+            }
         }
     }
 
     public void Shoot(Vector3 target, float moveSpeed, float travelTime)
     {
-        StartCoroutine(MoveToTarget(target, moveSpeed, travelTime));
+        coroutine = MoveToTarget(target, moveSpeed, travelTime);
+        StartCoroutine(coroutine);
     }
 
     private IEnumerator MoveToTarget(Vector3 target, float moveSpeed, float travelTime)
     {
-        Instantiate(groundCrack, new Vector3(tip.position.x, 0.01f, tip.position.z), Quaternion.identity);
-        Debug.Break();
-        float timer = 0f;
+        isCoroutineRunning = true;
 
-        while (timer < travelTime)
+        // Sometimes passes through due to high movement speed
+        while (Vector3.Distance(tip.position, target) > 0.1f)
         {
             transform.position += transform.up * moveSpeed * Time.deltaTime;
-            timer += Time.deltaTime;
             yield return null;
         }
+
+        float alpha = 0f;
+        while(alpha < 1f)
+        {
+            alpha += Time.deltaTime / timeTillDissolve;
+            mat.material.SetFloat("Alpha_Ref", alpha);
+            yield return null;
+        }
+
+        isCoroutineRunning = false;
+        
+        Destroy(gameObject);
+    }
+
+    private IEnumerator Dissolve()
+    {
+        float alpha = 0f;
+        while (alpha < 1f)
+        {
+            alpha += Time.deltaTime / timeTillDissolve;
+            mat.material.SetFloat("Alpha_Ref", alpha);
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using System;
 
 /// <summary>
 /// Must run before SceneLoadManager so that it can subscribe before it invokes the event
@@ -21,13 +22,11 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject slime;
     [SerializeField] private GameObject bigSlime;
     [SerializeField] private GameObject twirler;
-    [SerializeField] private GameObject fortune;
 
     [Header("Enemy Y positions")]
     [SerializeField] private Transform slimeY;
     [SerializeField] private Transform bigSlimeY;
     [SerializeField] private Transform twirlerY;
-    [SerializeField] private Transform fortuneY;
 
     [Header("Wave Settings")]
     [SerializeField] private float timeTillFirstWaveStarts = 5f;
@@ -41,7 +40,8 @@ public class WaveManager : MonoBehaviour
 
     private int currentWave = 0;
 
-    [SerializeField] private GameObject spawnedFortune;
+    public Action<int> OnWaveStart;
+    public Action OnWaveEnd;
 
     void Awake()
     {
@@ -106,7 +106,7 @@ public class WaveManager : MonoBehaviour
             // Spawn Slime at a new cage
             do
             {
-                cageIndex = Random.Range(0, 7);
+                cageIndex = UnityEngine.Random.Range(0, 7);
             } while (previousSpawnIndex.Contains(cageIndex));
 
             Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
@@ -119,19 +119,14 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
             Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
-        if(currentWave == 3)
-        {
-            spawnedFortune.SetActive(true);
-        }
-
-        //for (int i = 0; i < waveEnemiesController[currentWave].numOfFortunes; ++i)
-        //    Instantiate(fortune, new Vector3(enemyCages[i].position.x, fortuneY.position.y, enemyCages[i].position.z), Quaternion.identity);
-
         EnemyManager.Instance.AddEnemies();
+
+        OnWaveStart?.Invoke(currentWave);
     }
 
     private void StartNewWave()
     {
+        OnWaveEnd?.Invoke();
         ++currentWave;
         StartCoroutine(NewWave());
     }
