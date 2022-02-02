@@ -8,6 +8,7 @@ public class Fortune : Enemy
     public enum State
     {
         CHASE,
+        IMPALE,
         LASER,
         MISSILE,
         CAGE
@@ -15,13 +16,15 @@ public class Fortune : Enemy
 
     private GameObject hearts;
 
-    [Header("Pillars")]
-    private Transform[] pillars = new Transform[6];
-    [SerializeField] private float impaleSpeed = 10f;
 
     private State currentState;
 
     public Transform body;
+
+    [Header("Spear")]
+    [SerializeField] private GameObject spear;
+    [SerializeField] private float spearSpeed = 10f;
+    [SerializeField] private float spearTravelTime = 1.5f;
 
     [Header("Laser")]
     [SerializeField] private GameObject laser;
@@ -62,7 +65,7 @@ public class Fortune : Enemy
 
     protected override void Update()
     {
-        hearts.transform.position = transform.position + Vector3.up * 2;
+        hearts.transform.position = transform.position + Vector3.up * 1.5f;
         //hearts.transform.LookAt(new Vector3(player.position.x, hearts.transform.position.y, player.position.z));
 
         switch (currentState)
@@ -82,7 +85,10 @@ public class Fortune : Enemy
         {
             case State.CHASE:
                 GetComponent<FortuneBodyMovement>().enabled = true;
-                //ResetPillars();
+                break;
+            case State.IMPALE:
+                GetComponent<FortuneBodyMovement>().enabled = false;
+                StartCoroutine("Impale");
                 break;
             case State.LASER:
                 GetComponent<FortuneBodyMovement>().enabled = false;
@@ -101,14 +107,14 @@ public class Fortune : Enemy
 
     private IEnumerator Impale()
     {
-        float distance = float.MaxValue;
-        while (distance > 2f)
-        {
-            //pillar.transform.position = Vector3.MoveTowards(pillar.transform.position, player.position, impaleSpeed * Time.deltaTime);
-            //distance = Vector3.Distance(player.position, pillar.transform.position);
-            yield return null;
-        }
-        //pillar.transform.localPosition = initialPillarPosition;
+        Vector3 spawnPoint = player.position + player.forward * 10;
+        GameObject spearObject = Instantiate(spear, new Vector3(spawnPoint.x, -2.5f, spawnPoint.z), Quaternion.identity);
+        spearObject.transform.up = (player.position - spearObject.transform.position).normalized;
+        spearObject.GetComponent<SpearOfFortune>().Shoot(player.position + (Vector3.up * 0.5f), spearSpeed, spearTravelTime);
+
+        yield return new WaitForSeconds(1f);
+
+        SetState(State.CHASE);
     }
 
     private IEnumerator Laser()
@@ -166,14 +172,5 @@ public class Fortune : Enemy
         yield return new WaitForSeconds(10f);
 
         SetState(State.CHASE);
-    }
-
-    private void ResetPillars()
-    {
-        for (int i = 0; i < 6; ++i)
-        {
-            pillars[i].rotation = Quaternion.identity;
-            pillars[i].position = new Vector3(transform.position.x, -5, transform.position.z);
-        }
     }
 }

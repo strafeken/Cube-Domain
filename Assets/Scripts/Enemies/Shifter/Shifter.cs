@@ -34,7 +34,6 @@ public class Shifter : Enemy
 
     [SerializeField] private float timeToEmerge = 3f;
 
-    [SerializeField] private float emergeForce = 10f;
     [SerializeField] private float emergeRange = 5f;
     [SerializeField] private float emergingSpeed = 10f;
     [SerializeField] private float minEmergeHeight = 1.5f;

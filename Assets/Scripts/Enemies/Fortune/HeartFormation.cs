@@ -75,12 +75,12 @@ public class HeartFormation : MonoBehaviour
         if (h1.activeInHierarchy)
         {
             activeHeart = h1;
-            //StartCoroutine("Impale");
+            fortune.SetState(Fortune.State.IMPALE);
+            OnUsedSkillEvent();
         }
         else if (h2.activeInHierarchy)
         {
             activeHeart = h2;
-
         }
         else if (h3.activeInHierarchy)
         {
