@@ -12,6 +12,11 @@ public class MissileOfFortune : MonoBehaviour
 
     private bool isShot = false;
 
+    [SerializeField] private Transform tip;
+    [SerializeField] private Transform tail;
+
+    [SerializeField] private GameObject groundCrack;
+
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -31,10 +36,10 @@ public class MissileOfFortune : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector3 target, float moveSpeed)
+    public void Shoot(float moveSpeed)
     {
         isShot = true;
-        StartCoroutine(MoveToTarget(target, moveSpeed));
+        StartCoroutine(MoveToTarget(moveSpeed));
     }
 
     private IEnumerator FacePlayer()
@@ -46,14 +51,25 @@ public class MissileOfFortune : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveToTarget(Vector3 target, float moveSpeed)
+    private IEnumerator MoveToTarget(float moveSpeed)
     {
-        Vector3 moveDirection = (target - transform.position).normalized;
-        while (Vector3.Distance(transform.position, target) > 0.1f)
+        bool isGroundHit = false;
+        while (tail.transform.position.y > 0.01f)
         {
-            //transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-            transform.position += moveDirection * moveSpeed * Time.deltaTime;
+            transform.position += transform.up * moveSpeed * Time.deltaTime;
+
+            if(tip.transform.position.y < 0.01f)
+            {
+                if(!isGroundHit)
+                {
+                    Instantiate(groundCrack, new Vector3(tip.position.x, 0.01f, tip.position.z), Quaternion.identity);
+                    isGroundHit = true;
+                }
+            }
+
             yield return null;
         }
+
+        Destroy(gameObject);
     }
 }

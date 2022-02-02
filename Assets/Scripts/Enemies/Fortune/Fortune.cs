@@ -155,7 +155,7 @@ public class Fortune : Enemy
 
         for (int i = 0; i < 5; ++i)
         {
-            missiles[i].GetComponent<MissileOfFortune>().Shoot(player.position + (Vector3.down * 0.5f), missileSpeed);
+            missiles[i].GetComponent<MissileOfFortune>().Shoot(missileSpeed);
             yield return new WaitForSeconds(shootingCooldown);
         }
 

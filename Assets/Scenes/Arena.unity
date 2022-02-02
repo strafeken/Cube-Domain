@@ -22325,13 +22325,15 @@ MonoBehaviour:
   rotationSpeed: 5
   missile: {fileID: 2711112945830060633, guid: e7d74137988880c40bdc58515a0ec575, type: 3}
   missilePosition: {fileID: 0}
-  missileSpeed: 5
+  missileRadius: 10
+  missileSpeed: 40
   timeUntilShootingStarts: 2
   shootingCooldown: 1
+  timeBetweenMissileShots: 7
   cage: {fileID: 4041182223631767543, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
   cageRadius: 2
-  risingSpeed: 1
-  cageEndPosition: {fileID: 0}
+  risingSpeed: 2
+  cageEndPosition: {fileID: 117995888}
   groundCrack: {fileID: 7025530989633287938, guid: 569280f1fb3bbb5419fcfa52baa1e546, type: 3}
   targetCrackScale: {x: 0.5, y: 0.5, z: 0.5}
   scaleDuration: 1.5

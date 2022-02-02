@@ -24,9 +24,11 @@ public class WaveFortune : MonoBehaviour
     [Header("Missile")]
     [SerializeField] private GameObject missile;
     [SerializeField] private Transform missilePosition;
+    [SerializeField] private float missileRadius = 10f;
     [SerializeField] private float missileSpeed = 5f;
     [SerializeField] private float timeUntilShootingStarts = 2f;
     [SerializeField] private float shootingCooldown = 1f;
+    [SerializeField] private float timeBetweenMissileShots = 7f;
 
     [Header("Cage")]
     [SerializeField] private GameObject cage;
@@ -64,10 +66,22 @@ public class WaveFortune : MonoBehaviour
         switch (waveCount)
         {
             case 0:
-                StartCoroutine("Impale");
+                StartCoroutine("Cage");
+                //StartCoroutine("Impale");
+                //StartCoroutine("Missile");
                 break;
             case 1:
-                Debug.Log(waveCount);
+                //StartCoroutine("Missile");
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                StartCoroutine("Missile");
+                break;
+            case 5:
+                StartCoroutine("Cage");
                 break;
         }
     }
@@ -118,5 +132,44 @@ public class WaveFortune : MonoBehaviour
 
             yield return new WaitForSeconds(timeBetweenSpears);
         }
+    }
+
+    private IEnumerator Missile()
+    {
+        while (isWaveOngoing)
+        {
+            List<GameObject> missiles = new List<GameObject>();
+
+            for (int i = 0; i < 5; ++i)
+            {
+                float angle = i * Mathf.PI * 2f / 5;
+                Vector3 pos = new Vector3(transform.position.x + Mathf.Cos(angle) * missileRadius, transform.position.y, transform.position.x + Mathf.Sin(angle) * missileRadius);
+                missiles.Add(Instantiate(missile, pos, Quaternion.identity));
+            }
+
+            yield return new WaitForSeconds(timeUntilShootingStarts);
+
+            for (int i = 0; i < 5; ++i)
+            {
+                missiles[i].GetComponent<MissileOfFortune>().Shoot(missileSpeed);
+                yield return new WaitForSeconds(shootingCooldown);
+            }
+
+            yield return new WaitForSeconds(timeBetweenMissileShots);
+        }
+    }
+
+    private IEnumerator Cage()
+    {
+        GameObject go = Instantiate(cage, new Vector3(player.position.x, -2.5f, player.position.z), Quaternion.identity);
+        Transform cageTransform = go.GetComponent<Transform>();
+
+        while (cageTransform.position.y < cageEndPosition.position.y)
+        {
+            cageTransform.position += Vector3.up * risingSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(10f);
     }
 }
