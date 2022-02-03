@@ -12,7 +12,7 @@ public class WaveEnemiesController
     [Range(0, 8)]
     public int numOfBigSlimes;
     [Range(0, 8)]
-    public int numOfTwirlers;
+    public int numOfShifters;
     [Range(0, 8)]
-    public int numOfFortunes;
+    public int numOfTwirlers;
 }

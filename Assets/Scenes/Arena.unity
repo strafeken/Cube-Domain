@@ -17503,7 +17503,7 @@ Transform:
   - {fileID: 620853047}
   - {fileID: 1960301475}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &601288447
 MonoBehaviour:
@@ -17530,6 +17530,12 @@ MonoBehaviour:
   sEmergeDistanceFromPlayer: 10
   spearEmergeDelay: 1
   timeBetweenSpears: 8
+  bonfireSpeed: 15
+  bEmergeDistanceFromPlayer: 5
+  bonfireEmergeDelay: 0.5
+  timeBetweenBonfires: 4
+  bCrackTargetScale: {x: 0.5, y: 0.5, z: 0.5}
+  bScaleDuration: 1.5
   lasers:
   - {fileID: 1995761527}
   - {fileID: 2095299912}
@@ -17718,7 +17724,6 @@ MonoBehaviour:
   body: {fileID: 1960301475}
   spear: {fileID: 2130471446923327583, guid: 18196a0804cd219429708f1bd3ab7d7c, type: 3}
   spearSpeed: 5
-  spearTravelTime: 1.5
   emergeDistanceFromPlayer: 10
   laser: {fileID: 1573554365}
   laserDuration: 8
@@ -18062,7 +18067,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &752755075
 GameObject:
@@ -40670,6 +40675,7 @@ MonoBehaviour:
   - {fileID: 104492395}
   slime: {fileID: 7312891628243121657, guid: d3977a841879dbe44a6fb6523d2bd511, type: 3}
   bigSlime: {fileID: 2930978943730317327, guid: 5acfe5d64a316464aab547c90af92b84, type: 3}
+  shifter: {fileID: 1970884332191926026, guid: 7a12bec70caa9ce488b290674644766a, type: 3}
   twirler: {fileID: 4173605010018148707, guid: f88813c2d17bc9a41a578a6b5e16ad1b, type: 3}
   slimeY: {fileID: 1828105027}
   bigSlimeY: {fileID: 698985954}
@@ -40679,35 +40685,35 @@ MonoBehaviour:
   waveBufferTime: 3
   waveEnemiesController:
   - waveNumber: 0
-    numOfSlimes: 1
+    numOfSlimes: 2
     numOfBigSlimes: 0
+    numOfShifters: 0
     numOfTwirlers: 0
-    numOfFortunes: 0
   - waveNumber: 1
-    numOfSlimes: 1
-    numOfBigSlimes: 0
+    numOfSlimes: 3
+    numOfBigSlimes: 1
+    numOfShifters: 0
     numOfTwirlers: 0
-    numOfFortunes: 0
   - waveNumber: 2
-    numOfSlimes: 1
+    numOfSlimes: 0
     numOfBigSlimes: 0
+    numOfShifters: 2
     numOfTwirlers: 0
-    numOfFortunes: 0
   - waveNumber: 3
     numOfSlimes: 1
-    numOfBigSlimes: 0
+    numOfBigSlimes: 1
+    numOfShifters: 1
     numOfTwirlers: 0
-    numOfFortunes: 0
   - waveNumber: 4
-    numOfSlimes: 1
+    numOfSlimes: 0
     numOfBigSlimes: 0
-    numOfTwirlers: 0
-    numOfFortunes: 0
+    numOfShifters: 0
+    numOfTwirlers: 1
   - waveNumber: 5
-    numOfSlimes: 1
-    numOfBigSlimes: 0
-    numOfTwirlers: 0
-    numOfFortunes: 0
+    numOfSlimes: 2
+    numOfBigSlimes: 1
+    numOfShifters: 2
+    numOfTwirlers: 1
   waveText: {fileID: 1048083320}
 --- !u!4 &1381783951
 Transform:
@@ -40721,7 +40727,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1385123006
 GameObject:

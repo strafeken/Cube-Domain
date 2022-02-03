@@ -21,6 +21,7 @@ public class WaveManager : MonoBehaviour
     [Header("Enemy prefabs")]
     [SerializeField] private GameObject slime;
     [SerializeField] private GameObject bigSlime;
+    [SerializeField] private GameObject shifter;
     [SerializeField] private GameObject twirler;
 
     [Header("Enemy Y positions")]
