@@ -10,6 +10,8 @@ using System;
 /// </summary>
 public class WaveManager : MonoBehaviour
 {
+    public static WaveManager Instance { get; private set; }
+
     private SceneLoadManager sceneLoadManager;
 
     [SerializeField] private Transform[] enemyCages;
@@ -44,8 +46,17 @@ public class WaveManager : MonoBehaviour
     public Action<int> OnWaveStart;
     public Action OnWaveEnd;
 
+    [Header("Player Settings")]
+    private Transform player;
+    [SerializeField] private Transform playerStartPosition;
+    [SerializeField] private float pullSpeed = 5f;
+
+    public bool lockPlayer = true;
+
     void Awake()
     {
+        Instance = this;
+
         sceneLoadManager = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
 
         gatesObject = GameObject.FindGameObjectsWithTag("Gate");
@@ -56,6 +67,9 @@ public class WaveManager : MonoBehaviour
         spawnDirection = new Transform[8];
         for(int i = 0; i < 8; ++i)
             spawnDirection[i] = enemyCages[i].Find("SpawnDirection").GetComponent<Transform>();
+
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        player = p.GetComponent<Transform>();
     }
 
     void Start()
@@ -78,7 +92,17 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SceneCountdown()
     {
-        while(waveTimer > 0f)
+        lockPlayer = true;
+
+        while (Vector3.Distance(player.position, playerStartPosition.position) > 0.2f)
+        {
+            player.position = Vector3.MoveTowards(player.position, playerStartPosition.position, pullSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        player.position = playerStartPosition.position;
+
+        while (waveTimer > 0f)
         {
             waveTimer -= Time.deltaTime;
             waveText.text = Mathf.Round(waveTimer % 60) + "s";
@@ -96,6 +120,8 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < 8; ++i)
             gates[i].CloseGate();
+
+        lockPlayer = false;
     }
 
     private void SpawnEnemies()
@@ -118,6 +144,9 @@ public class WaveManager : MonoBehaviour
             Instantiate(bigSlime, new Vector3(enemyCages[i].position.x, bigSlimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
+            Instantiate(shifter, new Vector3(enemyCages[i].position.x, slimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
+
+        for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
             Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
         EnemyManager.Instance.AddEnemies();
@@ -134,6 +163,16 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator NewWave()
     {
+        lockPlayer = true;
+
+        while (Vector3.Distance(player.position, playerStartPosition.position) > 0.2f)
+        {
+            player.position = Vector3.MoveTowards(player.position, playerStartPosition.position, pullSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        player.position = playerStartPosition.position;
+
         waveTimer = waveBufferTime;
         waveText.gameObject.SetActive(true);
 
@@ -155,5 +194,7 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < 8; ++i)
             gates[i].CloseGate();
+    
+        lockPlayer = false;
     }
 }

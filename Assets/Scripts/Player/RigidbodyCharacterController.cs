@@ -75,6 +75,9 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     public void JumpOnGround(InputAction.CallbackContext context)
     {
+        if (WaveManager.Instance.lockPlayer)
+            return;
+
         jump = true;
     }
 }

@@ -65,6 +65,9 @@ public class SwordController : MonoBehaviour
 
     public void OnLMBClicked()
     {
+        if (WaveManager.Instance.lockPlayer)
+            return;
+
         if (isAnimationPlaying)
             return;
 

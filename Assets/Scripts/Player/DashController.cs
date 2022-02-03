@@ -55,8 +55,11 @@ public class DashController : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
+        if (WaveManager.Instance.lockPlayer)
+            return;
+
         if (canDash)
-            sword.Dash();
+                sword.Dash();
     }
 
     public void StartDash()

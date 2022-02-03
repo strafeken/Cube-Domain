@@ -118,6 +118,8 @@ public class WaveFortune : MonoBehaviour
 
     private IEnumerator Geyser()
     {
+        yield return new WaitForSeconds(timeBetweenGeysers);
+
         while (isWaveOngoing)
         {
             if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
@@ -160,6 +162,8 @@ public class WaveFortune : MonoBehaviour
 
     private IEnumerator Impale()
     {
+        yield return new WaitForSeconds(timeBetweenSpears);
+
         while (isWaveOngoing)
         {
             if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
@@ -203,6 +207,8 @@ public class WaveFortune : MonoBehaviour
 
     private IEnumerator Bonfire()
     {
+        yield return new WaitForSeconds(timeBetweenBonfires);
+
         while (isWaveOngoing)
         {
             if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
@@ -274,6 +280,8 @@ public class WaveFortune : MonoBehaviour
 
     private IEnumerator Missile()
     {
+        yield return new WaitForSeconds(timeBetweenMissileShots);
+
         while (isWaveOngoing)
         {
             List<GameObject> missiles = new List<GameObject>();

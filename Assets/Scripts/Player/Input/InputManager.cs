@@ -47,7 +47,9 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        rigidbodyController.ReceiveInput(walkInput);
+        if(!WaveManager.Instance.lockPlayer)
+            rigidbodyController.ReceiveInput(walkInput);
+
         mouseLook.ReceiveInput(mouseInput);
         //sword.ReceiveInput(mouseScrollY);
     }

@@ -13,6 +13,6 @@ public class WaveEnemiesController
     public int numOfBigSlimes;
     [Range(0, 8)]
     public int numOfShifters;
-    [Range(0, 8)]
+    [Range(0, 1)]
     public int numOfTwirlers;
 }
