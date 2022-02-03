@@ -53,6 +53,8 @@ public class WaveManager : MonoBehaviour
 
     public bool lockPlayer = true;
 
+    [SerializeField] private GameObject[] lockIcon = new GameObject[2];
+
     void Awake()
     {
         Instance = this;
@@ -93,6 +95,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator SceneCountdown()
     {
         lockPlayer = true;
+        ToggleLockIcons();
 
         while (Vector3.Distance(player.position, playerStartPosition.position) > 0.2f)
         {
@@ -122,6 +125,7 @@ public class WaveManager : MonoBehaviour
             gates[i].CloseGate();
 
         lockPlayer = false;
+        ToggleLockIcons();
     }
 
     private void SpawnEnemies()
@@ -164,6 +168,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator NewWave()
     {
         lockPlayer = true;
+        ToggleLockIcons();
 
         while (Vector3.Distance(player.position, playerStartPosition.position) > 0.2f)
         {
@@ -196,5 +201,14 @@ public class WaveManager : MonoBehaviour
             gates[i].CloseGate();
     
         lockPlayer = false;
+        ToggleLockIcons();
+    }
+
+    private void ToggleLockIcons()
+    {
+        for(int i = 0; i < 2; ++i)
+        {
+            lockIcon[i].SetActive(!lockIcon[i].activeSelf);
+        }
     }
 }
