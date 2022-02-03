@@ -16,14 +16,11 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private float timeBetweenSpears = 4f;
 
     [Header("Laser")]
-    [SerializeField] private GameObject laser;
-    [SerializeField] private float laserDuration = 5f;
+    [SerializeField] private GameObject[] lasers = new GameObject[4];
     [SerializeField] private float rotationSpeed = 5f;
-    private float laserTimer = 0f;
 
     [Header("Missile")]
     [SerializeField] private GameObject missile;
-    [SerializeField] private Transform missilePosition;
     [SerializeField] private float missileRadius = 10f;
     [SerializeField] private float missileSpeed = 5f;
     [SerializeField] private float timeUntilShootingStarts = 2f;
@@ -32,7 +29,6 @@ public class WaveFortune : MonoBehaviour
 
     [Header("Cage")]
     [SerializeField] private GameObject cage;
-    [SerializeField] private float cageRadius = 2f;
     [SerializeField] private float risingSpeed = 1f;
     [SerializeField] private Transform cageEndPosition;
 
@@ -45,6 +41,7 @@ public class WaveFortune : MonoBehaviour
     [Header("Wave")]
     [SerializeField] private Transform body;
     private bool isWaveOngoing = false;
+    private IEnumerator coroutine;
 
     void Awake()
     {
@@ -54,11 +51,13 @@ public class WaveFortune : MonoBehaviour
     void OnEnable()
     {
         waveManager.OnWaveStart += OnWaveStart;
+        waveManager.OnWaveEnd += OnWaveEnd;
     }
 
     void OnDisable()
     {
         waveManager.OnWaveStart -= OnWaveStart;
+        waveManager.OnWaveEnd -= OnWaveEnd;
     }
 
     private void OnWaveStart(int waveCount)
@@ -69,30 +68,30 @@ public class WaveFortune : MonoBehaviour
         {
             case 0:
                 body.rotation = Quaternion.Euler(0, 0, -90);
-                //body.Rotate(0, 0, -90);
-                StartCoroutine("Impale");
-                //StartCoroutine("Cage");
-                //StartCoroutine("Missile");
+                coroutine = Impale();
                 break;
             case 1:
                 body.rotation = Quaternion.Euler(-90, 0, 0);
-                //StartCoroutine("Missile");
+                coroutine = Impale();
                 break;
             case 2:
                 body.rotation = Quaternion.Euler(0, 0, 180);
                 break;
             case 3:
                 body.rotation = Quaternion.Euler(0, 0, 0);
+                coroutine = Laser();
                 break;
             case 4:
                 body.rotation = Quaternion.Euler(90, 0, 0);
-                StartCoroutine("Missile");
+                coroutine = Missile();
                 break;
             case 5:
                 body.rotation = Quaternion.Euler(0, 0, 90);
-                StartCoroutine("Cage");
+                coroutine = Cage();
                 break;
         }
+
+        StartCoroutine(coroutine);
     }
 
     private void OnWaveEnd()
@@ -143,6 +142,26 @@ public class WaveFortune : MonoBehaviour
         }
     }
 
+    private IEnumerator Laser()
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            lasers[i].SetActive(true);
+            lasers[i].GetComponent<LaserOfFortune>().Shoot();
+        }
+
+        while (isWaveOngoing)
+        {
+            for (int i = 0; i < 4; ++i)
+                lasers[i].transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        for (int i = 0; i < 4; ++i)
+            lasers[i].SetActive(false);
+    }
+
     private IEnumerator Missile()
     {
         while (isWaveOngoing)
@@ -178,7 +197,5 @@ public class WaveFortune : MonoBehaviour
             cageTransform.position += Vector3.up * risingSpeed * Time.deltaTime;
             yield return null;
         }
-
-        yield return new WaitForSeconds(10f);
     }
 }
