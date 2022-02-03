@@ -143,7 +143,7 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < waveEnemiesController[currentWave].numOfBigSlimes; ++i)
             Instantiate(bigSlime, new Vector3(enemyCages[i].position.x, bigSlimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
-        for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
+        for (int i = 0; i < waveEnemiesController[currentWave].numOfShifters; ++i)
             Instantiate(shifter, new Vector3(enemyCages[i].position.x, slimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)

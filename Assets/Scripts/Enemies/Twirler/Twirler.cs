@@ -7,6 +7,7 @@ public class Twirler : Enemy
 {
     public enum State
     {
+        SPAWNED,
         IDLE,
         CHASE,
         FIREBALL,
@@ -55,6 +56,11 @@ public class Twirler : Enemy
     public Action OnChangeToMultipleFireballState;
     public Action OnChangeToSpinState;
 
+    private Vector3 centerOfArena;
+
+    [SerializeField] private float spawnBufferDuration = 2f;
+    private float spawnedTimer = 0f;
+
     void Awake()
     {
         //northCube = transform.Find("NorthCube").GetComponent<FollowCurveRoute>();
@@ -81,13 +87,28 @@ public class Twirler : Enemy
         eastCube.OnEndPointReached += OnProjectileReachEnd;
         westCube.OnEndPointReached += OnProjectileReachEnd;
 
-        SetState(State.IDLE);
+        centerOfArena = GameObject.FindGameObjectWithTag("CenterOfArena").GetComponent<Transform>().position;
+        centerOfArena.y = transform.position.y;
+
+        SetState(State.SPAWNED);
     }
 
     protected override void Update()
     {
         switch (currentState)
         {
+            case State.SPAWNED:
+                {
+                    // Move out of cage for (spawnBufferDuration)s
+                    transform.position = Vector3.MoveTowards(transform.position, centerOfArena, movementSpeed * Time.deltaTime);
+
+                    spawnedTimer += Time.deltaTime;
+                    if (spawnedTimer > spawnBufferDuration)
+                    {
+                        SetState(State.IDLE);
+                    }
+                }
+                break;
             case State.IDLE:
                 {
                     Quaternion lookRotation = GetLookRotation();
