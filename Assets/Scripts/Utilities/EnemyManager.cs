@@ -14,6 +14,8 @@ public class EnemyManager : MonoBehaviour
     public event Action OnEnemyDeath;
     public event Action OnAllEnemiesDead;
 
+    private bool endGame = false;
+
     void Start()
     {
         Instance = this;
@@ -28,6 +30,9 @@ public class EnemyManager : MonoBehaviour
 
     public void RemoveFromList(GameObject go)
     {
+        if (endGame)
+            return;
+
         enemies.Remove(go);
         --numOfEnemies;
 
@@ -35,5 +40,17 @@ public class EnemyManager : MonoBehaviour
 
         if(numOfEnemies < 1)
             OnAllEnemiesDead?.Invoke();
+    }
+
+    public void EndGame()
+    {
+        endGame = true;
+
+        for(int i = 0; i < enemies.Count; ++i)
+        {
+            Destroy(enemies[i]);
+        }
+
+        enemies.Clear();
     }
 }

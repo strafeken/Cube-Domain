@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameEndingManager : MonoBehaviour
 {
     private Health playerHealth;
+    private InputManager playerInputManager;
 
     [SerializeField] private Canvas inGameCanvas;
     [SerializeField] private float endingCanvasFadeDuration = 1f;
@@ -16,7 +17,9 @@ public class GameEndingManager : MonoBehaviour
 
     void Awake()
     {
-        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        playerHealth = player.GetComponent<Health>();
+        playerInputManager = player.GetComponent<InputManager>();
     }
 
     void OnEnable()
@@ -31,6 +34,8 @@ public class GameEndingManager : MonoBehaviour
 
     public void WinEnding()
     {
+        StopScene();
+
         inGameCanvas.gameObject.SetActive(false);
         winCanvas.gameObject.SetActive(true);
 
@@ -42,6 +47,8 @@ public class GameEndingManager : MonoBehaviour
 
     private void OnPlayerDeath()
     {
+        StopScene();
+
         inGameCanvas.gameObject.SetActive(false);
         endingCanvas.gameObject.SetActive(true);
 
@@ -69,5 +76,12 @@ public class GameEndingManager : MonoBehaviour
             endingCanvas.alpha = timer / endingCanvasFadeDuration;
             yield return null;
         }
+    }
+
+    private void StopScene()
+    {
+        playerInputManager.enabled = false;
+        EnemyManager.Instance.EndGame();
+        StopAllCoroutines();
     }
 }
