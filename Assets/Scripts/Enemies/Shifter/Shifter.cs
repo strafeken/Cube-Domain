@@ -367,7 +367,7 @@ public class Shifter : Enemy
         {
             transform.position += Vector3.up * emergingSpeed * Time.deltaTime;
 
-            if (Physics.CheckSphere(groundCheck.position, 0.001f, emergeMask))
+            if(groundCheck.position.y > 0f)
                 isFullyVisible = true;
 
             yield return null;

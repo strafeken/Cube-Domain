@@ -558,7 +558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51042575}
   m_LocalRotation: {x: -0.6532815, y: 0.27059805, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 27.3, y: 5, z: 27.3}
+  m_LocalPosition: {x: 28.3, y: 5, z: 27.3}
   m_LocalScale: {x: 3.5000005, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
@@ -31698,7 +31698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284668801}
   m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: 0.6532815, w: 0.27059805}
-  m_LocalPosition: {x: 27.3, y: 5, z: -27.3}
+  m_LocalPosition: {x: 28.3, y: 5, z: -27.3}
   m_LocalScale: {x: 3.5000005, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
@@ -36949,9 +36949,9 @@ MonoBehaviour:
   waveBufferTime: 3
   waveEnemiesController:
   - waveNumber: 0
-    numOfSlimes: 2
+    numOfSlimes: 0
     numOfBigSlimes: 0
-    numOfShifters: 0
+    numOfShifters: 2
     numOfTwirlers: 0
   - waveNumber: 1
     numOfSlimes: 3
@@ -37530,7 +37530,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526478652}
   m_LocalRotation: {x: 0.65328145, y: 0.2705982, z: 0.2705982, w: -0.65328145}
-  m_LocalPosition: {x: -27.3, y: 5, z: 27.3}
+  m_LocalPosition: {x: -28.3, y: 5, z: 27.3}
   m_LocalScale: {x: 3.5, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
@@ -40526,7 +40526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049121725}
   m_LocalRotation: {x: 0.27059793, y: 0.65328157, z: 0.65328157, w: -0.27059793}
-  m_LocalPosition: {x: -27.3, y: 5, z: -27.3}
+  m_LocalPosition: {x: -28.3, y: 5, z: -27.3}
   m_LocalScale: {x: 3.5000002, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 650828490}
