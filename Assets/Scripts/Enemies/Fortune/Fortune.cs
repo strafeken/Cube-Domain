@@ -24,7 +24,6 @@ public class Fortune : Enemy
     [Header("Spear")]
     [SerializeField] private GameObject spear;
     [SerializeField] private float spearSpeed = 10f;
-    [SerializeField] private float spearTravelTime = 1.5f;
     [SerializeField] private float emergeDistanceFromPlayer = 10f;
 
     [Header("Laser")]
@@ -116,7 +115,7 @@ public class Fortune : Enemy
         spearTransform.position = new Vector3(spawnPoint.x, -2.5f, spawnPoint.z);
         spearTransform.up = (player.position - spearTransform.position).normalized;
 
-        spawnedSpear.GetComponent<SpearOfFortune>().Shoot(player.position + (Vector3.up * 0.5f), spearSpeed, spearTravelTime);
+        spawnedSpear.GetComponent<SpearOfFortune>().Shoot(spearSpeed);
 
         yield return new WaitForSeconds(1f);
 

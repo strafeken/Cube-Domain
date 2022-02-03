@@ -7,11 +7,19 @@ public class WaveFortune : MonoBehaviour
     private Transform player;
     [SerializeField] private WaveManager waveManager;
 
+    [Header("Geyser")]
+    [SerializeField] private GameObject geyser;
+    [SerializeField] private float geyserSpeed = 15f;
+    [SerializeField] private float gEmergeDistanceFromPlayer = 5f;
+    [SerializeField] private float geyserEmergeDelay = 0.5f;
+    [SerializeField] private float timeBetweenGeysers = 4f;
+    [SerializeField] private Vector3 gCrackTargetScale = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private float gScaleDuration = 1.5f;
+
     [Header("Spear")]
     [SerializeField] private GameObject spear;
     [SerializeField] private float spearSpeed = 10f;
-    [SerializeField] private float spearTravelTime = 1.5f;
-    [SerializeField] private float emergeDistanceFromPlayer = 10f;
+    [SerializeField] private float sEmergeDistanceFromPlayer = 10f;
     [SerializeField] private float spearEmergeDelay = 0.5f;
     [SerializeField] private float timeBetweenSpears = 4f;
 
@@ -68,7 +76,7 @@ public class WaveFortune : MonoBehaviour
         {
             case 0:
                 body.rotation = Quaternion.Euler(0, 0, -90);
-                coroutine = Impale();
+                coroutine = Geyser();
                 break;
             case 1:
                 body.rotation = Quaternion.Euler(-90, 0, 0);
@@ -99,13 +107,56 @@ public class WaveFortune : MonoBehaviour
         isWaveOngoing = false;
     }
 
+    private IEnumerator Geyser()
+    {
+        // Impale that goes up
+        while (isWaveOngoing)
+        {
+            if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
+            {
+                Vector3 crackPoint = player.position + player.forward * gEmergeDistanceFromPlayer;
+                crackPoint.y = 0.01f;
+
+                // Instantiate a crack
+                GameObject spawnedCrack = Instantiate(groundCrack, crackPoint, Quaternion.identity);
+                Transform crackT = spawnedCrack.transform;
+                crackT.localScale = originalCrackScale;
+
+                // Increase its scale over time
+                float timeElapsed = 0f;
+                while (timeElapsed < gScaleDuration)
+                {
+                    crackT.localScale = Vector3.Lerp(originalCrackScale, gCrackTargetScale, timeElapsed / gScaleDuration);
+                    timeElapsed += Time.deltaTime;
+                    yield return null;
+                }
+
+                yield return new WaitForSeconds(geyserEmergeDelay);
+
+                GameObject spawnedGeyser = Instantiate(geyser, crackPoint, Quaternion.identity);
+
+                Transform geyserTransform = spawnedGeyser.transform;
+
+                Transform tip = geyserTransform.Find("Tip").GetComponent<Transform>();
+
+                // The value needed to move the tip to crack
+                Vector3 absoluteMovement = crackPoint - tip.position;
+                geyserTransform.position += absoluteMovement;
+
+                spawnedGeyser.GetComponent<GeyserOfFortune>().Shoot(geyserSpeed);
+            }
+
+            yield return new WaitForSeconds(timeBetweenGeysers);
+        }
+    }
+
     private IEnumerator Impale()
     {
         while (isWaveOngoing)
         {
             if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
             {
-                Vector3 crackPoint = player.position + player.forward * emergeDistanceFromPlayer;
+                Vector3 crackPoint = player.position + player.forward * sEmergeDistanceFromPlayer;
                 crackPoint.y = 0.01f;
 
                 // Instantiate a crack
@@ -135,7 +186,7 @@ public class WaveFortune : MonoBehaviour
                 Vector3 absoluteMovement = crackPoint - tip.position;
                 spearTransform.position += absoluteMovement;
 
-                spawnedSpear.GetComponent<SpearOfFortune>().Shoot(player.position + (Vector3.up * 0.5f), spearSpeed, spearTravelTime);
+                spawnedSpear.GetComponent<SpearOfFortune>().Shoot(spearSpeed);
             }
 
             yield return new WaitForSeconds(timeBetweenSpears);

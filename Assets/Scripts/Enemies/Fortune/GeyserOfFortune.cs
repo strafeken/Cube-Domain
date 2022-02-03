@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpearOfFortune : MonoBehaviour
+public class GeyserOfFortune : MonoBehaviour
 {
     private Transform player;
     private Health playerHP;
@@ -32,11 +32,11 @@ public class SpearOfFortune : MonoBehaviour
 
     public void Shoot(float moveSpeed)
     {
-        coroutine = MoveToTarget(moveSpeed);
+        coroutine = Rise(moveSpeed);
         StartCoroutine(coroutine);
     }
 
-    private IEnumerator MoveToTarget(float moveSpeed)
+    private IEnumerator Rise(float moveSpeed)
     {
         while (tail.position.y < 0f)
         {
@@ -45,13 +45,13 @@ public class SpearOfFortune : MonoBehaviour
         }
 
         float alpha = 0f;
-        while(alpha < 1f)
+        while (alpha < 1f)
         {
             alpha += Time.deltaTime / timeTillDissolve;
             mat.material.SetFloat("Alpha_Ref", alpha);
             yield return null;
         }
-        
+
         Destroy(gameObject);
     }
 }
