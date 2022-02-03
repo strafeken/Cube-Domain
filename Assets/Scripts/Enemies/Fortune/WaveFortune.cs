@@ -23,6 +23,14 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private float spearEmergeDelay = 0.5f;
     [SerializeField] private float timeBetweenSpears = 4f;
 
+    [Header("Bonfire")]
+    [SerializeField] private float bonfireSpeed = 15f;
+    [SerializeField] private float bEmergeDistanceFromPlayer = 5f;
+    [SerializeField] private float bonfireEmergeDelay = 0.5f;
+    [SerializeField] private float timeBetweenBonfires = 4f;
+    [SerializeField] private Vector3 bCrackTargetScale = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private float bScaleDuration = 1.5f;
+
     [Header("Laser")]
     [SerializeField] private GameObject[] lasers = new GameObject[4];
     [SerializeField] private float rotationSpeed = 5f;
@@ -84,6 +92,7 @@ public class WaveFortune : MonoBehaviour
                 break;
             case 2:
                 body.rotation = Quaternion.Euler(0, 0, 180);
+                coroutine = Bonfire();
                 break;
             case 3:
                 body.rotation = Quaternion.Euler(0, 0, 0);
@@ -109,7 +118,6 @@ public class WaveFortune : MonoBehaviour
 
     private IEnumerator Geyser()
     {
-        // Impale that goes up
         while (isWaveOngoing)
         {
             if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
@@ -190,6 +198,57 @@ public class WaveFortune : MonoBehaviour
             }
 
             yield return new WaitForSeconds(timeBetweenSpears);
+        }
+    }
+
+    private IEnumerator Bonfire()
+    {
+        while (isWaveOngoing)
+        {
+            if (Vector3.Distance(Vector3.zero, player.position) < 25f) // Distance from the center of the map
+            {
+                Vector3[] crackPoints = new Vector3[] { player.position + player.forward * bEmergeDistanceFromPlayer, player.position - player.forward * bEmergeDistanceFromPlayer };
+                crackPoints[0].y = crackPoints[1].y = 0.01f;
+
+                // Instantiate a crack
+                GameObject[] spawnedCracks = new GameObject[] { Instantiate(groundCrack, crackPoints[0], Quaternion.identity), Instantiate(groundCrack, crackPoints[1], Quaternion.identity) };
+                Transform[] cracksT = new Transform[] { spawnedCracks[0].transform, spawnedCracks[1].transform };
+                cracksT[0].localScale = cracksT[1].localScale = originalCrackScale;
+
+                // Increase its scale over time
+                float timeElapsed = 0f;
+                while (timeElapsed < bScaleDuration)
+                {
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        cracksT[i].localScale = Vector3.Lerp(originalCrackScale, bCrackTargetScale, timeElapsed / bScaleDuration);
+                    }
+                    timeElapsed += Time.deltaTime;
+
+                    yield return null;
+                }
+
+                yield return new WaitForSeconds(bonfireEmergeDelay);
+
+                GameObject[] spawnedSpears = new GameObject[] { Instantiate(spear, crackPoints[0], Quaternion.identity), Instantiate(spear, crackPoints[1], Quaternion.identity) };
+
+                Transform[] spearTransforms = new Transform[] { spawnedSpears[0].transform, spawnedSpears[1].transform };
+                spearTransforms[0].up = (player.position - spearTransforms[0].position).normalized;
+                spearTransforms[1].up = (player.position - spearTransforms[1].position).normalized;
+
+                Transform[] tips = new Transform[] { spearTransforms[0].Find("Tip").GetComponent<Transform>(), spearTransforms[1].Find("Tip").GetComponent<Transform>() };
+
+                // The value needed to move the tip to crack
+                for (int i = 0; i < 2; ++i)
+                {
+                    Vector3 absoluteMovement = crackPoints[i] - tips[i].position;
+                    spearTransforms[i].position += absoluteMovement;
+
+                    spawnedSpears[i].GetComponent<SpearOfFortune>().Shoot(bonfireSpeed);
+                }
+            }
+
+            yield return new WaitForSeconds(timeBetweenBonfires);
         }
     }
 
