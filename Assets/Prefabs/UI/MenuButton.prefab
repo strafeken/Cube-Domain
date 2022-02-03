@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -106,9 +106,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: dcdd46b9dac281945b4cc7fbb6b27ca5, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: dcdd46b9dac281945b4cc7fbb6b27ca5, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: dcdd46b9dac281945b4cc7fbb6b27ca5, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -186,10 +186,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Play
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7b2ae9489b609764d994dff16694f853, type: 2}
-  m_sharedMaterial: {fileID: -6377331153584905706, guid: 7b2ae9489b609764d994dff16694f853, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 904e1fcb8446ea44e834e8ae78a039a7, type: 2}
+  m_sharedMaterial: {fileID: -6377331153584905706, guid: 904e1fcb8446ea44e834e8ae78a039a7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -14,4 +14,9 @@ public class SceneTransitionManager : MonoBehaviour
     {
         SceneManager.LoadScene("Arena");
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
