@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1970884332191926033}
   m_Layer: 14
   m_Name: Shifter
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,12 +86,12 @@ MonoBehaviour:
   rotationSpeed: 50
   timeToDisappear: 2
   timeToEmerge: 3
-  emergeForce: 8
   emergeRange: 5
   emergingSpeed: 0.5
   minEmergeHeight: 1.5
   maxEmergeHeight: 2
   wallEmergeDistance: 35
+  timeToAttack: 3
   disappearVFX: {fileID: 8601040074032618806, guid: 778a60dfcee990b4ba0de90dcc49a81e, type: 3}
   emergeVFX: {fileID: 8601040074032618806, guid: 778a60dfcee990b4ba0de90dcc49a81e, type: 3}
   groundCheck: {fileID: 1970884332494814688}
