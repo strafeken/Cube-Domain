@@ -7,6 +7,7 @@ public class BigSlime : Enemy
 {
     public enum State
     {
+        SPAWNED,
         IDLE,
         CHASE,
         ATTACK,
@@ -14,6 +15,7 @@ public class BigSlime : Enemy
         DEAD
     }
 
+    private NavMeshAgent agent;
     private Rigidbody rb;
     private List<Heart> hearts = new List<Heart>();
     private int numOfHearts;
@@ -23,6 +25,9 @@ public class BigSlime : Enemy
 
     [Header("State")]
     [SerializeField] private State currentState;
+
+    [SerializeField] private float spawnBufferDuration = 2f;
+    private float spawnedTimer = 0f;
 
     [Header("Chase")]
     [SerializeField] private float moveCooldown = 2f;
@@ -35,6 +40,7 @@ public class BigSlime : Enemy
     [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float attackRange = 5f;
     [SerializeField] private float attackForce = 100f;
+    private bool isAttacking = false;
 
     [Header("Relax")]
     [SerializeField] private float relaxTime = 4f;
@@ -47,11 +53,14 @@ public class BigSlime : Enemy
     [SerializeField] private ParticleSystem chargeVFX;
     [SerializeField] private ParticleSystem attackVFX;
 
+    private Vector3 centerOfArena;
+
     //private Material material;
     //private Color defaultColor;
 
     void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         hearts.AddRange(GetComponentsInChildren<Heart>()); // FIGURE OUT HOW TO SUBSCRIBE TO EACH ONE OF THEM
         //material = GetComponent<Renderer>().material;
@@ -72,15 +81,29 @@ public class BigSlime : Enemy
 
         numOfHearts = hearts.Count;
 
+        centerOfArena = GameObject.FindGameObjectWithTag("CenterOfArena").GetComponent<Transform>().position;
         //defaultColor = material.GetColor("_BaseColor");
 
-        SetState(State.CHASE);
+        SetState(State.SPAWNED);
     }
 
     protected override void Update()
     {
         switch (currentState)
         {
+            case State.SPAWNED:
+                {
+                    // Move out of cage for (spawnBufferDuration)s
+                    agent.SetDestination(centerOfArena);
+
+                    spawnedTimer += Time.deltaTime;
+                    if (spawnedTimer > spawnBufferDuration)
+                    {
+                        agent.enabled = false;
+                        SetState(State.CHASE);
+                    }
+                }
+                break;
             case State.IDLE:
                 {
                     FacePlayer();
@@ -133,8 +156,12 @@ public class BigSlime : Enemy
         if (currentState != State.ATTACK)
             return;
 
-        if (rb.velocity.magnitude < 0.1f)
+        if (!isAttacking)
+            return;
+
+        if (Mathf.Approximately(rb.velocity.magnitude, 0f))
         {
+            isAttacking = false;
             SetState(State.RELAX);
         }
     }
@@ -151,9 +178,7 @@ public class BigSlime : Enemy
     void OnCollisionEnter(Collision collision)
     {
         if (currentState == State.ATTACK)
-        {
             playerHealth.DealDamage();
-        }
     }
 
     void OnDrawGizmos()
@@ -192,7 +217,6 @@ public class BigSlime : Enemy
             case State.ATTACK:
                 //material.SetColor("_BaseColor", new Color(1, 0, 0, 0.5f));
                 StartCoroutine("Attack");
-                
                 break;
             case State.DEAD:
                 Destroy(gameObject);
@@ -235,6 +259,7 @@ public class BigSlime : Enemy
         rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
         attackVFX.Play();
         chargeVFX.Stop();
+        StartCoroutine("ToggleIsAttacking");
     }
 
     private IEnumerator Attack()
@@ -242,5 +267,14 @@ public class BigSlime : Enemy
         yield return new WaitForSeconds(attackCooldown);
         chargeVFX.Play();
         animator.SetInteger("State", 2);
+    }
+
+    /// <summary>
+    /// Waits for a moment since rb.velocity is only updated a few frames after applying force
+    /// </summary>
+    private IEnumerator ToggleIsAttacking()
+    {
+        yield return new WaitForSeconds(0.01f);
+        isAttacking = true;
     }
 }
