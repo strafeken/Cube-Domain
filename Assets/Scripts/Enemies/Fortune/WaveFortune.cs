@@ -23,6 +23,7 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private float sEmergeDistanceFromPlayer = 10f;
     [SerializeField] private float spearEmergeDelay = 0.5f;
     [SerializeField] private float timeBetweenSpears = 4f;
+    [SerializeField] private AudioSource spearSFX;
 
     [Header("Bonfire")]
     [SerializeField] private float bonfireSpeed = 15f;
@@ -135,12 +136,7 @@ public class WaveFortune : MonoBehaviour
                 // Instantiate a crack
                 GameObject spawnedCrack = Instantiate(groundCrack, crackPoint, Quaternion.identity);
                 AudioSource sfx = spawnedCrack.AddComponent<AudioSource>();
-                sfx.clip = crackSFX.clip;
-                sfx.volume = crackSFX.volume;
-                sfx.spatialBlend = crackSFX.spatialBlend;
-                sfx.minDistance = crackSFX.minDistance;
-                sfx.maxDistance = crackSFX.maxDistance;
-                sfx.Play();
+                PlaySFX(sfx, crackSFX);
 
                 Transform crackT = spawnedCrack.transform;
                 crackT.localScale = originalCrackScale;
@@ -171,12 +167,7 @@ public class WaveFortune : MonoBehaviour
                 spawnedGeyser.GetComponent<GeyserOfFortune>().Shoot(geyserSpeed);
 
                 sfx = spawnedGeyser.AddComponent<AudioSource>();
-                sfx.clip = geyserSFX.clip;
-                sfx.volume = geyserSFX.volume;
-                sfx.spatialBlend = geyserSFX.spatialBlend;
-                sfx.minDistance = geyserSFX.minDistance;
-                sfx.maxDistance = geyserSFX.maxDistance;
-                sfx.Play();
+                PlaySFX(sfx, geyserSFX);
             }
 
             yield return new WaitForSeconds(timeBetweenGeysers);
@@ -196,6 +187,9 @@ public class WaveFortune : MonoBehaviour
 
                 // Instantiate a crack
                 GameObject spawnedCrack = Instantiate(groundCrack, crackPoint, Quaternion.identity);
+                AudioSource sfx = spawnedCrack.AddComponent<AudioSource>();
+                PlaySFX(sfx, crackSFX);
+
                 Transform crackT = spawnedCrack.transform;
                 crackT.localScale = originalCrackScale;
 
@@ -207,6 +201,8 @@ public class WaveFortune : MonoBehaviour
                     timeElapsed += Time.deltaTime;
                     yield return null;
                 }
+
+                sfx.Stop();
 
                 yield return new WaitForSeconds(spearEmergeDelay);
 
@@ -222,6 +218,9 @@ public class WaveFortune : MonoBehaviour
                 spearTransform.position += absoluteMovement;
 
                 spawnedSpear.GetComponent<SpearOfFortune>().Shoot(spearSpeed);
+
+                sfx = spawnedSpear.AddComponent<AudioSource>();
+                PlaySFX(sfx, spearSFX);
             }
 
             yield return new WaitForSeconds(timeBetweenSpears);
@@ -338,5 +337,15 @@ public class WaveFortune : MonoBehaviour
             cageTransform.position += Vector3.up * risingSpeed * Time.deltaTime;
             yield return null;
         }
+    }
+
+    private void PlaySFX(AudioSource sfx, AudioSource audioToCopy)
+    {
+        sfx.clip = audioToCopy.clip;
+        sfx.volume = audioToCopy.volume;
+        sfx.spatialBlend = audioToCopy.spatialBlend;
+        sfx.minDistance = audioToCopy.minDistance;
+        sfx.maxDistance = audioToCopy.maxDistance;
+        sfx.Play();
     }
 }
