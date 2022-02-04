@@ -110,6 +110,7 @@ public class SwordController : MonoBehaviour
     private void PlayAnimation(string slash)
     {
         animator.Play(slash);
+        AudioManager.Instance.PlayAudio("SwordSwing");
         --currentSlashCharges;
         cooldownText.text = currentSlashCharges.ToString();
 
