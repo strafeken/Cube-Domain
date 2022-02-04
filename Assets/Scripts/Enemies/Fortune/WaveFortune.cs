@@ -15,6 +15,7 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private float timeBetweenGeysers = 4f;
     [SerializeField] private Vector3 gCrackTargetScale = new Vector3(0.5f, 0.5f, 0.5f);
     [SerializeField] private float gScaleDuration = 1.5f;
+    [SerializeField] private AudioSource geyserSFX;
 
     [Header("Spear")]
     [SerializeField] private GameObject spear;
@@ -53,6 +54,7 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private Vector3 targetCrackScale = new Vector3(0.5f, 0.5f, 0.5f);
     private Vector3 originalCrackScale = new Vector3(0.1f, 0.5f, 0.1f);
     [SerializeField] private float scaleDuration = 1.5f;
+    [SerializeField] private AudioSource crackSFX;
 
     [Header("Wave")]
     [SerializeField] private Transform body;
@@ -132,6 +134,10 @@ public class WaveFortune : MonoBehaviour
 
                 // Instantiate a crack
                 GameObject spawnedCrack = Instantiate(groundCrack, crackPoint, Quaternion.identity);
+                AudioSource sfx = spawnedCrack.AddComponent<AudioSource>();
+                sfx.clip = crackSFX.clip;
+                sfx.Play();
+
                 Transform crackT = spawnedCrack.transform;
                 crackT.localScale = originalCrackScale;
 
@@ -143,6 +149,8 @@ public class WaveFortune : MonoBehaviour
                     timeElapsed += Time.deltaTime;
                     yield return null;
                 }
+
+                sfx.Stop();
 
                 yield return new WaitForSeconds(geyserEmergeDelay);
 
@@ -157,6 +165,10 @@ public class WaveFortune : MonoBehaviour
                 geyserTransform.position += absoluteMovement;
 
                 spawnedGeyser.GetComponent<GeyserOfFortune>().Shoot(geyserSpeed);
+
+                sfx = spawnedGeyser.AddComponent<AudioSource>();
+                sfx.clip = geyserSFX.clip;
+                sfx.Play();
             }
 
             yield return new WaitForSeconds(timeBetweenGeysers);

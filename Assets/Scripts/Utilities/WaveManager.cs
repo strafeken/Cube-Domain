@@ -55,6 +55,8 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private GameObject[] lockIcon = new GameObject[2];
 
+    private AudioSource sfx;
+
     void Awake()
     {
         Instance = this;
@@ -72,6 +74,8 @@ public class WaveManager : MonoBehaviour
 
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         player = p.GetComponent<Transform>();
+
+        sfx = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -114,6 +118,8 @@ public class WaveManager : MonoBehaviour
 
         waveText.gameObject.SetActive(false);
 
+        sfx.Play();
+
         for (int i = 0; i < 8; ++i)
             gates[i].OpenGate();
 
@@ -126,6 +132,10 @@ public class WaveManager : MonoBehaviour
 
         lockPlayer = false;
         ToggleLockIcons();
+
+        yield return new WaitForSeconds(1.5f);
+
+        sfx.Stop();
     }
 
     private void SpawnEnemies()
@@ -201,7 +211,9 @@ public class WaveManager : MonoBehaviour
         }
 
         waveText.gameObject.SetActive(false);
-        
+
+        sfx.Play();
+
         for (int i = 0; i < 8; ++i)
             gates[i].OpenGate();
 
@@ -214,6 +226,10 @@ public class WaveManager : MonoBehaviour
     
         lockPlayer = false;
         ToggleLockIcons();
+
+        yield return new WaitForSeconds(1.5f);
+
+        sfx.Stop();
     }
 
     private void ToggleLockIcons()
