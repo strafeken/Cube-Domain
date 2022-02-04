@@ -52,8 +52,8 @@ MonoBehaviour:
   - {fileID: 941501335540876807}
   - {fileID: 941501334811586319}
   - {fileID: 941501334070398580}
-  beamLength: 8
-  expandSpeed: 8
+  beamLength: 10
+  expandSpeed: 10
 --- !u!1001 &302399460643021615
 PrefabInstance:
   m_ObjectHideFlags: 0
