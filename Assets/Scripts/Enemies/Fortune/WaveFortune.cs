@@ -240,6 +240,10 @@ public class WaveFortune : MonoBehaviour
 
                 // Instantiate a crack
                 GameObject[] spawnedCracks = new GameObject[] { Instantiate(groundCrack, crackPoints[0], Quaternion.identity), Instantiate(groundCrack, crackPoints[1], Quaternion.identity) };
+                AudioSource[] sfx = { spawnedCracks[0].AddComponent<AudioSource>(), spawnedCracks[1].AddComponent<AudioSource>() };
+                PlaySFX(sfx[0], crackSFX);
+                PlaySFX(sfx[1], crackSFX);
+
                 Transform[] cracksT = new Transform[] { spawnedCracks[0].transform, spawnedCracks[1].transform };
                 cracksT[0].localScale = cracksT[1].localScale = originalCrackScale;
 
@@ -255,6 +259,9 @@ public class WaveFortune : MonoBehaviour
 
                     yield return null;
                 }
+
+                sfx[0].Stop();
+                sfx[1].Stop();
 
                 yield return new WaitForSeconds(bonfireEmergeDelay);
 
@@ -273,6 +280,8 @@ public class WaveFortune : MonoBehaviour
                     spearTransforms[i].position += absoluteMovement;
 
                     spawnedSpears[i].GetComponent<SpearOfFortune>().Shoot(bonfireSpeed);
+                    sfx[i] = spawnedSpears[i].AddComponent<AudioSource>();
+                    PlaySFX(sfx[i], spearSFX);
                 }
             }
 
