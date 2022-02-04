@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3642610590015880571}
   - component: {fileID: 3642610590015880570}
   - component: {fileID: 3642610590015880569}
-  m_Layer: 0
+  - component: {fileID: 647854482022694969}
+  m_Layer: 24
   m_Name: CageBarOfFortune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,3 +96,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &647854482022694969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642610590015880567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9b4fc4d59f25240b46dcd1bae10678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
+  sparksVFX: {fileID: 2208148902106606192, guid: 4397695b00d159f4897a807a61eb9e71, type: 3}
