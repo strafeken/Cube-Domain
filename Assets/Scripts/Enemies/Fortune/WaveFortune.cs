@@ -88,8 +88,7 @@ public class WaveFortune : MonoBehaviour
         {
             case 0:
                 body.rotation = Quaternion.Euler(0, 0, -90);
-                coroutine = Missile();
-                //coroutine = Geyser();
+                coroutine = Geyser();
                 break;
             case 1:
                 body.rotation = Quaternion.Euler(-90, 0, 0);

@@ -17,6 +17,9 @@ public class GameEndingManager : MonoBehaviour
     [SerializeField] private CanvasGroup winCanvas;
     private float timer;
 
+    [SerializeField] private AudioSource winSFX;
+    [SerializeField] private AudioSource loseSFX;
+
     void Awake()
     {
         Instance = this;
@@ -40,6 +43,8 @@ public class GameEndingManager : MonoBehaviour
     {
         StopScene();
 
+        winSFX.Play();
+
         inGameCanvas.gameObject.SetActive(false);
         winCanvas.gameObject.SetActive(true);
 
@@ -53,6 +58,8 @@ public class GameEndingManager : MonoBehaviour
     {
         StopScene();
 
+        loseSFX.Play();
+        
         inGameCanvas.gameObject.SetActive(false);
         endingCanvas.gameObject.SetActive(true);
 
