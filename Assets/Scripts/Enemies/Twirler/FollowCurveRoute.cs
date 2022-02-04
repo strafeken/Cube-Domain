@@ -21,11 +21,14 @@ public class FollowCurveRoute : MonoBehaviour
 
     private Health playerHealth;
 
+    private AudioSource sfx;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<TrailRenderer>();
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+        sfx = GetComponent<AudioSource>();
     }
 
     void OnEnable()
@@ -63,6 +66,8 @@ public class FollowCurveRoute : MonoBehaviour
 
     private IEnumerator GoByTheRoute(int routeNumber)
     {
+        sfx.Play();
+
         Vector3 p0 = routes[routeNumber].GetChild(0).position;
         Vector3 p1 = routes[routeNumber].GetChild(1).position;
         Vector3 p2 = routes[routeNumber].GetChild(2).position;
@@ -81,6 +86,8 @@ public class FollowCurveRoute : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+
+        sfx.Stop();
 
         t = 0f;
 

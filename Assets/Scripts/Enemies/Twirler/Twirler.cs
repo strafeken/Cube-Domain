@@ -61,6 +61,8 @@ public class Twirler : Enemy
     [SerializeField] private float spawnBufferDuration = 2f;
     private float spawnedTimer = 0f;
 
+    [SerializeField] private AudioSource spinSFX;
+
     void Awake()
     {
         //northCube = transform.Find("NorthCube").GetComponent<FollowCurveRoute>();
@@ -172,6 +174,7 @@ public class Twirler : Enemy
 
                 if (Vector3.Distance(transform.position, spinAttackEndPoint) < 0.1f)
                 {
+                    spinSFX.Stop();
                     swirlVFX.SetActive(false);
                     SetState(State.IDLE);
                 }
@@ -236,6 +239,7 @@ public class Twirler : Enemy
                 break;
             case State.SPIN:
                 OnChangeToSpinState?.Invoke();
+                spinSFX.Play();
                 swirlVFX.SetActive(true);
                 spinAttackEndPoint = player.position + GetDirectionToPlayer() * 5f;
                 spinAttackEndPoint.y = player.position.y;
