@@ -21,6 +21,7 @@ public class CageBarOfFortune : MonoBehaviour
 
         if (health < 1)
         {
+            AudioManager.Instance.PlayAudio("EnvironmentBreak");
             Destroy(gameObject);
         }
     }
