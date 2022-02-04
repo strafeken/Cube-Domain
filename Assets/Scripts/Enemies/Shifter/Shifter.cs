@@ -57,6 +57,10 @@ public class Shifter : Enemy
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform wallCheck;
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource teleportSFX;
+    [SerializeField] private AudioSource attackSFX;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -362,6 +366,8 @@ public class Shifter : Enemy
 
     private IEnumerator Rise()
     {
+        teleportSFX.Play();
+
         bool isFullyVisible = false;
         while (!isFullyVisible)
         {
@@ -374,6 +380,8 @@ public class Shifter : Enemy
         }
 
         yield return new WaitForSeconds(timeToAttack);
+        
+        teleportSFX.Stop();
 
         boxCollider.enabled = true;
         rb.isKinematic = false;
@@ -387,6 +395,8 @@ public class Shifter : Enemy
 
     private IEnumerator Pass()
     {
+        teleportSFX.Play();
+
         bool isFullyVisible = false;
         while (!isFullyVisible)
         {
@@ -399,6 +409,8 @@ public class Shifter : Enemy
         }
 
         yield return new WaitForSeconds(timeToAttack);
+
+        teleportSFX.Stop();
 
         boxCollider.enabled = true;
         rb.isKinematic = false;
@@ -436,6 +448,8 @@ public class Shifter : Enemy
         Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
 
         rb.AddForce(finalVelocity * rb.mass * 1.1f, ForceMode.Impulse);
+
+        attackSFX.Play();
     }
 
     private Vector3 GetRandomPosition()
