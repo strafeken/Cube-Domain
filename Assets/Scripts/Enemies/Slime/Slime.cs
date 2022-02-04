@@ -58,7 +58,10 @@ public class Slime : Enemy
     [Header("Others")]
     private Vector3 centerOfArena;
 
-    private AudioSource sfx;
+    [Header("SFX")]
+    [SerializeField] private AudioSource bounceSFX;
+    [SerializeField] private AudioSource chargeSFX;
+    [SerializeField] private AudioSource attackSFX;
 
     void Awake()
     {
@@ -66,7 +69,6 @@ public class Slime : Enemy
         rb = GetComponent<Rigidbody>();
         heart = GetComponentInChildren<Heart>();
         material = transform.Find("Body").GetComponent<Renderer>().material;
-        sfx = GetComponent<AudioSource>();
     }
 
     void OnEnable()
@@ -194,7 +196,7 @@ public class Slime : Enemy
         {
             if (collision.collider.CompareTag("Floor"))
             {
-                sfx.Play();
+                bounceSFX.Play();
                 SetState(State.IDLE);
             }
         }
@@ -227,11 +229,12 @@ public class Slime : Enemy
             case State.CHASE:
                 {
                     attackVFX.Stop();
+                    chargeSFX.Stop();
 
                     attackCooldownTimer = 0f;
-                
+
                     ResetAnimationToIdle();
-               
+
                     jumpCooldownTimer = 0f;
                 }
                 break;
@@ -242,6 +245,7 @@ public class Slime : Enemy
                     ResetAnimationToIdle();
 
                     attackVFX.Play();
+                    chargeSFX.Play();
                 }
                 break;
             case State.DEAD:
@@ -253,7 +257,7 @@ public class Slime : Enemy
     private IEnumerator AttackColorTransition()
     {
         float timeElapsed = 0f;
-        while(timeElapsed < colorTransitionDuration)
+        while (timeElapsed < colorTransitionDuration)
         {
             Color gradient = Color.Lerp(defaultColor, attackColor, timeElapsed / colorTransitionDuration);
             material.SetColor("_FresnelColor", gradient);
@@ -304,15 +308,19 @@ public class Slime : Enemy
     public void StartJump()
     {
         attackVFX.Stop();
+        chargeSFX.Stop();
 
         rb.AddForce(resultantJumpForce);
-        sfx.Play();
 
         if (currentState == State.READY_TO_ATTACK)
         {
+            attackSFX.Play();
             SetState(State.ATTACKING);
             return;
         }
+        else
+            bounceSFX.Play();
+
 
         SetState(State.JUMPING);
     }

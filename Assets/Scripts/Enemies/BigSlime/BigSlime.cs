@@ -53,6 +53,10 @@ public class BigSlime : Enemy
     [SerializeField] private ParticleSystem chargeVFX;
     [SerializeField] private ParticleSystem attackVFX;
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource attackSFX;
+    [SerializeField] private AudioSource chargeSFX;
+
     private Vector3 centerOfArena;
 
     //private Material material;
@@ -259,6 +263,7 @@ public class BigSlime : Enemy
         rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
         attackVFX.Play();
         chargeVFX.Stop();
+        chargeSFX.Stop();
         StartCoroutine("ToggleIsAttacking");
     }
 
@@ -266,6 +271,7 @@ public class BigSlime : Enemy
     {
         yield return new WaitForSeconds(attackCooldown);
         chargeVFX.Play();
+        chargeSFX.Play();
         animator.SetInteger("State", 2);
     }
 
