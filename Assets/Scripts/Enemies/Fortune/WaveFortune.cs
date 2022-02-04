@@ -115,6 +115,8 @@ public class WaveFortune : MonoBehaviour
     {
         isWaveOngoing = false;
         StopCoroutine(coroutine);
+        for(int i = 0; i < 4; ++i)
+            lasers[i].SetActive(false);
     }
 
     private IEnumerator Geyser()

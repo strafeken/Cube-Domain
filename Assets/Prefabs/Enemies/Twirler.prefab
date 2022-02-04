@@ -1200,7 +1200,7 @@ MonoBehaviour:
   spinAttackRotationSpeed: 200
   spinAttackMovementSpeed: 5
   spinAttackRange: 10
-  spawnBufferDuration: 4
+  spawnBufferDuration: 5
 --- !u!1 &4173605010153824676
 GameObject:
   m_ObjectHideFlags: 0

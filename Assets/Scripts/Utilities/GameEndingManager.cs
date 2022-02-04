@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameEndingManager : MonoBehaviour
 {
+    public static GameEndingManager Instance { get; private set; }
+
     private Health playerHealth;
     private InputManager playerInputManager;
 
@@ -17,6 +19,8 @@ public class GameEndingManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player.GetComponent<Health>();
         playerInputManager = player.GetComponent<InputManager>();

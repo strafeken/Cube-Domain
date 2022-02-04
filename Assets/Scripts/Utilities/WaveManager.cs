@@ -134,25 +134,29 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfSlimes; ++i)
         {
-            Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            GameObject spawn = Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), Quaternion.identity);
+            spawn.transform.LookAt(new Vector3(0, slimeY.position.y, 0), Vector3.up);
             ++cageIndex;
         }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfBigSlimes; ++i)
         {
-            Instantiate(bigSlime, new Vector3(enemyCages[cageIndex].position.x, bigSlimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            GameObject spawn = Instantiate(bigSlime, new Vector3(enemyCages[cageIndex].position.x, bigSlimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            spawn.transform.LookAt(new Vector3(0, bigSlimeY.position.y, 0), Vector3.up);
             ++cageIndex;
         }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfShifters; ++i)
         {
-            Instantiate(shifter, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            GameObject spawn = Instantiate(shifter, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            spawn.transform.LookAt(new Vector3(0, slimeY.position.y, 0), Vector3.up);
             ++cageIndex;
         }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
         {
-            Instantiate(twirler, new Vector3(enemyCages[cageIndex].position.x, twirlerY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            GameObject spawn = Instantiate(twirler, new Vector3(enemyCages[cageIndex].position.x, twirlerY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            spawn.transform.LookAt(new Vector3(0, twirlerY.position.y, 0), Vector3.up);
         }
 
         EnemyManager.Instance.AddEnemies();
@@ -164,6 +168,12 @@ public class WaveManager : MonoBehaviour
     {
         OnWaveEnd?.Invoke();
         ++currentWave;
+        // Game is finished
+        if(currentWave == 6)
+        {
+            GameEndingManager.Instance.WinEnding();
+            return;
+        }
         StartCoroutine(NewWave());
     }
 
