@@ -130,28 +130,30 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        int cageIndex;
-        int[] previousSpawnIndex = new int[waveEnemiesController[currentWave].numOfSlimes];
+        int cageIndex = 0;
+
         for (int i = 0; i < waveEnemiesController[currentWave].numOfSlimes; ++i)
         {
-            // Spawn Slime at a new cage
-            do
-            {
-                cageIndex = UnityEngine.Random.Range(0, 7);
-            } while (previousSpawnIndex.Contains(cageIndex));
-
             Instantiate(slime, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
-            previousSpawnIndex[i] = cageIndex;
+            ++cageIndex;
         }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfBigSlimes; ++i)
-            Instantiate(bigSlime, new Vector3(enemyCages[i].position.x, bigSlimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
+        {
+            Instantiate(bigSlime, new Vector3(enemyCages[cageIndex].position.x, bigSlimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            ++cageIndex;
+        }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfShifters; ++i)
-            Instantiate(shifter, new Vector3(enemyCages[i].position.x, slimeY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
+        {
+            Instantiate(shifter, new Vector3(enemyCages[cageIndex].position.x, slimeY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+            ++cageIndex;
+        }
 
         for (int i = 0; i < waveEnemiesController[currentWave].numOfTwirlers; ++i)
-            Instantiate(twirler, new Vector3(enemyCages[i].position.x, twirlerY.position.y, enemyCages[i].position.z), spawnDirection[i].rotation);
+        {
+            Instantiate(twirler, new Vector3(enemyCages[cageIndex].position.x, twirlerY.position.y, enemyCages[cageIndex].position.z), spawnDirection[cageIndex].rotation);
+        }
 
         EnemyManager.Instance.AddEnemies();
 

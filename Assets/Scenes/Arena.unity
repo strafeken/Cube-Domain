@@ -37098,7 +37098,7 @@ MonoBehaviour:
   bigSlimeY: {fileID: 698985954}
   twirlerY: {fileID: 963898675}
   timeTillFirstWaveStarts: 3
-  gatesClosingTime: 5
+  gatesClosingTime: 6
   waveBufferTime: 3
   waveEnemiesController:
   - waveNumber: 0

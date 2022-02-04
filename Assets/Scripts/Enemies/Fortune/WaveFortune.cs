@@ -114,6 +114,7 @@ public class WaveFortune : MonoBehaviour
     private void OnWaveEnd()
     {
         isWaveOngoing = false;
+        StopCoroutine(coroutine);
     }
 
     private IEnumerator Geyser()
