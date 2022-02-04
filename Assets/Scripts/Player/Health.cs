@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
     {
         --health;
         OnDamaged?.Invoke();
+        AudioManager.Instance.PlayAudio("PlayerHit");
 
         if (health < 1)
             OnDeath?.Invoke();

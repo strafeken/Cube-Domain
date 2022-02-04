@@ -15,6 +15,7 @@ public class Heart : MonoBehaviour
     {
         GameObject vfx = Instantiate(sparksVFX, other.transform.position, Quaternion.identity);
         Destroy(vfx, 1f);
+        AudioManager.Instance.PlayAudio("EnemyHit");
 
         --health;
         
