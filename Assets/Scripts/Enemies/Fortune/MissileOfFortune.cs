@@ -17,6 +17,10 @@ public class MissileOfFortune : MonoBehaviour
 
     [SerializeField] private GameObject groundCrack;
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource hitSFX;
+    [SerializeField] private AudioSource crackSFX;
+
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -62,7 +66,9 @@ public class MissileOfFortune : MonoBehaviour
             {
                 if(!isGroundHit)
                 {
+                    AudioSource.PlayClipAtPoint(hitSFX.clip, tip.transform.position);
                     Instantiate(groundCrack, new Vector3(tip.position.x, 0.01f, tip.position.z), Quaternion.identity);
+                    AudioSource.PlayClipAtPoint(crackSFX.clip, tip.transform.position);
                     isGroundHit = true;
                 }
             }

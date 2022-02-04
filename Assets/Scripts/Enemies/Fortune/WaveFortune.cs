@@ -44,6 +44,7 @@ public class WaveFortune : MonoBehaviour
     [SerializeField] private float timeUntilShootingStarts = 2f;
     [SerializeField] private float shootingCooldown = 1f;
     [SerializeField] private float timeBetweenMissileShots = 7f;
+    [SerializeField] private AudioSource missileSFX;
 
     [Header("Cage")]
     [SerializeField] private GameObject cage;
@@ -87,7 +88,8 @@ public class WaveFortune : MonoBehaviour
         {
             case 0:
                 body.rotation = Quaternion.Euler(0, 0, -90);
-                coroutine = Geyser();
+                coroutine = Missile();
+                //coroutine = Geyser();
                 break;
             case 1:
                 body.rotation = Quaternion.Euler(-90, 0, 0);
