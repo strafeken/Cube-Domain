@@ -58,12 +58,15 @@ public class Slime : Enemy
     [Header("Others")]
     private Vector3 centerOfArena;
 
+    private AudioSource sfx;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         heart = GetComponentInChildren<Heart>();
         material = transform.Find("Body").GetComponent<Renderer>().material;
+        sfx = GetComponent<AudioSource>();
     }
 
     void OnEnable()
@@ -191,6 +194,7 @@ public class Slime : Enemy
         {
             if (collision.collider.CompareTag("Floor"))
             {
+                sfx.Play();
                 SetState(State.IDLE);
             }
         }
@@ -302,6 +306,7 @@ public class Slime : Enemy
         attackVFX.Stop();
 
         rb.AddForce(resultantJumpForce);
+        sfx.Play();
 
         if (currentState == State.READY_TO_ATTACK)
         {

@@ -136,6 +136,10 @@ public class WaveFortune : MonoBehaviour
                 GameObject spawnedCrack = Instantiate(groundCrack, crackPoint, Quaternion.identity);
                 AudioSource sfx = spawnedCrack.AddComponent<AudioSource>();
                 sfx.clip = crackSFX.clip;
+                sfx.volume = crackSFX.volume;
+                sfx.spatialBlend = crackSFX.spatialBlend;
+                sfx.minDistance = crackSFX.minDistance;
+                sfx.maxDistance = crackSFX.maxDistance;
                 sfx.Play();
 
                 Transform crackT = spawnedCrack.transform;
@@ -168,6 +172,10 @@ public class WaveFortune : MonoBehaviour
 
                 sfx = spawnedGeyser.AddComponent<AudioSource>();
                 sfx.clip = geyserSFX.clip;
+                sfx.volume = geyserSFX.volume;
+                sfx.spatialBlend = geyserSFX.spatialBlend;
+                sfx.minDistance = geyserSFX.minDistance;
+                sfx.maxDistance = geyserSFX.maxDistance;
                 sfx.Play();
             }
 
