@@ -262,6 +262,7 @@ public class BigSlime : Enemy
     {
         rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
         attackVFX.Play();
+        attackSFX.Play();
         chargeVFX.Stop();
         chargeSFX.Stop();
         StartCoroutine("ToggleIsAttacking");
