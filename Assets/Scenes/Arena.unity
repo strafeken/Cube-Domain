@@ -31500,20 +31500,20 @@ MonoBehaviour:
   - name: SwordSwing
     clip: {fileID: 8300000, guid: 45af4a1982c9f214b8d78e7a2ad29e7e, type: 3}
     volume: 1
-    pitch: 0.1
     loop: 0
+    startingTime: 0
     source: {fileID: 0}
   - name: SwordSwingHitEnemy
     clip: {fileID: 0}
     volume: 0
-    pitch: 0
     loop: 0
+    startingTime: 0
     source: {fileID: 0}
   - name: SwordSwingHitEnvironment
-    clip: {fileID: 8300000, guid: 6a9c26db60e8f4544b1244d4d022e2da, type: 3}
+    clip: {fileID: 8300000, guid: 40ada012ae32d7f4e9c69f952c377da0, type: 3}
     volume: 1
-    pitch: 0
     loop: 0
+    startingTime: 0
     source: {fileID: 0}
 --- !u!4 &1232537448
 Transform:
@@ -38378,6 +38378,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7449934331566482341, guid: 57fa1263c271f374c930d779c80fcafa, type: 3}
   m_PrefabInstance: {fileID: 1480908921}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1682910321
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_RootOrder
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767540, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041182223631767543, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
+      propertyPath: m_Name
+      value: CageOfFortune
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c5c55bda09a2ff54cb2e6ff45a181b74, type: 3}
 --- !u!1 &1705734271
 GameObject:
   m_ObjectHideFlags: 0
