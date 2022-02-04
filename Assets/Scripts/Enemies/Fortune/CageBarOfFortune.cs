@@ -8,6 +8,10 @@ public class CageBarOfFortune : MonoBehaviour
 
     [SerializeField] private GameObject sparksVFX;
 
+    [SerializeField] private AudioSource sfxHit;
+    [SerializeField] private AudioSource sfxBreak;
+
+
     void OnTriggerEnter(Collider other)
     {
         if (other.name != "Blade")
@@ -15,13 +19,13 @@ public class CageBarOfFortune : MonoBehaviour
 
         GameObject vfx = Instantiate(sparksVFX, other.transform.position, Quaternion.identity);
         Destroy(vfx, 1f);
-        AudioManager.Instance.PlayAudio("SwordSwingHitEnvironment");
+        sfxHit.Play();
 
         --health;
 
         if (health < 1)
         {
-            AudioManager.Instance.PlayAudio("EnvironmentBreak");
+            AudioSource.PlayClipAtPoint(sfxBreak.clip, transform.position);
             Destroy(gameObject);
         }
     }

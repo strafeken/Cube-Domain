@@ -11,11 +11,19 @@ public class Heart : MonoBehaviour
 
     [SerializeField] private GameObject sparksVFX;
 
+    private AudioSource sfx;
+
+    void Awake()
+    {
+        sfx = GetComponent<AudioSource>();
+    }
+
     void OnTriggerEnter(Collider other)
     {
         GameObject vfx = Instantiate(sparksVFX, other.transform.position, Quaternion.identity);
         Destroy(vfx, 1f);
-        AudioManager.Instance.PlayAudio("EnemyHit");
+
+        AudioSource.PlayClipAtPoint(sfx.clip, transform.position);
 
         --health;
         

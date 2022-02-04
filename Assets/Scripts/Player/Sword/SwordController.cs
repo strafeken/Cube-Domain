@@ -46,11 +46,15 @@ public class SwordController : MonoBehaviour
     [SerializeField] private BoxCollider hitCollider;
     [SerializeField] private Vector3 dashColliderSize = new Vector3(10, 1, 50);
 
+    private AudioSource sfx;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
 
         cooldownSlider = icon.GetComponent<Slider>();
+
+        sfx = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -110,7 +114,8 @@ public class SwordController : MonoBehaviour
     private void PlayAnimation(string slash)
     {
         animator.Play(slash);
-        AudioManager.Instance.PlayAudio("SwordSwing");
+        sfx.Play();
+
         --currentSlashCharges;
         cooldownText.text = currentSlashCharges.ToString();
 

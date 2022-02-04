@@ -7,9 +7,15 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private int health = 10;
     private int maxHealth;
+    private AudioSource sfx;
 
     public event Action OnDamaged;
     public event Action OnDeath;
+
+    void Awake()
+    {
+        sfx = GetComponent<AudioSource>();    
+    }
 
     void Start()
     {
@@ -20,7 +26,8 @@ public class Health : MonoBehaviour
     {
         --health;
         OnDamaged?.Invoke();
-        AudioManager.Instance.PlayAudio("PlayerHit");
+
+        AudioSource.PlayClipAtPoint(sfx.clip, transform.position);
 
         if (health < 1)
             OnDeath?.Invoke();
