@@ -1704,7 +1704,7 @@ GameObject:
   - component: {fileID: 222259778}
   - component: {fileID: 222259779}
   m_Layer: 0
-  m_Name: GateSFX
+  m_Name: CountdownSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1734,11 +1734,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5edb560c806b2b244a4d26232aaa0ee7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f99ccf5527f28bf41b9fbe0a00ccedb4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -12469,8 +12469,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -38131,6 +38131,7 @@ MonoBehaviour:
   lockIcon:
   - {fileID: 1086541962}
   - {fileID: 2111482097}
+  countdownSFX: {fileID: 222259779}
   lockSFX: {fileID: 2114617134}
 --- !u!4 &1381783951
 Transform:

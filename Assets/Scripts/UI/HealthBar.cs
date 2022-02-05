@@ -23,7 +23,7 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
-        text.text = "HP: " + health.GetCurrentHealth() + " / " + health.GetMaxHealth();
+        text.text = health.GetCurrentHealth() + " / " + health.GetMaxHealth();
         slider.value = health.GetMaxHealth();
     }
 
@@ -34,7 +34,7 @@ public class HealthBar : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        text.text = "HP: " + health.GetCurrentHealth() + " / " + health.GetMaxHealth();
+        text.text = health.GetCurrentHealth() + " / " + health.GetMaxHealth();
         slider.value = health.GetCurrentHealth();
     }
 }

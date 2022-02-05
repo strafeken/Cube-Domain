@@ -54,6 +54,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject[] lockIcon = new GameObject[2];
 
     [Header("SFX")]
+    [SerializeField] private AudioSource countdownSFX;
     [SerializeField] private AudioSource lockSFX;
 
     void Awake()
@@ -105,6 +106,8 @@ public class WaveManager : MonoBehaviour
         }
 
         player.position = playerStartPosition.position;
+
+        countdownSFX.Play();
 
         while (waveTimer > 0f)
         {
@@ -193,6 +196,8 @@ public class WaveManager : MonoBehaviour
 
         waveTimer = waveBufferTime;
         waveText.gameObject.SetActive(true);
+
+        countdownSFX.Play();
 
         while (waveTimer > 0f)
         {
