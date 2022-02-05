@@ -180,9 +180,6 @@ public class Twirler : Enemy
                 }
                 break;
             case State.DEAD:
-                {
-                    Destroy(gameObject);
-                }
                 break;
         }
     }

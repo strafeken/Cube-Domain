@@ -46,15 +46,14 @@ public class WaveManager : MonoBehaviour
     public Action<int> OnWaveStart;
     public Action OnWaveEnd;
 
-    [Header("Player Settings")]
+    [Header("Lock")]
     private Transform player;
     [SerializeField] private Transform playerStartPosition;
     [SerializeField] private float pullSpeed = 5f;
-
     public bool lockPlayer = true;
-
     [SerializeField] private GameObject[] lockIcon = new GameObject[2];
 
+    [Header("SFX")]
     [SerializeField] private AudioSource gateSFX;
     [SerializeField] private AudioSource lockSFX;
 
