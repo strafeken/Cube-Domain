@@ -7,7 +7,6 @@ using TMPro;
 
 public class DashController : MonoBehaviour
 {
-    private CapsuleCollider bodyCollider;
     private Rigidbody rb;
 
     [Header("Properties")]
@@ -33,9 +32,12 @@ public class DashController : MonoBehaviour
     private Slider cooldownSlider;
     private TMP_Text cooldownText;
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource dashSFX;
+    [SerializeField] private AudioSource skillRefreshSFX;
+
     void Awake()
     {
-        bodyCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
 
         cooldownSlider = icon.GetComponent<Slider>();
@@ -76,6 +78,8 @@ public class DashController : MonoBehaviour
 
         rb.AddForce(Camera.main.transform.forward * dashForce, ForceMode.Impulse);
 
+        dashSFX.Play();
+
         canDash = false;
 
         yield return new WaitForSeconds(dashDuration);
@@ -100,6 +104,8 @@ public class DashController : MonoBehaviour
             cooldownText.text = Mathf.Ceil(cooldownSlider.value).ToString();
             yield return null;
         }
+
+        skillRefreshSFX.Play();
 
         // Reset properties
         icon.SetActive(false);

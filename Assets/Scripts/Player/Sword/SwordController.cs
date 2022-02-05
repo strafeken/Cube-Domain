@@ -46,6 +46,9 @@ public class SwordController : MonoBehaviour
     [SerializeField] private BoxCollider hitCollider;
     [SerializeField] private Vector3 dashColliderSize = new Vector3(10, 1, 50);
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource skillRefreshSFX;
+
     private AudioSource sfx;
 
     void Awake()
@@ -141,6 +144,7 @@ public class SwordController : MonoBehaviour
             {
                 ++currentSlashCharges;
                 slashRegenTimer = 0f;
+                skillRefreshSFX.Play();
             }
 
             cooldownText.text = currentSlashCharges.ToString();
