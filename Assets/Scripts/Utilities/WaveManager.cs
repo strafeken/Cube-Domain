@@ -56,6 +56,7 @@ public class WaveManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioSource countdownSFX;
     [SerializeField] private AudioSource lockSFX;
+    [SerializeField] private AudioSource backgroundSFX;
 
     void Awake()
     {
@@ -115,6 +116,8 @@ public class WaveManager : MonoBehaviour
             waveText.text = Mathf.Round(waveTimer % 60) + "s";
             yield return null;
         }
+
+        backgroundSFX.Play();
 
         waveText.gameObject.SetActive(false);
 
